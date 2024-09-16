@@ -63,7 +63,7 @@ public class DataImportService {
             costumerNumber++;
         }
 
-        cleanUpClient();
+        //cleanUpClient();
 
         for (Row row : sheet) {
             if (row.getRowNum() < 6) continue; // Skip header row
