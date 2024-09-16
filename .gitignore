@@ -1,4 +1,5 @@
 # Ignore Maven/Gradle build files
+/target/
 /out/
 /build/
 
