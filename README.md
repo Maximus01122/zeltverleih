@@ -50,6 +50,6 @@ docker-compose up --build
 
 Sobald die Container gestartet sind, kannst du auf die verschiedenen Teile der Anwendung über die folgenden URLs zugreifen:
 
-1. **phpMyAdmin**: http://localhost:8080 – Verwende diese URL, um die Datenbank über phpMyAdmin zu verwalten.
-2. **Spring Boot Backend**: Läuft auf http://localhost:8081 (Standardport 8080 intern).
+1. **phpMyAdmin**: http://localhost/phpmyadmin – Verwende diese URL, um die Datenbank über phpMyAdmin zu verwalten.
+2. **Spring Boot Backend**: Läuft auf http://localhost:8080.
 3. **React Frontend**: Zugriff über http://localhost:3000 – Die React-Anwendung wird im Browser gestartet.
