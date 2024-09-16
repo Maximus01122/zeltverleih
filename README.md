@@ -7,7 +7,9 @@ Dieses Projekt enthält eine komplette Fullstack-Anwendung bestehend aus einer M
 Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem Rechner installiert ist:
 
 Java SE Development Kit (JDK) 17 oder neuer installieren ([Oracle Download](https://www.oracle.com/java/technologies/downloads))
+
 Apache und MySQL Datenbank aufsetzen, beispielsweise mit [XAMPP](https://www.apachefriends.org/de/download.html)
+
 Unter [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/) eine neue MySQL Datenbank mit Namen "zeltverleih" anlegen
 
 1. **Git** – Um das Repository zu klonen.
