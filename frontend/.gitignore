@@ -22,10 +22,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-
-
 # Ignore Maven/Gradle build files
-/target/
 /out/
 /build/
 

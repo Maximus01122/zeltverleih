@@ -25,7 +25,6 @@ yarn-error.log*
 
 
 # Ignore Maven/Gradle build files
-/target/
 /out/
 /build/
 
@@ -76,7 +75,7 @@ Thumbs.db
 
 # Ignore Spring Boot auto-generated files
 /.mvn/
-!backend/main/resources/application*.properties
+!src/main/resources/application*.properties
 
 # Ignore package-lock and yarn.lock if you're using npm or yarn for dependency management
 /frontend/package-lock.json
