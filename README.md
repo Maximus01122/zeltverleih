@@ -46,7 +46,7 @@ docker-compose up --build
 ```
 
 
-### 3. Zugriff auf die Anwendung
+### 4. Zugriff auf die Anwendung
 
 Sobald die Container gestartet sind, kannst du auf die verschiedenen Teile der Anwendung über die folgenden URLs zugreifen:
 
