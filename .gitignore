@@ -77,7 +77,7 @@ Thumbs.db
 
 # Ignore Spring Boot auto-generated files
 /.mvn/
-!src/main/resources/application*.properties
+!backend/main/resources/application*.properties
 
 # Ignore package-lock and yarn.lock if you're using npm or yarn for dependency management
 /frontend/package-lock.json
