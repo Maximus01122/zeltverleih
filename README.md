@@ -17,7 +17,7 @@ Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem 
 Zuerst musst du das Git-Repository auf deinen lokalen Rechner klonen. Führe dazu den folgenden Befehl in deinem Terminal oder deiner Kommandozeile aus:
 
 ```bash
-git clone https://github.com/username/repository-name.git
+git clone https://github.com/username/repository-name.git```
 
 
 
