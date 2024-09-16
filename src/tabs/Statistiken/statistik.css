@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    width: 100%;
+    text-align: center;
+}
+
+.chart1,
+.chart2 {
+    width: 50%;
+    border: thin solid darkgray;
+    height: 10%;
+}

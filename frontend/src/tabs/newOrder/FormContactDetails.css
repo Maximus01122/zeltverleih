@@ -1,0 +1,31 @@
+.form-container {
+    max-width: 500px; /* Begrenze die Breite des Formulars */
+    margin: 0 auto; /* Zentriere das Formular horizontal */
+    padding: 20px; /* Fügt etwas Abstand um das Formular herum hinzu */
+    background-color: #fff; /* Hintergrundfarbe des Formulars */
+    border-radius: 8px; /* Abgerundete Ecken */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Schattierung für eine leichte Tiefe */
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container input {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px; /* Reduziere den unteren Rand für weniger Abstand */
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-container2 {
+    display: flex;
+    justify-content: space-between;
+}
+
