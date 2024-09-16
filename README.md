@@ -7,8 +7,9 @@ Dieses Projekt enthält eine komplette Fullstack-Anwendung bestehend aus einer M
 Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem Rechner installiert ist:
 
 1. **Git** – Um das Repository zu klonen.
-2. **Docker** – Um Container zu bauen und zu starten.
-3. **Docker Compose** – Zum Orchestrieren der Container.
+2. **Maven** – Um das Spring Boot Backend zu kompilieren.
+3. **Docker** – Um Container zu bauen und zu starten.
+4. **Docker Compose** – Zum Orchestrieren der Container.
 
 ## Installation und Einrichtung
 
@@ -17,5 +18,26 @@ Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem 
 Zuerst musst du das Git-Repository auf deinen lokalen Rechner klonen. Führe dazu den folgenden Befehl in deinem Terminal oder deiner Kommandozeile aus:
 
 ```bash
-git clone https://github.com/username/repository-name.git
+git clone https://github.com/Maximus01122/zeltverleih.git
+```
+
+Navigiere in das geklonte Verzeichnis:
+```bash
+cd zeltverleih
+```
+
+### 2. Backend kompilieren (Spring Boot)
+
+Bevor du die Docker-Container startest, musst du sicherstellen, dass das Spring Boot Backend kompiliert ist. Dies wird mit Maven gemacht. Führe den folgenden Befehl aus:
+```bash
+mvn clean install
+```
+
+### 3. Docker-Container starten (Spring Boot)
+Nachdem du das Repository geklont und das Backend erfolgreich kompiliert hast, kannst du alle benötigten Docker-Container (Spring Boot Backend mit MySQL und React Frontend) mit Docker Compose starten.
+
+Führe den folgenden Befehl aus, um die Container zu starten:
+
+```bash
+docker-compose up --build
 ```
