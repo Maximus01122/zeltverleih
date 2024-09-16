@@ -15,9 +15,9 @@
 *.log
 
 # Node.js and React/TypeScript dependencies
-/frontend/node_modules/
-/frontend/build/
-/frontend/dist/
+/src/main/frontend/node_modules/
+/src/main/frontend/build/
+/src/main/frontend/dist/
 
 # Ignore temporary files created during development
 *.swp
@@ -28,7 +28,6 @@
 # Ignore Docker-related files
 docker-compose.override.yml
 .env
-Dockerfile
 
 # Operating system-specific files
 .DS_Store
@@ -55,5 +54,5 @@ Thumbs.db
 
 
 # Ignore package-lock and yarn.lock if you're using npm or yarn for dependency management
-/frontend/package-lock.json
-/frontend/yarn.lock
+/src/main/frontend/package-lock.json
+/src/main/frontend/yarn.lock
