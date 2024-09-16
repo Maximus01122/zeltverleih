@@ -32,7 +32,7 @@ cd zeltverleih
 
 ### 2. Backend kompilieren (Spring Boot)
 
-Bevor du die Docker-Container startest, musst du sicherstellen, dass das Spring Boot Backend kompiliert ist. Dies wird mit Maven gemacht. Überprüfe, dass die Credentials in src/main/java/application.properties mit denen von der angelegten Datenbank übereinstimmen. Führe dann den folgenden Befehl aus:
+Bevor du die Docker-Container startest, musst du sicherstellen, dass das Spring Boot Backend kompiliert ist. Dies wird mit Maven gemacht. Überprüfe, dass die Credentials in src/main/resources/application.properties mit denen von der angelegten Datenbank übereinstimmen. Führe dann den folgenden Befehl aus:
 ```bash
 mvn clean install
 ```
