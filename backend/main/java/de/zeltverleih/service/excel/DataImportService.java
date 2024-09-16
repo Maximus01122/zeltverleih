@@ -31,9 +31,9 @@ public class DataImportService {
 
     private final DataFormatter dataFormatter = new DataFormatter();
 
-    //@PostConstruct
+    @PostConstruct
     public void importData() throws IOException {
-        FileInputStream excelFile = new FileInputStream("/Users/maximilianfuchs/Desktop/Projekte/Docker2/zeltverleihreactbuchungssystem/src/main/resources/Terminübersicht 2021 Kopie.xlsx");
+        FileInputStream excelFile = new FileInputStream("backend/main/resources/Terminübersicht 2021 Kopie.xlsx");
         Workbook workbook = new XSSFWorkbook(excelFile);
         Sheet sheet = workbook.getSheet("Buchungen");
 
