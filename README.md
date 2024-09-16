@@ -18,7 +18,7 @@ Zuerst musst du das Git-Repository auf deinen lokalen Rechner klonen. Führe daz
 
 ```bash
 git clone https://github.com/username/repository-name.git
-bash```
+bash´´´
 
 
 
