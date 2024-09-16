@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>de.zeltverleih</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>zeltverleih</artifactId>
+	<version>1.0</version>
 	<name>Buchungssystem</name>
 	<description>Buchungssystem für Bestellungen</description>
 
