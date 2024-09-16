@@ -10,9 +10,9 @@ Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem 
 2. Apache und MySQL Datenbank aufsetzen, beispielsweise mit [XAMPP](https://www.apachefriends.org/de/download.html)
 3. Unter [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/) eine neue MySQL Datenbank mit Namen "zeltverleih" anlegen
 4. **Git** – Um das Repository zu klonen.
-5. **Maven** – Um das Spring Boot Backend zu kompilieren.
-6. **Docker** – Um Container zu bauen und zu starten.
-7. **Docker Compose** – Zum Orchestrieren der Container.
+6. **Maven** – Um das Spring Boot Backend zu kompilieren.
+7. **Docker** – Um Container zu bauen und zu starten.
+8. **Docker Compose** – Zum Orchestrieren der Container.
 
 ## Installation und Einrichtung
 
@@ -44,3 +44,12 @@ Führe den folgenden Befehl aus, um die Container zu starten:
 ```bash
 docker-compose up --build
 ```
+
+
+### 3. Zugriff auf die Anwendung
+
+Sobald die Container gestartet sind, kannst du auf die verschiedenen Teile der Anwendung über die folgenden URLs zugreifen:
+
+1. **phpMyAdmin**: http://localhost:8080 – Verwende diese URL, um die Datenbank über phpMyAdmin zu verwalten.
+2. **Spring Boot Backend**: Läuft auf http://localhost:8081 (Standardport 8080 intern).
+3. **React Frontend**: Zugriff über http://localhost:3000 – Die React-Anwendung wird im Browser gestartet.
