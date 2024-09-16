@@ -6,16 +6,13 @@ Dieses Projekt enthält eine komplette Fullstack-Anwendung bestehend aus einer M
 
 Bevor du das Projekt startest, stelle sicher, dass folgende Software auf deinem Rechner installiert ist:
 
-Java SE Development Kit (JDK) 17 oder neuer installieren ([Oracle Download](https://www.oracle.com/java/technologies/downloads))
-
-Apache und MySQL Datenbank aufsetzen, beispielsweise mit [XAMPP](https://www.apachefriends.org/de/download.html)
-
-Unter [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/) eine neue MySQL Datenbank mit Namen "zeltverleih" anlegen
-
-1. **Git** – Um das Repository zu klonen.
-2. **Maven** – Um das Spring Boot Backend zu kompilieren.
-3. **Docker** – Um Container zu bauen und zu starten.
-4. **Docker Compose** – Zum Orchestrieren der Container.
+1. Java SE Development Kit (JDK) 17 oder neuer installieren ([Oracle Download](https://www.oracle.com/java/technologies/downloads))
+2. Apache und MySQL Datenbank aufsetzen, beispielsweise mit [XAMPP](https://www.apachefriends.org/de/download.html)
+3. Unter [http://localhost/phpmyadmin/](http://localhost/phpmyadmin/) eine neue MySQL Datenbank mit Namen "zeltverleih" anlegen
+4. **Git** – Um das Repository zu klonen.
+5. **Maven** – Um das Spring Boot Backend zu kompilieren.
+6. **Docker** – Um Container zu bauen und zu starten.
+7. **Docker Compose** – Zum Orchestrieren der Container.
 
 ## Installation und Einrichtung
 
