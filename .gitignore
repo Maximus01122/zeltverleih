@@ -1,0 +1,60 @@
+# Ignore Maven/Gradle build files
+/target/
+/out/
+/build/
+
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/workspace.xml
+
+# VSCode
+.vscode/
+
+# Logs
+/logs
+*.log
+
+# Node.js and React/TypeScript dependencies
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+
+# Ignore temporary files created during development
+*.swp
+*.temp
+*.tmp
+*~
+
+# Ignore Docker-related files
+docker-compose.override.yml
+.env
+Dockerfile
+
+# Operating system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore Java class and compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore database files
+*.h2.db
+*.mv.db
+
+# Ignore Eclipse IDE project files (if applicable)
+/.classpath
+/.project
+/.settings/
+
+# Ignore Spring Boot auto-generated files
+/.mvn/
+!src/main/resources/application*.properties
+
+
+# Ignore package-lock and yarn.lock if you're using npm or yarn for dependency management
+/frontend/package-lock.json
+/frontend/yarn.lock
