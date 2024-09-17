@@ -7,6 +7,7 @@ import de.zeltverleih.repository.MaterialRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +32,7 @@ public class DataImportService {
 
     private final DataFormatter dataFormatter = new DataFormatter();
 
-    @PostConstruct
+    //@PostConstruct
     public void importData() throws IOException {
         FileInputStream excelFile = new FileInputStream("src/main/resources/Terminübersicht 2021 Kopie.xlsx");
         Workbook workbook = new XSSFWorkbook(excelFile);

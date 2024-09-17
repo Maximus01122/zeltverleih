@@ -8,6 +8,7 @@ import de.zeltverleih.service.BookingService;
 import de.zeltverleih.service.ClientService;
 import de.zeltverleih.service.CreatePDF;
 import de.zeltverleih.service.MaterialService;
+import de.zeltverleih.service.excel.DataImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +39,23 @@ public class BookingController {
     private BookingService bookingService;
 
     @Autowired
+    private DataImportService importDataService;
+
+    @Autowired
     private ClientService clientService;
 
     @PostMapping("/add")
     public Booking createBooking(@RequestBody Booking booking) throws Exception {
         return bookingService.saveBooking(booking);
     }
+
+    @GetMapping("/setup")
+    public String fillDatabase() throws Exception {
+        importDataService.importData();
+        return "Datenbank geladen";
+    }
+
+
 
     @DeleteMapping("/{id}")
     public void deleteBooking(@PathVariable Long id) {
