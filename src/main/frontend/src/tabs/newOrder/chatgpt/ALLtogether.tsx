@@ -41,16 +41,18 @@ export const CarouselBooking = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("bookingProps", bookingProps)
-        BookingService.getBuchung(bookingProps).then(
-            (existingBooking: Booking) => {
-                setBooking(existingBooking);
-                setDateRange({from:new Date(existingBooking.dateDetails.startDate),
-                                    to: new Date(existingBooking.dateDetails.endDate)});
-                setBookedMaterials(existingBooking.bookingMaterials);
-                console.log("existing", );
-            }
-        )
+        if (bookingProps) {
+            console.log("bookingProps", bookingProps)
+            BookingService.getBuchung(bookingProps).then(
+                (existingBooking: Booking) => {
+                    setBooking(existingBooking);
+                    setDateRange({from:new Date(existingBooking.dateDetails.startDate),
+                        to: new Date(existingBooking.dateDetails.endDate)});
+                    setBookedMaterials(existingBooking.bookingMaterials);
+                    console.log("existing", );
+                }
+            )
+        }
     }, [bookingProps]);
 
     useEffect(() => {

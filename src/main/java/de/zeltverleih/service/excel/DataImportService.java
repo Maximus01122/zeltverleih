@@ -31,7 +31,7 @@ public class DataImportService {
 
     private final DataFormatter dataFormatter = new DataFormatter();
 
-    //@PostConstruct
+    @PostConstruct
     public void importData() throws IOException {
         FileInputStream excelFile = new FileInputStream("/Users/maximilianfuchs/Desktop/Projekte/Docker2/zeltverleihreactbuchungssystem/src/main/resources/Terminübersicht 2021 Kopie.xlsx");
         Workbook workbook = new XSSFWorkbook(excelFile);
@@ -63,7 +63,7 @@ public class DataImportService {
             costumerNumber++;
         }
 
-        cleanUpClient();
+        //cleanUpClient();
 
         for (Row row : sheet) {
             if (row.getRowNum() < 6) continue; // Skip header row

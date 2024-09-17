@@ -93,22 +93,6 @@ export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({bookingId, ha
         }
     }
 
-    /*<Autocomplete
-        options={clientNameOptions}
-        //value={inputClientName}
-        getOptionLabel={(option) => option}
-        onChange={(_, value) => {
-            if (value === null) {
-                reset();
-            }
-            field.onChange(value);
-            handleClientSelect(value as string);
-        }}
-        //onInputChange={handleClientNameChange}
-        renderInput={(params) => (
-            <TextField {...params} label="Kundenname" placeholder="Kundenname"/>
-        )}
-    />*/
     return (
         <>
             <FormProvider {...form}>
@@ -121,16 +105,16 @@ export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({bookingId, ha
                                 <FormControl>
                                     <Autocomplete
                                         options={clientNameOptions}
-                                        value={inputClientName}
                                         getOptionLabel={(option) => option}
+                                        value={field.value || null} // Ensure value from form is passed correctly
                                         onChange={(_, value) => {
-                                            if (value === null) {
-                                                reset();
-                                            }
-                                            field.onChange(value);
-                                            handleClientSelect(value as string);
+                                            field.onChange(value); // Update the form state
+                                            handleClientSelect(value as string); // Additional handler
                                         }}
-                                        onInputChange={(_, value) =>setInputClientName(value)}
+                                        onBlur={() => console.log("Input field blurred")}
+                                        onInputChange={(_, value) => {
+                                            setValue("name", value); // Update form state or local state
+                                        }}
                                         renderInput={(params) => (
                                             <TextField {...params} label="Kundenname" placeholder="Kundenname"/>
                                         )}
