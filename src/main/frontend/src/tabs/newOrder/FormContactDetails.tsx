@@ -14,15 +14,16 @@ import {Button} from "@/components/ui/button";
 import BookingService from "@/services/BookingService";
 
 
+
 interface ClientFormFieldsProps {
-    bookingId?: number;
     handleNextClient: (values: z.infer<any>) => Promise<void>;
+    existingClient?: Client;  // Neue Prop für den bestehenden Kunden
 }
 
-export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({bookingId, handleNextClient}) => {
+
+export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({handleNextClient, existingClient}) => {
     const [clientNameOptions, setClientNameOptions] = useState<string[]>([]);
     const [inputClientName, setInputClientName] = useState<string>("");
-
 
     const form = useForm<z.infer<typeof clientSchema>>({
         resolver: zodResolver(clientSchema),
@@ -43,22 +44,6 @@ export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({bookingId, ha
     })
     const {setValue, control, reset} = form
 
-
-    useEffect(() => {
-        console.log("bookingId", bookingId)
-        if (bookingId !== undefined) {
-            BookingService.getBuchung(bookingId)
-                .then(data => {
-                    console.log("BookingID found", data);
-                    reset(data.client);
-                    setInputClientName(data.client.name);
-                })
-                .catch(error => {
-                });
-        }
-    }, [bookingId])
-
-
     useEffect(() => {
         // Fetch names of clients from API
         ClientService.getAll().then((response: AxiosResponse<Client[]>) => {
@@ -66,6 +51,14 @@ export const ClientFormFields: React.FC<ClientFormFieldsProps> = ({bookingId, ha
             setClientNameOptions(namen);
         });
     }, []);
+
+    useEffect(() => {
+        if (existingClient !== undefined) {
+            console.log(existingClient);
+            reset(existingClient);
+            setInputClientName(existingClient.name);
+        }
+    }, [existingClient])
 
     // Bei Auswahl eines existierenden Kunden, lade dessen Details
     async function handleClientSelect(clientName: string | undefined) {

@@ -46,6 +46,7 @@ export const CarouselBooking = () => {
             BookingService.getBuchung(bookingProps).then(
                 (existingBooking: Booking) => {
                     setBooking(existingBooking);
+                    setClient(existingBooking.client);
                     setDateRange({from:new Date(existingBooking.dateDetails.startDate),
                         to: new Date(existingBooking.dateDetails.endDate)});
                     setBookedMaterials(existingBooking.bookingMaterials);
@@ -101,8 +102,7 @@ export const CarouselBooking = () => {
             console.log("Kunde erstellt", response.data.id)
 
             setClient(response.data);
-            //form.setValue("id", response.data.id);
-            //form.setValue("address", response.data.address);
+
             handleNext();
         } catch (error) {
             console.error("Error creating client:", error);
@@ -197,7 +197,7 @@ export const CarouselBooking = () => {
                 <Progress value={(step - 1) * (100 / 3)}/>
             </CardHeader>
             <CardContent>
-                {step === 1 && <ClientFormFields bookingId={bookingProps} handleNextClient={handleNextClient} />}
+                {step === 1 && <ClientFormFields existingClient={client} handleNextClient={handleNextClient} />}
 
                 {step === 2 && (
                     <MaterialSelection
@@ -259,10 +259,3 @@ export const CarouselBooking = () => {
         </Card>
     );
 }
-
-/*
-{step === 1 && (
-
-
-                )}
- */
