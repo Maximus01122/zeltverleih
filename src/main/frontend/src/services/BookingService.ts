@@ -59,11 +59,6 @@ const getBookingsByDateRange = async (startDate: Date, endDate: Date): Promise<B
     }
 };
 
-// 5. formatDateToLocalDateString - Formatiert ein Datum als lokales Datum
-const formatDateToLocalDateString = (date: Date): string => {
-    return date.toISOString().split('T')[0];
-};
-
 // 6. writeToExcel - Schreibt Daten in eine Excel-Datei
 const writeToExcel = async (id: number) => {
     try {
@@ -76,26 +71,8 @@ const writeToExcel = async (id: number) => {
 // 7. save - Speichert eine Buchung
 const save = async (buchung: Booking) => {
     try {
-        return await axios.post(BUCHUNG_API_BASE_URL + `/add`, buchung);
-    } catch (error) {
-        handleError(error);
-    }
-};
-
-// 8. addAufbauService - Fügt einen Aufbau-Service hinzu
-const addAufbauService = async (id: number, aufbauservice: SetupService[]) => {
-    try {
-        console.log("jetzt soll Service hinzugefügt werden");
-        return await axios.put(BUCHUNG_API_BASE_URL + `/addAufbauService/${id}`, aufbauservice);
-    } catch (error) {
-        handleError(error);
-    }
-};
-
-// 9. deleteAufbauService - Löscht einen Aufbau-Service
-const deleteAufbauService = async (id: number) => {
-    try {
-        return await axios.delete(BUCHUNG_API_BASE_URL + `/deleteAufbauService/${id}`);
+        const response = await axios.post(BUCHUNG_API_BASE_URL + `/add`, buchung);
+        return response.data;
     } catch (error) {
         handleError(error);
     }
@@ -124,24 +101,6 @@ const addLadepauschale = async (id: number, ladepauschale: LoadingFee) => {
     try {
         console.log("übergebene loadingFee", ladepauschale);
         return await axios.put(BUCHUNG_API_BASE_URL + `/addLadepauschale/${id}`, ladepauschale);
-    } catch (error) {
-        handleError(error);
-    }
-};
-
-// 13. saveAll - Speichert mehrere Buchungen
-const saveAll = async (buchungen: Booking[]) => {
-    try {
-        return await axios.post(BUCHUNG_API_BASE_URL + `/addAll`, buchungen);
-    } catch (error) {
-        handleError(error);
-    }
-};
-
-// 14. update - Aktualisiert eine Buchung
-const update = async (buchung: Booking) => {
-    try {
-        return await axios.put(BUCHUNG_API_BASE_URL + `/update`, buchung);
     } catch (error) {
         handleError(error);
     }
@@ -256,14 +215,11 @@ const BookingService = {
     getAll,
     getBuchung,
     save,
-    update,
     deleteBuchung,
     getMaterialienFromBuchung,
     getByDate,
     createInvoice,
     createOffer,
-    addAufbauService,
-    deleteAufbauService,
     writeToExcel,
     getLadepauschale,
     getAufbauService,
