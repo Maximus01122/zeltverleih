@@ -3,153 +3,255 @@ import {Booking, SetupService, LoadingFee, CostDetails} from "@/model/AllTypes";
 
 const BUCHUNG_API_BASE_URL = "http://localhost:8080/booking";
 
-async function getAll(): Promise<Booking[]> {
+// Zentrale Fehlerbehandlung
+function handleError(error: unknown): never {
+    if (axios.isAxiosError(error) && error.response) {
+        console.error(`API Error: ${error.response.data}`);
+        throw new Error(`API Error: ${error.response.data}`);
+    } else {
+        console.error(`Unexpected error: ${error}`);
+        throw new Error(`Unexpected error: ${error}`);
+    }
+}
+
+// 1. getAll - Holt alle Buchungen
+const getAll = async (): Promise<Booking[]> => {
     try {
         const response = await axios.get<Booking[]>(BUCHUNG_API_BASE_URL + "/getAll");
         console.log("angekommen", response.data);
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(`Error fetching bookings: ${error.response.data}`);
-        } else {
-            throw new Error(`Unexpected error: ${error}`);
-        }
+        handleError(error);
     }
-}
+};
 
-async function getBuchung (id: number) : Promise<Booking> {
+// 2. getBuchung - Holt eine spezifische Buchung nach ID
+const getBuchung = async (id: number): Promise<Booking> => {
     try {
         const response = await axios.get<Booking>(BUCHUNG_API_BASE_URL + `/${id}`);
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(`Error fetching booking with id ${id}: ${error.response.data}`);
-        } else {
-            throw new Error(`Unexpected error: ${error}`);
-        }
+        handleError(error);
     }
-}
+};
 
-async function getBookingsByStartDate(startDate: Date): Promise<Booking[]> {
+// 3. getBookingsByStartDate - Holt Buchungen nach Startdatum
+const getBookingsByStartDate = async (startDate: Date): Promise<Booking[]> => {
     try {
         const response = await axios.get<Booking[]>(`${BUCHUNG_API_BASE_URL}/byStartDate`, {
             params: { startDate }
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(`Error fetching bookings with start date ${startDate}: ${error.response.data}`);
-        } else {
-            throw new Error(`Unexpected error: ${error}`);
-        }
+        handleError(error);
     }
-}
+};
 
-async function getBookingsByDateRange(startDate: Date, endDate: Date): Promise<Booking[]> {
+// 4. getBookingsByDateRange - Holt Buchungen nach Datumsbereich
+const getBookingsByDateRange = async (startDate: Date, endDate: Date): Promise<Booking[]> => {
     try {
         const response = await axios.get<Booking[]>(`${BUCHUNG_API_BASE_URL}/byDateRange`, {
-            params: {startDate, endDate }
+            params: { startDate, endDate }
         });
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            throw new Error(`Error fetching bookings between ${startDate} and ${endDate}: ${error.response.data}`);
-        } else {
-            throw new Error(`Unexpected error: ${error}`);
-        }
+        handleError(error);
     }
-}
-
-function formatDateToLocalDateString(date: Date): string {
-    return date.toISOString().split('T')[0];
-}
-
-
-const writeToExcel = (id:number) => {
-    return axios.put(BUCHUNG_API_BASE_URL +`/insertIntoExcel/${id}`);
-}
-
-const save = (buchung: Booking) => {
-    return axios.post(BUCHUNG_API_BASE_URL +`/add`, buchung);
 };
 
-async function  addAufbauService  (id: number, aufbauservice:SetupService[])  {
-    console.log("jetzt soll Servce hinzugefügt werden")
-    return await axios.put(BUCHUNG_API_BASE_URL + `/addAufbauService/${id}`, aufbauservice)
-}
+// 5. formatDateToLocalDateString - Formatiert ein Datum als lokales Datum
+const formatDateToLocalDateString = (date: Date): string => {
+    return date.toISOString().split('T')[0];
+};
 
-async function deleteAufbauService (id: number) {
-    return await axios.delete(BUCHUNG_API_BASE_URL + `/deleteAufbauService/${id}`)
-}
+// 6. writeToExcel - Schreibt Daten in eine Excel-Datei
+const writeToExcel = async (id: number) => {
+    try {
+        return await axios.put(BUCHUNG_API_BASE_URL + `/insertIntoExcel/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function getAufbauService(id: number) {
-    return await axios.get(BUCHUNG_API_BASE_URL + `/getAufbauService/${id}`)
-}
+// 7. save - Speichert eine Buchung
+const save = async (buchung: Booking) => {
+    try {
+        return await axios.post(BUCHUNG_API_BASE_URL + `/add`, buchung);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function getLadepauschale(id: number) {
-    return await axios.get(BUCHUNG_API_BASE_URL + `/getLadepauschale/${id}`)
-}
+// 8. addAufbauService - Fügt einen Aufbau-Service hinzu
+const addAufbauService = async (id: number, aufbauservice: SetupService[]) => {
+    try {
+        console.log("jetzt soll Service hinzugefügt werden");
+        return await axios.put(BUCHUNG_API_BASE_URL + `/addAufbauService/${id}`, aufbauservice);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function addLadepauschale(id: number, ladepauschale: LoadingFee) {
-    console.log("übergebene loadingFee",ladepauschale)
-    return await axios.put(BUCHUNG_API_BASE_URL + `/addLadepauschale/${id}`,ladepauschale)
-}
+// 9. deleteAufbauService - Löscht einen Aufbau-Service
+const deleteAufbauService = async (id: number) => {
+    try {
+        return await axios.delete(BUCHUNG_API_BASE_URL + `/deleteAufbauService/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function saveAll (buchungen: Booking[]) {
-    return await axios.post(BUCHUNG_API_BASE_URL +`/addAll`, buchungen);
-}
+// 10. getAufbauService - Holt den Aufbau-Service einer Buchung
+const getAufbauService = async (id: number) => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/getAufbauService/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function update (buchung: Booking) {
-    return await axios.put(BUCHUNG_API_BASE_URL +`/update`, buchung);
-}
+// 11. getLadepauschale - Holt die Ladepauschale einer Buchung
+const getLadepauschale = async (id: number) => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/getLadepauschale/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function deleteBuchung (id: number) {
-    return await axios.delete(BUCHUNG_API_BASE_URL +`/${id}`);
-}
+// 12. addLadepauschale - Fügt eine Ladepauschale hinzu
+const addLadepauschale = async (id: number, ladepauschale: LoadingFee) => {
+    try {
+        console.log("übergebene loadingFee", ladepauschale);
+        return await axios.put(BUCHUNG_API_BASE_URL + `/addLadepauschale/${id}`, ladepauschale);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function getMaterialienFromBuchung (id: number) {
-    return await axios.get(BUCHUNG_API_BASE_URL +`/getMaterialien/${id}`);
-}
+// 13. saveAll - Speichert mehrere Buchungen
+const saveAll = async (buchungen: Booking[]) => {
+    try {
+        return await axios.post(BUCHUNG_API_BASE_URL + `/addAll`, buchungen);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function countBuchungByStatus (status: string) {
-    let year = new Date().getFullYear();
-    return await axios.get(BUCHUNG_API_BASE_URL +`/count/${status}/${year}`);
-}
+// 14. update - Aktualisiert eine Buchung
+const update = async (buchung: Booking) => {
+    try {
+        return await axios.put(BUCHUNG_API_BASE_URL + `/update`, buchung);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function getByDate (startdatum: Date, enddatum: Date) {
-    return await axios.get(BUCHUNG_API_BASE_URL +`/getByDatum`,
-        {
-            params: {startDate:startdatum.toLocaleDateString('en-CA'), endDate:enddatum.toLocaleDateString('en-CA') }
-        })
-}
+// 15. deleteBuchung - Löscht eine Buchung nach ID
+const deleteBuchung = async (id: number) => {
+    try {
+        return await axios.delete(BUCHUNG_API_BASE_URL + `/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function getIncome(){
-    return await axios.get(BUCHUNG_API_BASE_URL +`/income`)
-}
+// 16. getMaterialienFromBuchung - Holt Materialien einer Buchung
+const getMaterialienFromBuchung = async (id: number) => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/getMaterialien/${id}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function incomePerMonthPerYear(){
-    return await axios.get(BUCHUNG_API_BASE_URL +`/incomePerMonthPerYear`)
-}
+// 17. countBuchungByStatus - Zählt Buchungen nach Status
+const countBuchungByStatus = async (status: string) => {
+    const year = new Date().getFullYear();
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/count/${status}/${year}`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function countBuchungPerMonthPerYear(){
-    return await axios.get(BUCHUNG_API_BASE_URL +`/countBuchungPerMonthPerYear`)
-}
+// 18. getByDate - Holt Buchungen nach Datum
+const getByDate = async (startdatum: Date, enddatum: Date) => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/getByDatum`, {
+            params: {
+                startDate: startdatum.toLocaleDateString('en-CA'),
+                endDate: enddatum.toLocaleDateString('en-CA')
+            }
+        });
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function incomePerMonth(){
-    return await axios.get(BUCHUNG_API_BASE_URL +`/incomePerMonth`)
-}
+// 19. getIncome - Holt die Einnahmen
+const getIncome = async () => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/income`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function createInvoice(id:number, rechnungsdatum:Date, leistungsdatum:Date, begleichsdatum:Date) {
-    return await axios.post(BUCHUNG_API_BASE_URL +`/createInvoice/${id}`,
-        {"invoiceDate":rechnungsdatum, "serviceDate":leistungsdatum, "paymentDate":begleichsdatum});
-}
+// 20. incomePerMonthPerYear - Holt die Einnahmen pro Monat und Jahr
+const incomePerMonthPerYear = async () => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/incomePerMonthPerYear`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
-async function createOffer(id:number, infos:CostDetails, validUntil:Date) {
-    await axios.post(BUCHUNG_API_BASE_URL +`/createOffer/${id}`,
-        {"countDailyRent":infos.countDailyRent, "countWeekendRent":infos.countWeekendRent,
-            "deliveryCosts":infos.deliveryCosts, "validUntil":validUntil});
-}
+// 21. countBuchungPerMonthPerYear - Zählt Buchungen pro Monat und Jahr
+const countBuchungPerMonthPerYear = async () => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/countBuchungPerMonthPerYear`);
+    } catch (error) {
+        handleError(error);
+    }
+};
 
+// 22. incomePerMonth - Holt die Einnahmen pro Monat
+const incomePerMonth = async () => {
+    try {
+        return await axios.get(BUCHUNG_API_BASE_URL + `/incomePerMonth`);
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+// 23. createInvoice - Erstellt eine Rechnung
+const createInvoice = async (id: number, rechnungsdatum: Date, leistungsdatum: Date, begleichsdatum: Date) => {
+    try {
+        return await axios.post(BUCHUNG_API_BASE_URL + `/createInvoice/${id}`, {
+            invoiceDate: rechnungsdatum,
+            serviceDate: leistungsdatum,
+            paymentDate: begleichsdatum
+        });
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+// 24. createOffer - Erstellt ein Angebot
+const createOffer = async (id: number, infos: CostDetails, validUntil: Date) => {
+    try {
+        await axios.post(BUCHUNG_API_BASE_URL + `/createOffer/${id}`, {
+            countDailyRent: infos.countDailyRent,
+            countWeekendRent: infos.countWeekendRent,
+            deliveryCosts: infos.deliveryCosts,
+            validUntil
+        });
+    } catch (error) {
+        handleError(error);
+    }
+};
+// Exporte
 const BookingService = {
     getAll,
     getBuchung,
@@ -173,4 +275,5 @@ const BookingService = {
     getBookingsByStartDate,
     getBookingsByDateRange
 };
+
 export default BookingService;
