@@ -251,8 +251,7 @@ export const CarouselBooking = () => {
 
                 {step === 4 && (
                     <div>
-                        <BookingSingleView bookingPreview={booking} showMenu={false}/>
-                        <Button onClick={handleDone}>Buchung abschließen</Button>
+                        <BookingSingleView bookingPreview={booking} handleDone={handleDone}/>
                     </div>
                 )}
             </CardContent>

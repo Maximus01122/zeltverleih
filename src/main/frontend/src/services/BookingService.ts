@@ -139,15 +139,15 @@ async function incomePerMonth(){
     return await axios.get(BUCHUNG_API_BASE_URL +`/incomePerMonth`)
 }
 
-async function createRechnung(id:number, rechnungsdatum:Date, leistungsdatum:Date, begleichsdatum:Date) {
-    return await axios.post(BUCHUNG_API_BASE_URL +`/createRechnung/${id}`,
-        {"rechnungsdatum":rechnungsdatum, "leistungsdatum":leistungsdatum, "begleichsdatum":begleichsdatum});
+async function createInvoice(id:number, rechnungsdatum:Date, leistungsdatum:Date, begleichsdatum:Date) {
+    return await axios.post(BUCHUNG_API_BASE_URL +`/createInvoice/${id}`,
+        {"invoiceDate":rechnungsdatum, "serviceDate":leistungsdatum, "paymentDate":begleichsdatum});
 }
 
-async function createAngebot(id:number, infos:CostDetails, gueltigBis:Date) {
-    await axios.post(BUCHUNG_API_BASE_URL +`/createAngebot/${id}`,
+async function createOffer(id:number, infos:CostDetails, validUntil:Date) {
+    await axios.post(BUCHUNG_API_BASE_URL +`/createOffer/${id}`,
         {"countDailyRent":infos.countDailyRent, "countWeekendRent":infos.countWeekendRent,
-            "deliveryCosts":infos.deliveryCosts, "validUntil":gueltigBis});
+            "deliveryCosts":infos.deliveryCosts, "validUntil":validUntil});
 }
 
 const BookingService = {
@@ -158,8 +158,8 @@ const BookingService = {
     deleteBuchung,
     getMaterialienFromBuchung,
     getByDate,
-    createRechnung,
-    createAngebot,
+    createInvoice,
+    createOffer,
     addAufbauService,
     deleteAufbauService,
     writeToExcel,

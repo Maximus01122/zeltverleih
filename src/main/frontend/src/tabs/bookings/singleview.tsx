@@ -20,13 +20,14 @@ import {Booking} from "@/model/AllTypes";
 import BookingService from "@/services/BookingService";
 import {AdresseToString, formatSetupServiceName} from "@/model/helperFunctions";
 import Menu from "@/tabs/navigation/menuNew";
+import {Button} from "@/components/ui/button";
 
 interface BookingSingleViewProps {
     bookingPreview?: Booking;
-    showMenu?: boolean;
+    handleDone?:  () => Promise<void>
 }
 
-export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPreview,showMenu }) => {
+export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPreview,handleDone }) => {
     const location = useLocation();
     const {id} = location.state || {}; // Extrahiere die ID aus dem State
     const [booking, setBooking] = useState<Booking>();
@@ -65,7 +66,7 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                 <CardHeader>
                     <div className="flex justify-between items-center">
                         <CardTitle>Kundeninformationen</CardTitle>
-                        {showMenu === undefined ? <Menu/> : <></>}
+                        {handleDone === undefined ? <Menu/> : <></>}
                     </div>
                 </CardHeader>
                 <CardContent>
@@ -208,6 +209,7 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                     </Table>
                 </CardContent>
             </Card>
+            {handleDone == undefined ? <></> : <Button onClick={handleDone}>Buchung abschließen</Button>}
         </div>
     )
 }

@@ -43,9 +43,9 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
     const [countDailyRent, setCountDailyRent] = React.useState(0)
     const [countWeekendRent, setCountWeekendRent] = React.useState(0)
     const [deliveryCosts, setDeliveryCosts] = React.useState(0)
-    const [rechnungsdatum, setRechnungsdatum] = React.useState<Date>(new Date())
-    const [leistungsdatum, setLeistungsdatum] = React.useState<Date>(new Date())
-    const [begleichsdatum, setBegleichsdatum] = React.useState<Date>(
+    const [invoiceDate, setInvoiceDate] = React.useState<Date>(new Date())
+    const [serviceDate, setServiceDate] = React.useState<Date>(new Date())
+    const [paymentDate, setPaymentDate] = React.useState<Date>(
         new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     )
 
@@ -56,14 +56,14 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
         setCountWeekendRent(0)
         setDeliveryCosts(0)
         setValidUntil(new Date())
-        setRechnungsdatum(new Date())
-        setLeistungsdatum(new Date())
-        setBegleichsdatum(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
+        setInvoiceDate(new Date())
+        setServiceDate(new Date())
+        setPaymentDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
     };
 
-    const handleClickAngebot = () => {
+    const handleClickOffer = () => {
         console.log(buchung.client.name, countDailyRent, countWeekendRent, deliveryCosts, validUntil)
-        BookingService.createAngebot(buchung.id!,
+        BookingService.createOffer(buchung.id!,
             {
                 countDailyRent: countDailyRent,
                 countWeekendRent: countWeekendRent,
@@ -79,11 +79,11 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
         })
     }
 
-    const handleClickRechnung = () => {
-        console.log(buchung.client.name, rechnungsdatum, leistungsdatum, begleichsdatum)
-        BookingService.createRechnung(buchung.id!, rechnungsdatum,
-                leistungsdatum,
-                begleichsdatum).then(
+    const handleClickInvoice = () => {
+        console.log(buchung.client.name, invoiceDate, serviceDate, paymentDate)
+        BookingService.createInvoice(buchung.id!, invoiceDate,
+                serviceDate,
+                paymentDate).then(
             _ => toast.success("Rechnung für " + buchung.client.name + " erstellt")
         ).catch(r => {
             let message:string = `Fehler bei Rechnung für ${buchung.client.name}: \n ${r.response?.data.message}`
@@ -157,7 +157,7 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
                                            />
                                        </div>}
                                        handleClickBack={handleClose}
-                                       handleClickContinue={handleClickAngebot}/>
+                                       handleClickContinue={handleClickOffer}/>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={e => e.preventDefault()} disabled={!["OFFER_ACCEPTED", "PAYMENT_PENDING", "COMPLETED"].includes(buchung.status)}>
                     <AlertDialogFilled buttonName={"Rechnung erstellen"}
@@ -168,35 +168,35 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
                                                [
                                                    <Calendar
                                                        mode="single"
-                                                       selected={rechnungsdatum}
+                                                       selected={invoiceDate}
                                                        onSelect={(date) => {
                                                            if (date) {
-                                                               setRechnungsdatum(date);
+                                                               setInvoiceDate(date);
                                                            }
                                                        }}
                                                    />,
                                                    <Calendar
                                                        mode="single"
-                                                       selected={leistungsdatum}
+                                                       selected={serviceDate}
                                                        onSelect={(date) => {
                                                            if (date) {
-                                                               setLeistungsdatum(date);
+                                                               setServiceDate(date);
                                                            }
                                                        }}
                                                    />,
                                                    <Calendar
                                                        mode="single"
-                                                       selected={begleichsdatum}
+                                                       selected={paymentDate}
                                                        onSelect={(date) => {
                                                            if (date) {
-                                                               setBegleichsdatum(date);
+                                                               setPaymentDate(date);
                                                            }
                                                        }}
                                                    />
                                                ]
                                            }/>}
                                        handleClickBack={handleClose}
-                                       handleClickContinue={handleClickRechnung}/>
+                                       handleClickContinue={handleClickInvoice}/>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator/>
                 <DropdownMenuItem>

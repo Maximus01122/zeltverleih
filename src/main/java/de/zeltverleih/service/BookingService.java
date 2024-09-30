@@ -1,5 +1,6 @@
 package de.zeltverleih.service;
 
+import de.zeltverleih.model.InvoiceDetails;
 import de.zeltverleih.model.OfferInfos;
 import de.zeltverleih.model.datenbank.*;
 import de.zeltverleih.repository.BookingRepository;
@@ -56,7 +57,7 @@ public class BookingService {
     }
 
     public Integer countBuchungByStatusEquals(String status, int year) {
-            List<int[]> result = bookingRepository.countBuchungByStatusEquals(status);
+            List<int[]> result = countBuchungByStatusEquals(status);
             int sum = 0;
             for (int[] array : result) {
                 if (array[0] == year)
@@ -65,18 +66,22 @@ public class BookingService {
             return sum;
     }
 
+    public List<int[]> countBuchungByStatusEquals(String status) {
+        return bookingRepository.countBuchungByStatusEquals(status);
+    }
+
     public List<Object[]> countBuchungPerMonthPerYear(){
         return bookingRepository.countBuchungPerMonthPerYear();
     }
 
 
-    private Map<BookingMaterial, Double> getPreiseForMaterialien(Long id, OfferInfos offerInfos) {
+    private Map<BookingMaterial, Double> getPreiseForMaterialien(Long id, CostDetails costDetails) {
         Booking b = findById(id);
         Map<BookingMaterial, Double> bestellung = new HashMap<>();
         for (BookingMaterial bm : b.getBookingMaterials()) {
             MaterialPrice materialPrice = materialService.findClosestMaterialPrice(bm.getMaterial().getId());
-            double preis = offerInfos.getCountWeekendRent() * materialPrice.getWeekendPrice();
-            preis += offerInfos.getCountDailyRent() * materialPrice.getDayPrice();
+            double preis = costDetails.getCountWeekendRent() * materialPrice.getWeekendPrice();
+            preis += costDetails.getCountDailyRent() * materialPrice.getDayPrice();
             preis *= bm.getQuantity();
             bestellung.put(bm, preis);
         }
@@ -124,7 +129,7 @@ public class BookingService {
         return servicePreise;
     }
 
-    public void createAngebot(Long id, OfferInfos offerInfos) throws Exception {
+    public void createOffer(Long id, OfferInfos offerInfos) throws Exception {
         //getPrice for every Material
         Booking b = findById(id);
         Map<BookingMaterial, Double> materialPrices = getPreiseForMaterialien(id, offerInfos);
@@ -152,6 +157,33 @@ public class BookingService {
         //new ExcelBuchungInTabelle(PATH_TO_EXCEL).insertAngebotInExcel(b, summe, angebotInfos);
         saveBooking(b);
     }
+
+    public void createInvoice(Long id, InvoiceDetails invoiceInfos) throws Exception {
+        Booking b = findById(id);
+
+        /*if (b.getClient().getCustomerNumber() == 0) {
+                Client k = b.getClient();
+                ClientNumber kNummer = kundennummerController.getKundennummer();
+                kundennummerController.increase();
+                k.setKundennummer(kNummer.getKundenummern());
+                k = kundenController.update(k);
+                b.setKunde(k);
+            }
+            BillNumber rechnungsnummer = rechnungnummerController.getRechnungsnummer();
+            boolean ersteRechnung = b.getInvoiceNumber() == 0;
+            if (ersteRechnung)
+                b.setRechnungsnummer(rechnungsnummer.getRechnungsnummer());
+            rechnungInfos.setLieferkosten(b.getLieferkosten());
+            rechnungInfos.setRechnungsnummer(b.getRechnungsnummer());
+        */
+
+        Map<BookingMaterial, Double> bestellung = getPreiseForMaterialien(id, b.getCostDetails());
+        TreeMap<String, Double> servicePreise = getServicePreise(id);
+
+        new CreatePDF().createPDF(b.getClient(), bestellung, servicePreise, invoiceInfos);
+        // BillNumber um 1 erhöhen
+        /*if (ersteRechnung)
+            rechnungnummerController.increase();*/
+        saveBooking(b);
+    }
 }
-
-

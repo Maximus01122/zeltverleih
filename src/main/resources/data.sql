@@ -1,4 +1,4 @@
-INSERT INTO `address` (`id`, `city`, `house_number`, `postal_code`, `street`) VALUES
+/*INSERT INTO `address` (`id`, `city`, `house_number`, `postal_code`, `street`) VALUES
                                                                                   (1, 'München', '28', '80333', 'Holzweg'),
                                                                                   (2, 'München', '', '80333', 'Holzweg'),
                                                                                   (3, 'München', '', '80333', 'Holzweg'),
@@ -260,4 +260,4 @@ INSERT INTO `setup_service` (`id`, `name`, `price`, `booking_id`) VALUES
                                                                       (17, 'SELBSTABHOLUNG', 0, 18),
                                                                       (18, 'LIEFERUNG', 0, 19),
                                                                       (19, 'LIEFERUNG', 0, 20),
-                                                                      (20, 'AUFBAU_ZELT', 0, 20);
+                                                                      (20, 'AUFBAU_ZELT', 0, 20);*/
