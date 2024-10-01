@@ -155,6 +155,7 @@ public class BookingService {
             summe += servicePreise.get(as);
         }
         //new ExcelBuchungInTabelle(PATH_TO_EXCEL).insertAngebotInExcel(b, summe, angebotInfos);
+        b.setStatus(BookingStatus.OFFER_SENT);
         saveBooking(b);
     }
 
@@ -184,6 +185,7 @@ public class BookingService {
         // BillNumber um 1 erhöhen
         /*if (ersteRechnung)
             rechnungnummerController.increase();*/
+        b.setStatus(BookingStatus.PAYMENT_PENDING);
         saveBooking(b);
     }
 }

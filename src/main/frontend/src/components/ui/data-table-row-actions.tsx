@@ -51,7 +51,12 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
 
 
     const handleClose = () => {
+        console.log("close ausgeführt");
         setOpen(false);
+        handleOfferDone();
+    };
+
+    const handleOfferDone = () => {
         setCountDailyRent(0)
         setCountWeekendRent(0)
         setDeliveryCosts(0)
@@ -59,7 +64,7 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
         setInvoiceDate(new Date())
         setServiceDate(new Date())
         setPaymentDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))
-    };
+    }
 
     const handleClickOffer = () => {
         console.log(buchung.client.name, countDailyRent, countWeekendRent, deliveryCosts, validUntil)
@@ -69,14 +74,19 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
                 countWeekendRent: countWeekendRent,
                 deliveryCosts: deliveryCosts}, validUntil).then(
             _ => {
-                handleChangeStatus("OFFER_SENT", buchung);
                 toast.success("Angebot für " + buchung.client.name + " erstellt");
             }
         ).catch(r => {
             let message:string = `Fehlerhaftes Angebot für ${buchung.client.name}: \n ${r.response?.data.message}`
             console.log(message)
             toast.error(message)
-        })
+        }).finally(
+            () => {
+                console.log("finally")
+                handleOfferDone();
+            }
+        )
+
     }
 
     const handleClickInvoice = () => {
@@ -108,10 +118,9 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
         setOpen(!isOpen)
     }
 
-    const handleChangeStatus = (label:Status, buchung:Booking) => {
-        buchung.status = label;
+    const handleChangeStatus = (label:Status, bookingId: number) => {
         (row.original as Booking).status = label;
-        BookingService.save(buchung)
+        BookingService.setStatus(bookingId, label);
         // @ts-ignore
         table.options.meta?.updateData(row.index, column.id, label)
     }
@@ -212,7 +221,7 @@ export function DataTableRowActions<TData>({row, column, table}: DataTableRowAct
                         <DropdownMenuRadioGroup>
                             {statusValues.map((label) => (
                                 <DropdownMenuRadioItem
-                                    onClick={() => handleChangeStatus(label, buchung) }
+                                    onClick={() => handleChangeStatus(label, buchung.id!) }
                                     key={label}
                                     value={label}>
                                     {statusTranslation[label]}

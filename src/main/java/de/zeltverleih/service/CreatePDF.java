@@ -229,7 +229,7 @@ public class CreatePDF {
         int startKontaktInfo = 722;
         FixText("Rechnungsdatum: " + rechnungInfos.getInvoiceDate().format(DATE_TIME_FORMATTER), 400.5F, startKontaktInfo - 66, writer, 12, regular);
         FixText("Leistungsdatum: " + rechnungInfos.getPaymentDate().format(DATE_TIME_FORMATTER), 410, startKontaktInfo - 78, writer, 12, regular);
-        FixText("ClientNumber: " + client.getCustomerNumber(), 443, startKontaktInfo - 90, writer, 12, regular);
+        FixText("Kundennummer: " + client.getId(), 409.5F, startKontaktInfo - 90, writer, 12, regular);
 
         int startRechnungGross = startKontaktInfo - 80;
         FixText("Rechnung", beginLeft, startRechnungGross, writer, 24, bold);

@@ -5,7 +5,6 @@ import de.zeltverleih.model.OfferInfos;
 import de.zeltverleih.model.datenbank.*;
 import de.zeltverleih.service.BookingService;
 import de.zeltverleih.service.ClientService;
-import de.zeltverleih.service.CreatePDF;
 import de.zeltverleih.service.MaterialService;
 import de.zeltverleih.service.excel.DataImportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class BookingController {
     private ClientService clientService;
 
     @PostMapping("/add")
-    public Booking createBooking(@RequestBody Booking booking) throws Exception {
+    public Booking saveBooking(@RequestBody Booking booking) throws Exception {
         return bookingService.saveBooking(booking);
     }
 
@@ -120,6 +119,13 @@ public class BookingController {
     @PostMapping("createOffer/{id}")
     public void createOffer(@PathVariable Long id, @RequestBody OfferInfos offerInfos) throws Exception {
         bookingService.createOffer(id, offerInfos);
+    }
+
+    @PostMapping("setStatus/{id}")
+    public void setStatus(@PathVariable Long id, @RequestBody BookingStatus bookingStatus) throws Exception {
+        Booking b = getBookingById(id);
+        b.setStatus(bookingStatus);
+        saveBooking(b);
     }
 
     @PostMapping("createInvoice/{id}")

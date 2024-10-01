@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Booking, SetupService, LoadingFee, CostDetails} from "@/model/AllTypes";
+import {Booking, SetupService, LoadingFee, CostDetails, Status} from "@/model/AllTypes";
 
 const BUCHUNG_API_BASE_URL = "http://localhost:8080/booking";
 
@@ -210,6 +210,20 @@ const createOffer = async (id: number, infos: CostDetails, validUntil: Date) => 
         handleError(error);
     }
 };
+
+const setStatus = async (id: number, status:Status) => {
+    try {
+        await axios.post(BUCHUNG_API_BASE_URL + `/setStatus/${id}`, status, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+    } catch (error) {
+        handleError(error);
+    }
+};
+
 // Exporte
 const BookingService = {
     getAll,
@@ -220,6 +234,7 @@ const BookingService = {
     getByDate,
     createInvoice,
     createOffer,
+    setStatus,
     writeToExcel,
     getLadepauschale,
     getAufbauService,
