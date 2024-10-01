@@ -3,7 +3,7 @@ import DashboardPage from "@/tabs/dashboard/dashboard";
 import BookingOverviewPage from "@/tabs/bookings/bookings";
 import {BookingSingleView} from "@/tabs/bookings/singleview";
 import {Warehouse} from "@/tabs/warehouse/Warehouse";
-import {CarouselBooking} from "@/tabs/newOrder/chatgpt/ALLtogether";
+import {CarouselBooking} from "@/tabs/newOrder/ALLtogether";
 
 function App() {
 
