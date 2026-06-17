@@ -1,6 +1,6 @@
 import { columns } from "@/components/ui/columns"
 import { DataTable } from "@/components/ui/data-table"
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import BookingService from "@/services/BookingService";
 import {Booking} from "@/model/AllTypes";
 import * as React from "react";
@@ -10,38 +10,36 @@ import {Button} from "@/components/ui/button";
 import {Cross2Icon} from "@radix-ui/react-icons";
 import {Toaster} from "@/components/ui/sonner";
 import Menu from "@/tabs/navigation/menuNew";
+import BookingCalendar from "@/components/ui/calendar2";
 
 export default function BookingOverviewPage() {
     const [buchungen, setBuchungen] = useState<Booking[]>([])
-    const [date, setDate] = React.useState<DateRange | undefined>({
-        from: undefined,
-        to: undefined,
-    })
+    // Initialised as undefined — avoids `!` non-null assertions throughout
+    const [dateRange, setDateRange] = React.useState<DateRange | undefined>(undefined)
+
+    // Single source of truth for "load all bookings" — used by both the
+    // initial mount effect and the reset button to avoid duplication.
+    const loadAll = useCallback(() => {
+        BookingService.getAll().then(setBuchungen).catch(console.error);
+    }, []);
+
+    useEffect(() => { loadAll(); }, [loadAll])
 
     useEffect(() => {
-        BookingService.getAll().then(
-            value => setBuchungen(value)
-    )
-    }, [])
-
-    useEffect(() => {
-        if (date!.from && date!.to){
-            BookingService.getByDate(date!.from,date!.to)
-                .then((result: any) => {
-                    setBuchungen(result.data);
-                })
+        if (dateRange?.from && dateRange?.to) {
+            BookingService.getByDate(dateRange.from, dateRange.to)
+                .then((result: any) => setBuchungen(result.data))
+                .catch(console.error);
+        } else if (dateRange?.from) {
+            BookingService.getByDate(dateRange.from, dateRange.from)
+                .then((result: any) => setBuchungen(result.data))
+                .catch(console.error);
         }
-        else if (date!.from){
-            BookingService.getByDate(date!.from, date!.from)
-                .then((result: any) => {
-                    setBuchungen(result.data);
-                })
-
-        }
-    }, [date])
+    }, [dateRange])
 
     return (
         <>
+            {/* hidden md:flex: page is intentionally desktop-only */}
             <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold tracking-tight">Buchungsübersicht</h2>
@@ -49,15 +47,13 @@ export default function BookingOverviewPage() {
                     <Menu/>
                 </div>
                 <div className="flex flex-1 items-center space-x-2">
-                    <DateRangePicker date={date} setDate={setDate}/>
-                    {(date!.to) && (
+                    <DateRangePicker date={dateRange} setDate={setDateRange}/>
+                    {dateRange?.from && (
                         <Button
                             variant="ghost"
                             onClick={() => {
-                                setDate({
-                                    from: undefined,
-                                    to: undefined,});
-                                BookingService.getAll().then(value => setBuchungen(value))
+                                setDateRange(undefined);
+                                loadAll(); // reuse loadAll — no duplicate getAll() call
                             }}
                             className="h-8 px-2 lg:px-3"
                         >
@@ -69,6 +65,5 @@ export default function BookingOverviewPage() {
                 <DataTable columns={columns} data={buchungen} setData={setBuchungen}/>
             </div>
         </>
-
     )
 }

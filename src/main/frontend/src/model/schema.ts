@@ -69,6 +69,7 @@ const bookingMaterialSchema = z.object({
     booking: z.lazy(() => bookingSchema).optional(), // Markiere das Feld 'booking' als optional
 });
 
+
 // Booking schema
 const bookingSchema: z.ZodType<Booking> = z.object({
     id: z.any().optional(),
@@ -79,7 +80,8 @@ const bookingSchema: z.ZodType<Booking> = z.object({
     dateDetails: dateDetailsSchema,
     costDetails: costDetailsSchema,
     status: z.enum(statusValues),
-    invoiceNumber: z.string().optional(),
+    invoiceNumber: z.number().optional(),
+    comment:z.string()
 });
 
 export { bookingSchema, clientSchema};

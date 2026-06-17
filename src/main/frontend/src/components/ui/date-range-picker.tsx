@@ -10,6 +10,7 @@ import {
 import {DateRange} from "react-day-picker";
 import {addDays, format} from "date-fns";
 import {CalendarIcon} from "@radix-ui/react-icons";
+import {de} from "date-fns/locale";
 
 
 type dateProps = {
@@ -63,6 +64,7 @@ export function DateRangePicker({date, setDate}: dateProps, {className}: React.H
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
+                        locale={de}
                         initialFocus
                         mode="range"
                         defaultMonth={date?.from}

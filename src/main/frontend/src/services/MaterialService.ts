@@ -1,17 +1,11 @@
 import axios from "axios";
 import {Material} from "@/model/AllTypes";
+import {apiUrl} from "@/services/api";
 
-const MATERIAL_API_BASE_URL = "http://localhost:8080/material";
+const MATERIAL_API_BASE_URL = apiUrl("/material");
 
 async function getAll() {
-    let materialien: Material[] = [];
     return  axios.get(MATERIAL_API_BASE_URL + "/getAll")
-    /*    .then((result: any) => {
-            result.data.forEach(function (item: Material) {
-                materialien.push(item);
-            });
-        });
-    return materialien;*/
 }
 
 const getMaterial = (id: number) => {
@@ -42,8 +36,8 @@ const getKategorien = () => {
     return axios.get(MATERIAL_API_BASE_URL + `/getKategorien/`);
 };
 
-async function getOccupiedQuantity (startdatum: Date, enddatum: Date) {
-    return await axios.get(MATERIAL_API_BASE_URL +`/getOccupiedQuantity`,
+async function getAvailableQuantity (startdatum: Date, enddatum: Date) {
+    return await axios.get(MATERIAL_API_BASE_URL +`/getAvailableQuantity`,
         {
             params: {startDate:startdatum.toISOString().split('T')[0], endDate:enddatum.toISOString().split('T')[0] }
         })
@@ -58,6 +52,6 @@ const MaterialService = {
     deleteMaterial,
     getKategorien,
     getByKategorie,
-    getOccupiedQuantity
+    getAvailableQuantity
 };
 export default MaterialService;

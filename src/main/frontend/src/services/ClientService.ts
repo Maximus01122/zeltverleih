@@ -1,7 +1,8 @@
 import {Client} from "@/model/AllTypes";
 import axios from "axios";
+import {apiUrl} from "@/services/api";
 
-const CLIENT_API_BASE_URL = "http://localhost:8080/client";
+const CLIENT_API_BASE_URL = apiUrl("/client");
 
 
 const add  = (kunde: Client) => {

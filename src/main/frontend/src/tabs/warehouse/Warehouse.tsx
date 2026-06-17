@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "../newOrder/FormContactDetails.css";
+
 import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { DateRange } from "react-day-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,13 +19,13 @@ export function Warehouse() {
     useEffect(() => {
         if (dateRange?.from && dateRange?.to) {
             console.log("selected date", dateRange.from, dateRange.to);
-            MaterialService.getOccupiedQuantity(dateRange.from, dateRange.to)
+            MaterialService.getAvailableQuantity(dateRange.from, dateRange.to)
                 .then((result: any) => {
                     console.log("nach parsen", result.data);
                     setMaterials(result.data);
                 })
                 .catch((error: any) => {
-                    console.error("Error fetching material data:", error);
+                    console.error("Fehler beim Laden der Materialdaten:", error);
                 });
         }
     }, [dateRange]);

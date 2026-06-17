@@ -86,11 +86,18 @@ export const columns: ColumnDef<Booking>[] = [
         cell: ({row}) => {
             return (
                 <div className="flex space-x-1">
-          <span className="max-w-[80px] truncate font-medium">
-            {new Date(
-                row.getValue("offerDate"))
-                .toLocaleDateString('de-DE', {year: 'numeric', month: '2-digit', day: '2-digit'})}
-          </span>
+                      <span className="max-w-[80px] truncate font-medium">
+                        {(() => {
+                            const date2:string = row.getValue("offerDate");
+                            return date2
+                                ? new Date(date2).toLocaleDateString("de-DE", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                })
+                                : "-";
+                        })()}
+                      </span>
                 </div>
             )
         },

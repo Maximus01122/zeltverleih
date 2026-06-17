@@ -1,24 +1,26 @@
 import axios from "axios";
-import {Booking, SetupService, LoadingFee, CostDetails, Status} from "@/model/AllTypes";
+import {Booking, SetupService, LoadingFee, CostDetails, Status, BookingMaterial} from "@/model/AllTypes";
+import {convertToUTC} from "@/model/helperFunctions";
+import {DateRange} from "react-day-picker";
+import {apiUrl} from "@/services/api";
 
-const BUCHUNG_API_BASE_URL = "http://localhost:8080/booking";
+const BUCHUNG_API_BASE_URL = apiUrl("/booking");
 
 // Zentrale Fehlerbehandlung
 function handleError(error: unknown): never {
     if (axios.isAxiosError(error) && error.response) {
-        console.error(`API Error: ${error.response.data}`);
-        throw new Error(`API Error: ${error.response.data}`);
+        throw new Error(`API-Fehler: ${error.response.data}`);
     } else {
-        console.error(`Unexpected error: ${error}`);
-        throw new Error(`Unexpected error: ${error}`);
+        throw new Error(`Unerwarteter Fehler: ${error}`);
     }
 }
+
+
 
 // 1. getAll - Holt alle Buchungen
 const getAll = async (): Promise<Booking[]> => {
     try {
         const response = await axios.get<Booking[]>(BUCHUNG_API_BASE_URL + "/getAll");
-        console.log("angekommen", response.data);
         return response.data;
     } catch (error) {
         handleError(error);
@@ -135,12 +137,12 @@ const countBuchungByStatus = async (status: string) => {
 };
 
 // 18. getByDate - Holt Buchungen nach Datum
-const getByDate = async (startdatum: Date, enddatum: Date) => {
+const getByDate = async (startDate: Date, endDate: Date) => {
     try {
         return await axios.get(BUCHUNG_API_BASE_URL + `/getByDatum`, {
             params: {
-                startDate: startdatum.toLocaleDateString('en-CA'),
-                endDate: enddatum.toLocaleDateString('en-CA')
+                startDate: startDate.toLocaleDateString('en-CA'),
+                endDate: endDate.toLocaleDateString('en-CA')
             }
         });
     } catch (error) {
@@ -148,14 +150,6 @@ const getByDate = async (startdatum: Date, enddatum: Date) => {
     }
 };
 
-// 19. getIncome - Holt die Einnahmen
-const getIncome = async () => {
-    try {
-        return await axios.get(BUCHUNG_API_BASE_URL + `/income`);
-    } catch (error) {
-        handleError(error);
-    }
-};
 
 // 20. incomePerMonthPerYear - Holt die Einnahmen pro Monat und Jahr
 const incomePerMonthPerYear = async () => {
@@ -185,26 +179,41 @@ const incomePerMonth = async () => {
 };
 
 // 23. createInvoice - Erstellt eine Rechnung
-const createInvoice = async (id: number, rechnungsdatum: Date, leistungsdatum: Date, begleichsdatum: Date) => {
+const createInvoice = async (id: number, invoiceDate: Date, serviceDate: Date, paymentDate: Date, items?: any[]) => {
+    invoiceDate = convertToUTC(invoiceDate)
+    serviceDate = convertToUTC(serviceDate)
+    paymentDate = convertToUTC(paymentDate)
     try {
         return await axios.post(BUCHUNG_API_BASE_URL + `/createInvoice/${id}`, {
-            invoiceDate: rechnungsdatum,
-            serviceDate: leistungsdatum,
-            paymentDate: begleichsdatum
+            invoiceDate: invoiceDate,
+            serviceDate: serviceDate,
+            paymentDate: paymentDate,
+            items: items
         });
     } catch (error) {
         handleError(error);
     }
 };
 
+const getInvoicePreview = async (id: number) => {
+    try {
+        const response = await axios.get(BUCHUNG_API_BASE_URL + `/getInvoicePreview/${id}`);
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+
 // 24. createOffer - Erstellt ein Angebot
 const createOffer = async (id: number, infos: CostDetails, validUntil: Date) => {
+    validUntil = convertToUTC(validUntil)
     try {
         await axios.post(BUCHUNG_API_BASE_URL + `/createOffer/${id}`, {
             countDailyRent: infos.countDailyRent,
             countWeekendRent: infos.countWeekendRent,
             deliveryCosts: infos.deliveryCosts,
-            validUntil
+            validUntil: validUntil
         });
     } catch (error) {
         handleError(error);
@@ -224,6 +233,32 @@ const setStatus = async (id: number, status:Status) => {
     }
 };
 
+const checkOrder = async (dateRange: DateRange | undefined, bookingMaterials:BookingMaterial[]) => {
+    try {
+        const response = await axios.post<boolean>(`${BUCHUNG_API_BASE_URL}/isValidOrder`,
+        bookingMaterials,
+            {
+                params: {
+                    startDate: dateRange?.from!.toLocaleDateString('en-CA'),
+                    endDate: dateRange?.to!.toLocaleDateString('en-CA')
+                },
+            }
+    );
+
+        return response.data; // Return the boolean result
+    } catch (error: any) {
+        if (error.response) {
+            console.error("Backend-Fehler:", error.response.data);
+            throw new Error(error.response.data.message || "Unbekannter Serverfehler");
+        } else if (error.request) {
+            console.error("Keine Serverantwort erhalten:", error.request);
+            throw new Error("Keine Antwort vom Server. Bitte versuche es später erneut.");
+        } else {
+            console.error("Fehler beim Aufbau der Anfrage:", error.message);
+            throw new Error("Die Anfrage konnte nicht verarbeitet werden.");
+        }
+    }
+}
 // Exporte
 const BookingService = {
     getAll,
@@ -240,11 +275,13 @@ const BookingService = {
     getAufbauService,
     addLadepauschale,
     countBuchungByStatus,
-    getIncome,
     incomePerMonthPerYear,
     countBuchungPerMonthPerYear,
     getBookingsByStartDate,
-    getBookingsByDateRange
+    getBookingsByDateRange,
+    checkOrder,
+    getInvoicePreview
 };
+
 
 export default BookingService;

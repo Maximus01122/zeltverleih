@@ -1,7 +1,8 @@
 import axios from "axios";
 import {SetupService} from "@/model/AllTypes";
+import {apiUrl} from "@/services/api";
 
-const BUCHUNG_API_BASE_URL = "http://localhost:8080/service";
+const BUCHUNG_API_BASE_URL = apiUrl("/service");
 
 async function getAll () {
     let aufbauService: SetupService[] = [];

@@ -7,7 +7,7 @@ type Address = {
 }
 
 const setupValues =
-    ["SELBSTABHOLUNG", "LIEFERUNG", "AUFBAU_ZELT", "AUFBAU_BESTUHLUNG", "AUFBAU_REGENRINNE", "AUFBAU_ZELTBODEN", "AUFBAU_AKTIVITÄTEN"] as const;
+    ["SELBSTABHOLUNG", "LIEFERUNG", "AUFBAU_ZELT", "AUFBAU_BESTUHLUNG", "AUFBAU_REGENRINNE", "AUFBAU_ZELTBODEN", "AUFBAU_AKTIVITÄTEN", "AUFBAUHILFE"] as const;
 type SetupServiceName = typeof setupValues[number];
 
 type SetupService = {
@@ -55,7 +55,8 @@ type Booking = {
     dateDetails: DateDetails;
     costDetails?: CostDetails;
     status: Status;
-    invoiceNumber?: string;
+    invoiceNumber?: number;
+    comment: string;
 }
 
 
@@ -95,13 +96,15 @@ type Material = {
     materialPrices: MaterialPrice[];
 }
 
+
+
 type MaterialPrice = {
     id?: number;
     dayPrice: number;
     weekendPrice: number;
     buildUpPrice: number;
-    startDate: Date | string;
-    material: Material;
+    startDate: Date;
+    material?: Material;
 }
 
 type PlatzMaterial = {
@@ -116,6 +119,12 @@ type StatistikMaterial = {
     count: number;
     rang: number;
 }
+
+type MonthlyRevenueRow = {
+    year: number;   // e.g., 2024
+    month: number;  // 1..12
+    revenue: number;
+};
 
 
 export type {
@@ -134,6 +143,7 @@ export type {
     DateDetails,
     CostDetails,
     Status,
-    SetupServiceName
+    SetupServiceName,
+    MonthlyRevenueRow
 }
 export { statusValues, statusTranslation, categoryValues, setupValues}

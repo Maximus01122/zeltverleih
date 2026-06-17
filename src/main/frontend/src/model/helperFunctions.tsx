@@ -7,34 +7,45 @@ function formatSetupServiceName(name: SetupServiceName): string {
         .join(' ');
 }
 
-function addMaterialLists(list1:Material[], list2:Material[]
-) {
-    const result: { [key: number]: Material } = {};
-
-    [...list1, ...list2].forEach(material => {
-        const id = material.id!;
-        result[id] = result[id]
-            ? { ...result[id], count: result[id].count + material.count }
-            : { ...material };
-    });
-
-    return Object.values(result);
+function convertToUTC (date:Date){
+    return new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
 }
 
-function addMaterialAvailabilityLists(list1:BookingMaterial[], list2:BookingMaterial[]) {
+function addBookingMaterialLists(list1:BookingMaterial[], list2:BookingMaterial[]) {
     const result: { [key: number]: BookingMaterial } = {};
-
     [...list1, ...list2].forEach(({ material, quantity }) => {
         const id = material.id!;
         result[id] = result[id]
             ? { ...result[id], quantity: result[id].quantity + quantity }
             : { material, quantity };
     });
-
     return Object.values(result);
 }
 
+function addMaterialAvailabilityLists(
+    list1: BookingMaterial[],
+    list2: MaterialAvailability[]
+): MaterialAvailability[] {
+    const result: { [key: number]: MaterialAvailability } = {};
 
+    // Zuerst die Einträge aus list2 in das Ergebnis übernehmen
+    list2.forEach(({ material, availableCount }) => {
+        const id = material.id!;
+        result[id] = { material, availableCount };
+    });
+
+    // Nun die Werte aus list1 hinzufügen oder summieren
+    list1.forEach(({ material, quantity }) => {
+        const id = material.id!;
+        if (result[id]) {
+            result[id].availableCount += quantity;
+        } else {
+            result[id] = { material, availableCount: quantity };
+        }
+    });
+
+    return Object.values(result);
+}
 
 function getEmptyKunde() {
     return {
@@ -51,6 +62,7 @@ function getEmptyKunde() {
         }
     }
 }
+
 function stringEmptySpace(s:string):string{
     return s==="" ? s : s+" ";
 }
@@ -59,7 +71,6 @@ function AdresseToString(obj:Client|Address) {
     let adresse:Address;
     if ("name" in obj) {
         adresse = obj.address
-
     }
     else {adresse = obj}
     let s:string = stringEmptySpace(adresse.street) +
@@ -83,14 +94,31 @@ function numberWithCommas(x:number) {
         s += ",00"
     }
     return s;
+}
 
+/** Shared options so both date formatters are consistent. */
+const DE_DATE_FORMAT: Intl.DateTimeFormatOptions = {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+};
+
+/** Formats a single date in German locale (dd.mm.yyyy). */
+function formatDateDE(date: Date | string): string {
+    return new Date(date).toLocaleDateString('de-DE', DE_DATE_FORMAT);
+}
+
+/** Formats a start–end date range in German locale. */
+function formatDateRangeDE(start: Date | string, end: Date | string): string {
+    return `${formatDateDE(start)} - ${formatDateDE(end)}`;
 }
 
 export {
     getEmptyKunde,
     AdresseToString,
     numberWithCommas,
+    formatDateDE,
+    formatDateRangeDE,
     formatSetupServiceName,
-    addMaterialLists,
-    addMaterialAvailabilityLists
+    addBookingMaterialLists,
+    addMaterialAvailabilityLists,
+    convertToUTC
 }

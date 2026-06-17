@@ -1,15 +1,16 @@
 import axios, {AxiosResponse} from "axios";
 import {BookingMaterial, PlatzMaterial} from "@/model/AllTypes";
+import {apiUrl} from "@/services/api";
 
-const BUCHUNG_API_BASE_URL = "http://localhost:8080/buchungmaterial";
+const BUCHUNG_API_BASE_URL = apiUrl("/buchungmaterial");
 
 function handleError(error: unknown): never {
     if (axios.isAxiosError(error) && error.response) {
-        console.error(`API Error: ${error.response.data}`);
-        throw new Error(`API Error: ${error.response.data}`);
+        console.error(`API-Fehler: ${error.response.data}`);
+        throw new Error(`API-Fehler: ${error.response.data}`);
     } else {
-        console.error(`Unexpected error: ${error}`);
-        throw new Error(`Unexpected error: ${error}`);
+        console.error(`Unerwarteter Fehler: ${error}`);
+        throw new Error(`Unerwarteter Fehler: ${error}`);
     }
 }
 

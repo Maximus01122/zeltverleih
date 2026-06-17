@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import { IoMailOutline } from "react-icons/io5";
 import { FaTents } from "react-icons/fa6";
@@ -8,7 +8,7 @@ import { PiPackage } from "react-icons/pi";
 import logo from "@/tabs/navigation/logo.png";
 import * as React from "react";
 
-export function Sidebar(className:any) {
+export function Sidebar() {
     const navigate = useNavigate();
 
     return (
@@ -73,14 +73,9 @@ export function Sidebar(className:any) {
                             Lager
                         </Button>
 
-                        <Button variant="ghost" className="w-full justify-start" onClick={() => navigate("/materialien")}>
+                        <Button variant="ghost" className="w-full justify-start" onClick={() => navigate("/materials")}>
                             <FaTents className={"mr-2 h-4 w-4"}/>
-                            Equipment
-                        </Button>
-
-                        <Button variant="secondary" className="w-full justify-start" onClick={() => navigate("/materialien")}>
-                            <IoMailOutline className={"mr-2 h-4 w-4"}/>
-                            Email
+                            Equipment/Preise
                         </Button>
                     </div>
                 </div>

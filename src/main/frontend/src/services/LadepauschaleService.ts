@@ -1,7 +1,8 @@
 import {LoadingFee} from "@/model/AllTypes";
 import axios from "axios";
+import {apiUrl} from "@/services/api";
 
-const BUCHUNG_API_BASE_URL = "http://localhost:8080/ladepauschale";
+const BUCHUNG_API_BASE_URL = apiUrl("/ladepauschale");
 
 async function getAll () {
     let ladepauschalen: LoadingFee[] = [];

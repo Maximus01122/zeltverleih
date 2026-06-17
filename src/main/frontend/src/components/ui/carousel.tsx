@@ -1,15 +1,14 @@
 import * as React from "react"
-import useEmblaCarousel, {
-    type EmblaCarouselType as CarouselApi,
-    type EmblaOptionsType as CarouselOptions,
-    type EmblaPluginType as CarouselPlugin,
-} from "embla-carousel-react"
+import useEmblaCarousel from "embla-carousel-react"
+import { EmblaCarouselType as CarouselApi,
+         EmblaOptionsType as CarouselOptions,
+         EmblaPluginType as CarouselPlugin} from 'embla-carousel';
+
 import { ArrowLeft, ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {Card, CardContent} from "@/components/ui/card";
-import {Calendar} from "@/components/ui/calendar";
 import {Label} from "@/components/ui/label";
 
 type CarouselProps = {
@@ -253,31 +252,30 @@ CarouselNext.displayName = "CarouselNext"
 
 type CarouselContentArray = {
     names: string[],
-    content: any[]
+    content: any[],
+    className?: string
 }
 
-function CarouselFull({names, content}:CarouselContentArray){
+function CarouselFull({names, content, className}:CarouselContentArray){
     return (
-        <Carousel className="w-full max-w-xs">
-            <CarouselContent>
-                {names.map((name, index) => (
-                    <CarouselItem key={index}>
-                        <div className="p-2">
-                            <Card>
-                                <CardContent className="aspect-auto items-center justify-center p-6">
-                                    <div className="grid w-full max-w-sm items-center gap-1.5">
-                                        <Label>{name}</Label>
-                                        {content[index]}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious/>
-            <CarouselNext/>
-        </Carousel>
+        <div className="flex flex-col items-center w-full">
+            <Carousel className={cn("w-full max-w-md", className)}>
+                <CarouselContent>
+                    {names.map((name, index) => (
+                        <CarouselItem key={index}>
+                            <div className="flex flex-col items-center justify-center space-y-4 p-4 min-h-[350px]">
+                                <Label className="text-xl font-bold text-center">{name}</Label>
+                                <div className="w-full flex justify-center">
+                                    {content[index]}
+                                </div>
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-6" />
+                <CarouselNext className="-right-6" />
+            </Carousel>
+        </div>
     )
 }
 
