@@ -8,7 +8,7 @@ import de.zeltverleih.repository.MaterialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 

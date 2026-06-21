@@ -1,6 +1,6 @@
 package de.zeltverleih.model.datenbank;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Entity

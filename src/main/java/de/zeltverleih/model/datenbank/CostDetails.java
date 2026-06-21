@@ -1,6 +1,6 @@
 package de.zeltverleih.model.datenbank;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class CostDetails {

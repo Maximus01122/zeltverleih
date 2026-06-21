@@ -2,7 +2,7 @@ package de.zeltverleih.model.datenbank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
