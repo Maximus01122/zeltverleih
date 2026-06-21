@@ -19,8 +19,12 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class CreatePDF {
-    private static final String ANGEBOTSORDNER = "/Users/maximilianfuchs/Documents/Angebot/";
-    private static final String RECHNUNGSORDNER = "/Users/maximilianfuchs/Documents/Rechnung/";
+    private static final String ANGEBOTSORDNER = System.getenv("PDF_ANGEBOT_PATH") != null
+            ? System.getenv("PDF_ANGEBOT_PATH")
+            : "/Users/maximilianfuchs/Documents/Angebot/";
+    private static final String RECHNUNGSORDNER = System.getenv("PDF_RECHNUNG_PATH") != null
+            ? System.getenv("PDF_RECHNUNG_PATH")
+            : "/Users/maximilianfuchs/Documents/Rechnung/";
 
     private static final BaseFont regular;
     private static final BaseFont bold;
