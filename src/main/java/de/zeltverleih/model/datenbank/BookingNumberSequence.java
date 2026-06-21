@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-public class ClientNumberSequence {
+public class BookingNumberSequence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

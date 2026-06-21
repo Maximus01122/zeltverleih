@@ -1,7 +1,7 @@
 package de.zeltverleih.repository;
 
-import de.zeltverleih.model.datenbank.ClientNumberSequence;
+import de.zeltverleih.model.datenbank.BookingNumberSequence;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClientNumberSequenceRepository extends JpaRepository<ClientNumberSequence, Long> {
+public interface BookingNumberSequenceRepository extends JpaRepository<BookingNumberSequence, Long> {
 }
