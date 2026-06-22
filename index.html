@@ -1828,10 +1828,9 @@ document.querySelectorAll('.pill-toggle').forEach(pill => {
 });
 
 /* ── FORM SUBMIT ──────────────────────────────────────────── */
-document.getElementById('quoteForm').addEventListener('submit', function(e) {
+document.getElementById('quoteForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  // Basic validation
   const name  = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   if (!name || !email) {
@@ -1841,11 +1840,52 @@ document.getElementById('quoteForm').addEventListener('submit', function(e) {
   }
   btn.textContent = 'Wird gesendet …';
   btn.disabled = true;
-  // Simulate send
-  setTimeout(() => {
-    this.style.display = 'none';
-    document.getElementById('formSuccess').classList.add('visible');
-  }, 1400);
+
+  const payload = {
+    name,
+    email,
+    phone:          document.getElementById('phone').value.trim(),
+    eventType:      document.getElementById('eventType').value,
+    eventDate:      document.getElementById('eventDate').value,
+    guestCount:     document.getElementById('guestCount').value.trim(),
+    tentSize:       document.getElementById('tentSize').value,
+    servicePackage: document.getElementById('serviceInput').value,
+    accessories:    document.getElementById('accInput').value,
+    ground:         document.getElementById('groundInput').value,
+    message:        document.getElementById('message').value.trim()
+  };
+
+  let apiOk = false;
+  try {
+    const res = await fetch('https://zeltverleiherfurt.de/api/anfragen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    apiOk = res.ok;
+  } catch (_) {}
+
+  if (!apiOk) {
+    // Fallback: E-Mail direkt öffnen wenn API nicht erreichbar
+    const subject = encodeURIComponent('Angebotsanfrage von ' + name);
+    const body = encodeURIComponent(
+      'Name: ' + payload.name + '\n' +
+      'E-Mail: ' + payload.email + '\n' +
+      'Telefon: ' + (payload.phone || '—') + '\n' +
+      'Veranstaltung: ' + payload.eventType + '\n' +
+      'Datum: ' + payload.eventDate + '\n' +
+      'Gäste: ' + payload.guestCount + '\n' +
+      'Zelt: ' + payload.tentSize + '\n' +
+      'Service: ' + payload.servicePackage + '\n' +
+      'Zubehör: ' + payload.accessories + '\n' +
+      'Untergrund: ' + payload.ground + '\n' +
+      'Nachricht: ' + (payload.message || '—')
+    );
+    window.location.href = 'mailto:zeltverleiherfurt@aol.com?subject=' + subject + '&body=' + body;
+  }
+
+  this.style.display = 'none';
+  document.getElementById('formSuccess').classList.add('visible');
 });
 // Reset error borders on input
 ['name','email'].forEach(id => {

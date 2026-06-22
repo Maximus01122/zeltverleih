@@ -30,6 +30,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       PDF_ANGEBOT_PATH: /app/pdfs/angebot/
       PDF_RECHNUNG_PATH: /app/pdfs/rechnung/
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
     volumes:
       - pdf_data:/app/pdfs
     depends_on:
