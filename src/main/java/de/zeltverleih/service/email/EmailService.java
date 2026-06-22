@@ -51,6 +51,21 @@ public class EmailService {
         }
     }
 
+    public String sendEmail(String recipient, String subject, String body) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setFrom(fromEmail);
+            helper.setTo(recipient);
+            helper.setSubject(subject);
+            helper.setText(body, false);
+            mailSender.send(message);
+            return "Email sent to " + recipient;
+        } catch (Exception e) {
+            return "Fehler: " + e.getMessage();
+        }
+    }
+
     private String row(String label, String value) {
         return "<tr><td style='padding:6px 12px;font-weight:bold;background:#f5f5f5'>" + label + "</td>"
              + "<td style='padding:6px 12px'>" + (value != null ? value : "—") + "</td></tr>";
