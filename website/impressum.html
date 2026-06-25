@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum – Zeltverleih Erfurt</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #2D5E3A;
+      --green-light: #3D7A4D;
+      --bg: #FDFAF5;
+      --charcoal: #1C1C1A;
+      --stone: #6B6860;
+      --linen: #E8DFD0;
+      --white: #FFFFFF;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --container: 1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--charcoal);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+    a { color: var(--green); text-decoration: underline; }
+    a:hover { color: var(--green-light); }
+    .nav {
+      background: var(--green);
+      padding: 14px 28px;
+    }
+    .nav-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+    }
+    .nav-back:hover { color: var(--white); }
+    .legal-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 28px 64px;
+    }
+    .legal-wrap h1 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      line-height: 1.2;
+    }
+    .legal-wrap h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 28px 0 10px;
+      color: var(--charcoal);
+    }
+    .legal-wrap p {
+      margin-bottom: 12px;
+      color: var(--stone);
+      line-height: 1.7;
+    }
+    .legal-wrap p strong { color: var(--charcoal); font-weight: 600; }
+    .footer {
+      background: var(--green);
+      color: rgba(255,255,255,0.65);
+      padding: 24px 28px;
+      font-size: 11px;
+    }
+    .footer-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer a { color: rgba(255,255,255,0.65); text-decoration: none; }
+    .footer a:hover { color: var(--white); }
+    .footer-links { display: flex; gap: 16px; }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Zeltverleih Erfurt</a>
+    <a href="index.html" class="nav-back">← Zurück zur Startseite</a>
+  </div>
+</header>
+
+<main class="legal-wrap">
+  <h1>Impressum</h1>
+
+  <h2>Verantwortlich</h2>
+  <p>
+    <strong>Zeltverleih Erfurt</strong><br />
+    Ludwig Fuchs<br />
+    Lützewiesenweg 18<br />
+    99098 Erfurt
+  </p>
+
+  <h2>Kontakt</h2>
+  <p>
+    Telefon: <a href="tel:017645829595">01 76 / 45 82 95 95</a><br />
+    E-Mail: <a href="mailto:info@zeltverleiherfurt.de">info@zeltverleiherfurt.de</a><br />
+    Internet: <a href="https://www.zeltverleiherfurt.de">www.zeltverleiherfurt.de</a>
+  </p>
+
+  <h2>USt-IdNr.</h2>
+  <p>DE356901873</p>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© 2025 Zeltverleih Erfurt · Ludwig Fuchs</span>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

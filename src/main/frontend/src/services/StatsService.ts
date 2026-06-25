@@ -1,9 +1,19 @@
-import {apiUrl} from "@/services/api";
+import {apiUrl, getToken, notifyUnauthorized} from "@/services/api";
 
 export type CategoryDatum = { name: string; revenue: number };
 
 async function handleFetch(path: string) {
-  const res = await fetch(apiUrl(path));
+  const headers: Record<string, string> = {};
+  const token = getToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await fetch(apiUrl(path), { headers });
+  if (res.status === 401) {
+    notifyUnauthorized();
+    throw new Error('Sitzung abgelaufen. Bitte erneut anmelden.');
+  }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`Anfrage an ${path} fehlgeschlagen: ${res.status} ${res.statusText} - ${text}`);

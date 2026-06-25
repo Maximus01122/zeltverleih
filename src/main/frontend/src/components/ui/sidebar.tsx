@@ -1,15 +1,31 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {useNavigate} from "react-router-dom";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import { IoMailOutline } from "react-icons/io5";
 import { FaTents } from "react-icons/fa6";
 import { PiPackage } from "react-icons/pi";
+import { LogOut } from "lucide-react";
 import logo from "@/tabs/navigation/logo.png";
 import * as React from "react";
+import { logout } from "@/services/auth";
+import QuoteRequestService from "@/services/QuoteRequestService";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
 
 export function Sidebar() {
     const navigate = useNavigate();
+    const { authed } = useAuth();
+    const [openCount, setOpenCount] = React.useState(0);
+
+    React.useEffect(() => {
+        if (!authed) return;
+        const load = () => QuoteRequestService.getUnprocessedCount()
+            .then(setOpenCount)
+            .catch(() => setOpenCount(0));
+        load();
+        const interval = setInterval(load, 60_000);
+        return () => clearInterval(interval);
+    }, [authed]);
 
     return (
             <div className="space-y-4 py-4">
@@ -22,6 +38,15 @@ export function Sidebar() {
                                 onClick={() => window.open('https://www.zeltverleiherfurt.de', '_blank')}>
                             <img src={logo}  className={"mr-2 h-4 w-4"}/>
                             Internetseite
+                        </Button>
+                        <Button variant="ghost" className="w-full justify-start" onClick={() => navigate("/anfragen")}>
+                            <IoMailOutline className="mr-2 h-4 w-4"/>
+                            <span className="flex-1 text-left">Anfragen</span>
+                            {openCount > 0 && (
+                                <Badge variant="destructive" className="ml-auto h-5 min-w-5 justify-center px-1.5">
+                                    {openCount}
+                                </Badge>
+                            )}
                         </Button>
                         <Button variant="ghost" className="w-full justify-start" onClick={() => navigate("/")}>
                                 <CalendarIcon className={"mr-2 h-4 w-4"}/>
@@ -76,6 +101,10 @@ export function Sidebar() {
                         <Button variant="ghost" className="w-full justify-start" onClick={() => navigate("/materials")}>
                             <FaTents className={"mr-2 h-4 w-4"}/>
                             Equipment/Preise
+                        </Button>
+                        <Button variant="ghost" className="w-full justify-start text-muted-foreground" onClick={() => void logout()}>
+                            <LogOut className="mr-2 h-4 w-4"/>
+                            Abmelden
                         </Button>
                     </div>
                 </div>

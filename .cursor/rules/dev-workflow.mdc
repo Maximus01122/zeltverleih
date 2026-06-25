@@ -1,0 +1,14 @@
+---
+description: Dev-Workflow für zeltverleih — Neustarts und Compile-Checks
+alwaysApply: true
+---
+
+# Dev-Workflow
+
+1. **Neustarts selbst ausführen** — Wenn Backend, Frontend oder Docker neu gestartet werden müssen, die Befehle eigenständig im Terminal ausführen (nicht nur vorschlagen).
+
+2. **Nach Änderungen kompilieren** — Immer prüfen, ob der Code kompiliert:
+   - Backend: `mvn -q compile -DskipTests`
+   - Frontend: `npm run build` in `src/main/frontend`
+
+Bei Compile-Fehlern zuerst beheben, bevor die Aufgabe als erledigt gilt.

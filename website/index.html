@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zeltverleih Erfurt – Ihr Fest. Unser Zelt.</title>
+  <meta name="description" content="Zeltverleih Erfurt: Partyzelte, Mobiliar und Komplettservice für Events bis 200 Personen. Pünktlich, zuverlässig, persönlich." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── CSS Custom Properties ─────────────────────────────── */
+    :root {
+      --waldgruen:   #2D5E3A;
+      --tiefwald:    #1F4229;
+      --salbeigruen: #3D7A4D;
+      --warmer-sand: #F5EFE0;
+      --bernstein:   #D4820A;
+      --bernstein-h: #F0A030;
+      --bg:          #FDFAF5;
+      --white:       #FFFFFF;
+      --anthrazit:   #1C1C1A;
+      --stein:       #6B6860;
+      --leinen:      #E8DFD0;
+      --font-head:   'Playfair Display', Georgia, serif;
+      --font-body:   'DM Sans', system-ui, sans-serif;
+      --max-w:       1100px;
+      --r:           8px;
+      --r-card:      12px;
+      --shadow:      0 2px 12px rgba(28,28,26,.08);
+      --shadow-md:   0 4px 24px rgba(28,28,26,.12);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--anthrazit);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+
+    .eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--bernstein);
+      display: block; margin-bottom: 10px;
+    }
+    h1, h2, h3 { font-family: var(--font-head); line-height: 1.1; }
+    h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 700; }
+    h2 { font-size: clamp(24px, 4vw, 34px); font-weight: 700; }
+    h3 { font-size: clamp(18px, 2.5vw, 22px); font-weight: 700; }
+
+    /* ─── Scroll reveal ─────────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0; transform: translateY(14px);
+        transition: opacity .5s ease-out, transform .5s ease-out;
+      }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Buttons ───────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-body); font-size: 15px; font-weight: 600;
+      border: none; border-radius: 28px; cursor: pointer;
+      padding: 13px 26px; transition: background .18s, transform .12s;
+      white-space: nowrap;
+    }
+    .btn--primary   { background: var(--bernstein);   color: var(--white); }
+    .btn--primary:hover   { background: var(--bernstein-h); transform: translateY(-1px); }
+    .btn--outline   { background: transparent; color: var(--white); border: 2px solid rgba(255,255,255,.5); }
+    .btn--outline:hover   { border-color: var(--white); }
+    .btn--green     { background: var(--waldgruen);  color: var(--white); }
+    .btn--green:hover     { background: var(--salbeigruen); transform: translateY(-1px); }
+    .btn--light     { background: var(--bg); color: var(--anthrazit); border: 1.5px solid var(--leinen); }
+    .btn--light:hover     { background: var(--warmer-sand); }
+
+    /* ═══════════════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════════════ */
+    #nav {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--waldgruen);
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 62px;
+    }
+    .nav__logo { display: flex; align-items: center; gap: 12px; }
+    .nav__logo-img {
+      height: 44px; width: auto; display: block; flex-shrink: 0;
+      border-radius: 4px;
+    }
+    .nav__logo-text { font-family: var(--font-head); font-size: 16px; color: var(--white); line-height: 1.2; }
+    .nav__logo-text span { display: block; font-size: 11px; font-family: var(--font-body); font-weight: 400; letter-spacing: .08em; opacity: .7; text-transform: uppercase; }
+    .nav__links { display: flex; gap: 28px; list-style: none; }
+    .nav__links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.85); transition: color .15s; }
+    .nav__links a:hover { color: var(--white); }
+    .nav__hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav__hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .25s; }
+    .nav__hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav__hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+    .nav__mobile { display: none; flex-direction: column; background: var(--tiefwald); padding: 16px 24px 24px; }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a { color: rgba(255,255,255,.85); font-size: 16px; font-weight: 500; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════ */
+    #hero {
+      background: linear-gradient(155deg, var(--tiefwald) 0%, var(--waldgruen) 55%, #3a6b4a 100%);
+      padding: 96px 0 72px; overflow: hidden; position: relative;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 28px 28px; pointer-events: none;
+    }
+    .hero__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; position: relative; z-index: 1; }
+    .hero__eyebrow { color: var(--bernstein-h); }
+    .hero__title { color: var(--white); margin-bottom: 20px; }
+    .hero__title em { font-style: normal; color: var(--bernstein-h); }
+    .hero__sub { color: rgba(255,255,255,.82); font-size: 17px; margin-bottom: 32px; max-width: 440px; }
+    .hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero__trust { margin-top: 44px; display: flex; gap: 28px; flex-wrap: wrap; }
+    .hero__trust-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.8); font-size: 14px; font-weight: 500; }
+    .hero__visual { display: flex; flex-direction: column; gap: 12px; }
+    .hero__img-main {
+      height: 272px; border-radius: 12px; overflow: hidden;
+    }
+    .hero__img-main img { width: 100%; height: 100%; object-fit: cover; }
+    .hero__img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hero__img-sm {
+      height: 126px; border-radius: 10px; overflow: hidden;
+    }
+    .hero__img-sm img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ═══════════════════════════════════════════════════════
+       TRUST BAR
+    ═══════════════════════════════════════════════════════ */
+    #trust {
+      background: var(--warmer-sand);
+      border-top: 1px solid var(--leinen); border-bottom: 1px solid var(--leinen);
+      padding: 20px 0;
+    }
+    .trust__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+    .trust__item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+    .trust__icon {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--waldgruen);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .trust__icon svg { width: 16px; height: 16px; color: var(--white); }
+    .trust__icon--euro span {
+      font-size: 15px; font-weight: 700; color: var(--white); line-height: 1;
+      font-family: var(--font-body);
+    }
+    .trust__stat { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--waldgruen); line-height: 1.1; }
+    .trust__label { font-size: 11px; color: var(--stein); line-height: 1.4; }
+
+    /* ═══════════════════════════════════════════════════════
+       SERVICE — "Wählen Sie Ihren Service" (dark green, 4 cards)
+    ═══════════════════════════════════════════════════════ */
+    #service { background: var(--waldgruen); }
+    .service__header { text-align: center; margin-bottom: 48px; }
+    .service__header .eyebrow { color: rgba(255,255,255,.55); }
+    .service__header h2 { color: var(--white); margin-bottom: 14px; }
+    .service__header p { color: rgba(255,255,255,.72); max-width: 520px; margin: 0 auto; }
+    .service__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .svc-card {
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+      border-radius: var(--r-card); padding: 30px 22px;
+      transition: background .2s, transform .2s;
+    }
+    .svc-card:hover { background: rgba(255,255,255,.14); transform: translateY(-2px); }
+    .svc-card__badge {
+      display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; background: rgba(255,255,255,.22); border-radius: 4px;
+      padding: 3px 8px; margin-bottom: 14px; color: var(--white);
+    }
+    .svc-card__badge--beliebt {
+      background: var(--bernstein);
+      color: var(--white);
+    }
+    .svc-card__top {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .svc-card__top .svc-card__num {
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+    }
+    .svc-card__top .svc-card__badge {
+      margin-bottom: 0;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      padding: 0 10px;
+      border-radius: 6px;
+      line-height: 1;
+    }
+    .svc-card__num { font-family: var(--font-head); font-size: 32px; font-weight: 700; color: rgba(255,255,255,.18); line-height: 1; margin-bottom: 6px; }
+    .svc-card h3 { color: var(--white); font-size: 17px; margin-bottom: 10px; }
+    .svc-card p { color: rgba(255,255,255,.72); font-size: 13.5px; max-width: none; }
+
+    /* ═══════════════════════════════════════════════════════
+       TENT SELECTOR — "Das richtige Zelt für Ihre Feier"
+    ═══════════════════════════════════════════════════════ */
+    #tents { background: var(--warmer-sand); }
+    .tents__header { text-align: center; margin-bottom: 40px; }
+    .tents__header h2 { margin-bottom: 10px; }
+    .tents__header p { color: var(--stein); max-width: 540px; margin: 0 auto; }
+
+    .tent-row {
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px;
+      margin-bottom: 20px; scrollbar-width: thin; scrollbar-color: var(--leinen) transparent;
+    }
+    .tent-row::-webkit-scrollbar { height: 4px; }
+    .tent-row::-webkit-scrollbar-thumb { background: var(--leinen); border-radius: 4px; }
+
+    .tent-card {
+      flex: 0 0 calc((100% - 80px)/9); min-width: 98px;
+      background: var(--white); border: 1.5px solid var(--leinen);
+      border-radius: 10px; padding: 13px 10px 11px;
+      text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .tent-card:hover { border-color: var(--salbeigruen); }
+    .tent-card.active { border-color: var(--waldgruen); background: #EFF7F2; }
+    .tent-code { font-size: 10px; font-weight: 600; color: var(--stein); text-transform: uppercase; letter-spacing: .10em; margin-bottom: 4px; }
+    .tent-dims { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--waldgruen); margin-bottom: 3px; }
+    .tent-persons { font-size: 11px; color: var(--stein); margin-bottom: 5px; }
+    .tent-price-day { font-size: 13px; font-weight: 600; color: var(--anthrazit); }
+    .tent-price-we { font-size: 10px; color: var(--stein); }
+
+    .tent-detail {
+      background: var(--white); border: 1px solid var(--leinen);
+      border-radius: var(--r-card); padding: 24px 28px;
+      display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;
+      transition: opacity .25s, transform .25s;
+    }
+    .tent-detail.fading { opacity: 0; transform: translateY(8px); }
+    .tent-detail-title { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--anthrazit); margin-bottom: 14px; }
+    .tent-specs { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+    .tent-spec { display: flex; gap: 10px; font-size: 13px; }
+    .tent-spec-lbl { color: var(--stein); min-width: 90px; }
+    .tent-spec-val { color: var(--anthrazit); font-weight: 500; }
+    .tent-detail-price { text-align: right; }
+    .tent-price-label { font-size: 11px; font-weight: 600; color: var(--stein); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+    .tent-price-big { font-family: var(--font-head); font-size: 36px; font-weight: 700; color: var(--waldgruen); line-height: 1; }
+    .tent-price-we-big { font-size: 13px; color: var(--stein); margin-top: 6px; }
+    .tent-price-note { font-size: 11px; color: var(--stein); margin-top: 4px; }
+
+    /* ═══════════════════════════════════════════════════════
+       ACCESSORIES — 4 cards
+    ═══════════════════════════════════════════════════════ */
+    #accessories { background: var(--bg); }
+    .acc__header { text-align: center; margin-bottom: 48px; }
+    .acc__header h2 { margin-bottom: 12px; }
+    .acc__header p { color: var(--stein); max-width: 500px; margin: 0 auto; }
+    .acc__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
+    .acc-card {
+      background: var(--white); border: 1px solid var(--leinen);
+      border-radius: var(--r-card); overflow: hidden; box-shadow: var(--shadow);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .acc-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .acc-card__img {
+      position: relative; overflow: hidden;
+      aspect-ratio: 4 / 3; background: var(--leinen);
+    }
+    .acc-slideshow { position: relative; width: 100%; height: 100%; }
+    .acc-slide {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0;
+      transition: opacity .7s ease;
+    }
+    .acc-slide.active { opacity: 1; z-index: 1; }
+    .acc-dots {
+      position: absolute; bottom: 8px; left: 0; right: 0; z-index: 2;
+      display: flex; justify-content: center; gap: 5px;
+    }
+    .acc-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.45); border: none; padding: 0; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .acc-dot.active { background: var(--white); transform: scale(1.15); }
+    .acc-card__body { padding: 20px 22px; }
+    .acc-card__body h3 { margin-bottom: 7px; font-size: 18px; }
+    .acc-card__body p { color: var(--stein); font-size: 13.5px; }
+
+    /* ═══════════════════════════════════════════════════════
+       VIDEO
+    ═══════════════════════════════════════════════════════ */
+    #video { background: var(--tiefwald); padding: 56px 0; }
+    .video__grid { display: grid; grid-template-columns: 2fr 3fr; gap: 44px; align-items: center; }
+    .video__thumb {
+      aspect-ratio: 16/9; border-radius: var(--r-card);
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; overflow: hidden; text-decoration: none;
+    }
+    .video__thumb-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .video__thumb::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0, 0, 0, .12);
+      transition: background .2s;
+    }
+    .video__thumb:hover::after { background: rgba(0, 0, 0, .28); }
+    .play-btn {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--bernstein);
+      display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;
+      transition: background .18s, transform .18s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.35);
+    }
+    .video__thumb:hover .play-btn { background: var(--bernstein-h); transform: scale(1.08); }
+    .play-btn svg { width: 22px; height: 22px; color: var(--white); margin-left: 3px; }
+    .video__text .eyebrow { color: rgba(255,255,255,.55); }
+    .video__title { font-family: var(--font-head); font-size: 26px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .video__desc { font-size: 14px; color: rgba(255,255,255,.68); line-height: 1.65; }
+
+    /* ═══════════════════════════════════════════════════════
+       BEWERTUNGEN
+    ═══════════════════════════════════════════════════════ */
+    #bewertungen { background: var(--warmer-sand); }
+    .bew__header { text-align: center; margin-bottom: 48px; }
+    .bew__header h2 { margin-bottom: 12px; }
+    .bew__header p { color: var(--stein); max-width: 500px; margin: 0 auto; }
+    .bew__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-bottom: 36px; }
+    .bew-card { background: var(--white); border: 1px solid var(--leinen); border-radius: var(--r-card); padding: 28px; box-shadow: var(--shadow); }
+    .bew-card__stars { color: var(--bernstein); font-size: 17px; letter-spacing: 2px; margin-bottom: 14px; }
+    .bew-card__text { font-size: 14px; line-height: 1.65; font-style: italic; margin-bottom: 18px; color: var(--anthrazit); }
+    .bew-card__name { font-weight: 600; font-size: 13px; }
+    .bew-card__meta { font-size: 12px; color: var(--stein); margin-top: 2px; }
+    .bew__cta { text-align: center; }
+
+    /* ═══════════════════════════════════════════════════════
+       FAQ
+    ═══════════════════════════════════════════════════════ */
+    #faq { background: var(--white); }
+    .faq__header { text-align: center; margin-bottom: 40px; }
+    .faq__header h2 { margin-bottom: 10px; }
+    .faq__header p { color: var(--stein); max-width: 480px; margin: 0 auto; }
+    .faq__inner { max-width: 640px; margin: 0 auto; }
+    .faq-item { border: 1px solid var(--leinen); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+    .faq-q {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px; cursor: pointer; font-size: 14px; font-weight: 500;
+      color: var(--anthrazit); gap: 12px; background: var(--white);
+      transition: background .15s; width: 100%; text-align: left; border: none; font-family: var(--font-body);
+    }
+    .faq-q:hover { background: var(--bg); }
+    .faq-chevron { flex-shrink: 0; width: 16px; height: 16px; color: var(--waldgruen); transition: transform .3s; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease-in-out; }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner { padding: 0 18px 16px; font-size: 13.5px; color: var(--stein); line-height: 1.7; }
+
+    /* ═══════════════════════════════════════════════════════
+       KONTAKT
+    ═══════════════════════════════════════════════════════ */
+    #kontakt { background: var(--bg); }
+    .kontakt__grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start; }
+
+    /* Info column */
+    .kontakt__info .eyebrow { margin-bottom: 10px; }
+    .kontakt__info h2 { margin-bottom: 14px; }
+    .kontakt__info > p { color: var(--stein); margin-bottom: 28px; }
+    .kontakt__details { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+    .kontakt__detail { display: flex; align-items: flex-start; gap: 11px; }
+    .kontakt__detail-icon {
+      width: 38px; height: 38px; border-radius: 9px; background: var(--warmer-sand);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .kontakt__detail-icon svg { color: var(--waldgruen); }
+    .kontakt__detail-text strong { display: block; font-size: 11px; font-weight: 600; color: var(--stein); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+    .kontakt__detail-text a { color: var(--waldgruen); font-weight: 500; font-size: 14px; }
+    .kontakt__detail-text a:hover { text-decoration: underline; }
+    .kontakt__detail-text span { font-size: 14px; color: var(--anthrazit); }
+    .map-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--leinen); height: 160px; }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    /* Form card */
+    .form-card {
+      background: var(--white); border: 1px solid var(--leinen);
+      border-radius: 16px; padding: 36px; box-shadow: var(--shadow-md);
+    }
+    .form-steps {
+      display: flex; margin-bottom: 28px; border-radius: 8px; overflow: hidden;
+      border: 1px solid var(--leinen);
+    }
+    .step-tab {
+      flex: 1; text-align: center; padding: 10px 4px;
+      font-size: 12px; font-weight: 600; color: var(--stein);
+      background: var(--bg); border-right: 1px solid var(--leinen);
+      letter-spacing: .04em; cursor: default;
+    }
+    .step-tab:last-child { border-right: none; }
+    .step-tab.active { background: var(--waldgruen); color: var(--white); }
+    .step-tab.done   { background: var(--salbeigruen); color: var(--white); }
+
+    .form-page { display: none; }
+    .form-page.active { display: block; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: var(--anthrazit); text-transform: uppercase; letter-spacing: .06em; }
+    .form-group label .req { color: var(--bernstein); }
+    .form-group input, .form-group select, .form-group textarea {
+      font-family: var(--font-body); font-size: 14px; color: var(--anthrazit);
+      background: var(--bg); border: 1.5px solid var(--leinen);
+      border-radius: var(--r); padding: 10px 13px;
+      transition: border-color .15s, box-shadow .15s; outline: none; width: 100%;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--waldgruen); box-shadow: 0 0 0 3px rgba(45,94,58,.09);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232D5E3A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+    }
+    .form-nav { display: flex; gap: 12px; justify-content: flex-end; margin-top: 4px; }
+
+    .form__success { display: none; text-align: center; padding: 16px 0; }
+    .form__success-icon {
+      width: 60px; height: 60px; background: #d7f0e0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
+    }
+    .form__success h3 { margin-bottom: 8px; }
+    .form__success p { color: var(--stein); font-size: 14px; }
+    .form__err { display: none; background: #fdf0f0; border: 1px solid #f0c0c0; border-radius: var(--r); padding: 11px 14px; font-size: 13px; color: #b00; margin-bottom: 14px; }
+
+    /* ═══════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════ */
+    footer { background: var(--tiefwald); color: rgba(255,255,255,.72); padding: 52px 0 28px; }
+    .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 44px; padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,.1); margin-bottom: 28px; }
+    .footer__brand h3 { color: var(--white); font-size: 18px; margin-bottom: 10px; }
+    .footer__brand p { font-size: 13px; color: rgba(255,255,255,.58); max-width: 280px; }
+    .footer__col h4 { color: var(--white); font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+    .footer__col ul { display: flex; flex-direction: column; gap: 8px; }
+    .footer__col ul li a { font-size: 13px; color: rgba(255,255,255,.62); transition: color .15s; }
+    .footer__col ul li a:hover { color: var(--white); }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgba(255,255,255,.4); flex-wrap: wrap; gap: 8px; }
+    .footer__bottom a { color: rgba(255,255,255,.5); }
+    .footer__bottom a:hover { color: rgba(255,255,255,.8); }
+    .footer__legal-links { display: flex; gap: 18px; }
+
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .hero__inner, .kontakt__grid { grid-template-columns: 1fr; }
+      .hero__visual { display: none; }
+      .service__grid { grid-template-columns: 1fr 1fr; }
+      .trust__grid { grid-template-columns: repeat(2,1fr); }
+      .acc__grid { grid-template-columns: 1fr 1fr; }
+      .bew__grid { grid-template-columns: 1fr; }
+      .footer__grid { grid-template-columns: 1fr; gap: 28px; }
+      .nav__links, .nav__cta-wrap { display: none; }
+      .nav__hamburger { display: flex; }
+      .video__grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 56px 0; }
+      .service__grid { grid-template-columns: 1fr; }
+      .acc__grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-card { padding: 22px 18px; }
+      .hero__actions { flex-direction: column; }
+      .tent-row { display: grid; grid-template-columns: repeat(3,1fr); overflow-x: unset; }
+      .tent-card { min-width: unset; flex: unset; }
+      .tent-detail { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════════════════ -->
+<header id="nav">
+  <div class="container">
+    <nav class="nav__inner">
+      <a href="#hero" class="nav__logo" aria-label="Zeltverleih Erfurt – Startseite">
+        <img src="logo.png" alt="" class="nav__logo-img" width="120" height="44" aria-hidden="true" />
+        <div class="nav__logo-text">Zeltverleih<span>Erfurt</span></div>
+      </a>
+      <ul class="nav__links">
+        <li><a href="#tents">Zelte &amp; Preise</a></li>
+        <li><a href="#service">Service</a></li>
+        <li><a href="#bewertungen">Bewertungen</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <div class="nav__cta-wrap">
+        <a href="#kontakt" class="btn btn--primary" style="padding:9px 20px;font-size:13.5px;">Jetzt anfragen</a>
+      </div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+  <nav class="nav__mobile" id="mobile-menu">
+    <a href="#tents"       onclick="closeMenu()">Zelte &amp; Preise</a>
+    <a href="#service"     onclick="closeMenu()">Service</a>
+    <a href="#bewertungen" onclick="closeMenu()">Bewertungen</a>
+    <a href="#faq"         onclick="closeMenu()">FAQ</a>
+    <a href="#kontakt"     onclick="closeMenu()">Kontakt</a>
+    <a href="tel:+4917645829595" style="color:var(--bernstein-h);border:none;margin-top:8px;">☎ 0176 45829595</a>
+  </nav>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero__inner">
+
+      <div class="hero__content">
+        <span class="eyebrow hero__eyebrow">Zeltverleih · Erfurt &amp; Umgebung</span>
+        <h1 class="hero__title">Ihr Fest.<br><em>Unser Zelt.</em></h1>
+        <p class="hero__sub">Wir liefern, bauen auf und kümmern uns um alles — damit Sie einfach feiern können. Wettersicher, pünktlich, persönlich.</p>
+        <div class="hero__actions">
+          <a href="#kontakt" class="btn btn--primary">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Kostenlos anfragen
+          </a>
+          <a href="tel:+4917645829595" class="btn btn--outline">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-1.87a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.22 15z"/></svg>
+            0176 45829595
+          </a>
+        </div>
+        <div class="hero__trust">
+          <div class="hero__trust-item">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 21l-5-3-5 3 1.523-8.11"/></svg>
+            Seit über 9 Jahren
+          </div>
+          <div class="hero__trust-item">
+            <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Pünktlich &amp; zuverlässig
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="hero__img-main">
+          <img src="../images/hero.jpg" alt="Zwei Partyzelte im Garten bei einer Feier" loading="eager" />
+        </div>
+        <div class="hero__img-row">
+          <div class="hero__img-sm">
+            <img src="../images/tent_pagoda.jpg" alt="Pagodenzelt im Garten" loading="lazy" />
+          </div>
+          <div class="hero__img-sm">
+            <img src="../images/tent_interior_2.jpg" alt="Innenraum eines Partyzelts" loading="lazy" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TRUST BAR
+═══════════════════════════════════════════════════════ -->
+<section id="trust" style="padding:0">
+  <div class="container" style="padding-top:20px;padding-bottom:20px;">
+    <div class="trust__grid">
+      <div class="trust__item reveal">
+        <div class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="trust__stat">9</div>
+        <div class="trust__label">Zeltgrößen<br>XS bis XXL</div>
+      </div>
+      <div class="trust__item reveal" style="transition-delay:.08s">
+        <div class="trust__icon trust__icon--euro" aria-hidden="true">
+          <span>€</span>
+        </div>
+        <div class="trust__stat">ab 65 €</div>
+        <div class="trust__label">pro Kalendertag<br>zzgl. MwSt.</div>
+      </div>
+      <div class="trust__item reveal" style="transition-delay:.16s">
+        <div class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="trust__stat">20 km</div>
+        <div class="trust__label">Lieferradius<br>um Erfurt</div>
+      </div>
+      <div class="trust__item reveal" style="transition-delay:.24s">
+        <div class="trust__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.1a19.79 19.79 0 0 1-3-8.59A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 5.37 5.37l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        </div>
+        <div class="trust__stat">Mo–Sa</div>
+        <div class="trust__label">09:00 – 19:00 Uhr<br>erreichbar</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SERVICE
+═══════════════════════════════════════════════════════ -->
+<section id="service">
+  <div class="container">
+    <div class="service__header reveal">
+      <span class="eyebrow">So flexibel wie Ihr Event</span>
+      <h2>Wählen Sie Ihren Service</h2>
+      <p>Ob Komplett-Sorglos oder Selbstabholung — wir passen uns Ihren Bedürfnissen an.</p>
+    </div>
+    <div class="service__grid">
+      <div class="svc-card reveal">
+        <div class="svc-card__num">01</div>
+        <h3>Selbstabholung</h3>
+        <p>Sie holen bei uns ab, bauen auf und bringen zurück. Die budgetfreundliche Option.</p>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.07s">
+        <div class="svc-card__num">02</div>
+        <h3>Lieferservice</h3>
+        <p>Wir liefern alles zu Ihnen. Aufbau und Abbau übernehmen Sie selbst in Ihrem Tempo.</p>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.14s">
+        <div class="svc-card__num">03</div>
+        <h3>Aufbauhilfe</h3>
+        <p>Lieferung inklusive Unterstützung beim Aufbau durch unser Team — der goldene Mittelweg.</p>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.21s">
+        <div class="svc-card__top">
+          <div class="svc-card__num">04</div>
+          <div class="svc-card__badge svc-card__badge--beliebt">Beliebt</div>
+        </div>
+        <h3>Komplett-Service</h3>
+        <p>Lieferung, Aufbau und Abbau durch unser Team. Sie müssen gar nichts tun — nur feiern.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     TENT SELECTOR
+═══════════════════════════════════════════════════════ -->
+<section id="tents">
+  <div class="container">
+    <div class="tents__header reveal">
+      <span class="eyebrow">Unsere Zelte</span>
+      <h2>Das richtige Zelt für Ihre Feier</h2>
+      <p>Alle Zelte in Festzeltqualität — 100 % wasserdicht, feuerhemmend, PVC-Planen. Wählen Sie Ihre Größe:</p>
+    </div>
+
+    <div class="tent-row reveal" id="tentRow"></div>
+
+    <div class="tent-detail reveal" id="tentDetail">
+      <div>
+        <h3 class="tent-detail-title" id="tdTitle"></h3>
+        <div class="tent-specs" id="tdSpecs"></div>
+        <a href="#kontakt" class="btn btn--green" id="tdCta">Dieses Zelt anfragen →</a>
+      </div>
+      <div class="tent-detail-price">
+        <div class="tent-price-label">Tagesmietpreis</div>
+        <div class="tent-price-big" id="tdDay"></div>
+        <div class="tent-price-we-big" id="tdWe"></div>
+        <div class="tent-price-note">(Fr 16:00 – Mo 09:00)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     ACCESSORIES
+═══════════════════════════════════════════════════════ -->
+<section id="accessories">
+  <div class="container">
+    <div class="acc__header reveal">
+      <span class="eyebrow">Ausstattung</span>
+      <h2>Alles aus einer Hand</h2>
+      <p>Von der Überdachung bis zur Lichterkette — wir liefern, was Ihr Event braucht.</p>
+    </div>
+    <div class="acc__grid">
+      <div class="acc-card reveal">
+        <div class="acc-card__img">
+          <div class="acc-slideshow">
+            <img class="acc-slide active" src="images/tisch/garnitur.png" alt="Biertischgarnitur" loading="lazy" />
+            <img class="acc-slide" src="images/tisch/tisch_stuhl.png" alt="Tisch und Stühle" loading="lazy" />
+            <img class="acc-slide" src="images/tisch/stehtisch.png" alt="Stehtisch" loading="lazy" />
+          </div>
+        </div>
+        <div class="acc-card__body">
+          <h3>Tische &amp; Stühle</h3>
+          <p>Biertischgarnituren, Tische &amp; Stühle, Stehtische, Hussen und Tischdecken für jeden Stil.</p>
+        </div>
+      </div>
+      <div class="acc-card reveal" style="transition-delay:.07s">
+        <div class="acc-card__img">
+          <div class="acc-slideshow">
+            <img class="acc-slide active" src="images/deko/lichterkette.png" alt="Lichterketten-Dekoration" loading="lazy" />
+            <img class="acc-slide" src="images/deko/thumb_29757274.jpg" alt="Event-Dekoration" loading="lazy" />
+          </div>
+        </div>
+        <div class="acc-card__body">
+          <h3>Licht &amp; Dekoration</h3>
+          <p>Lichterketten, LED-Strahler, Stehlampen und Sonnensegel — für das passende Ambiente ihrer Feier.</p>
+        </div>
+      </div>
+      <div class="acc-card reveal" style="transition-delay:.14s">
+        <div class="acc-card__img">
+          <div class="acc-slideshow">
+            <img class="acc-slide active" src="images/kaltundwarm/thumb_29757297.png" alt="Heizlüfter für Zeltveranstaltungen" loading="lazy" />
+            <img class="acc-slide" src="images/kaltundwarm/thumb_29757275.JPG" alt="Klimatisierung unter dem Zelt" loading="lazy" />
+          </div>
+        </div>
+        <div class="acc-card__body">
+          <h3>Wärme &amp; Kühle</h3>
+          <p>Heizlüfter für Herbst- und Winterfeiern, Ventilatoren für heiße Sommertage. Immer das richtige Klima unter dem Zelt.</p>
+        </div>
+      </div>
+      <div class="acc-card reveal" style="transition-delay:.21s">
+        <div class="acc-card__img">
+          <div class="acc-slideshow">
+            <img class="acc-slide active" src="images/aktivitaeten/kicker.png" alt="Tischkicker" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/tischtennis.png" alt="Tischtennis" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/thumb_29757266.JPG" alt="Kegeln" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/thumb_29757267.JPG" alt="Hufeisenwerfen" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/thumb_29757268.JPG" alt="Riesen-Jenga" loading="lazy" />
+          </div>
+        </div>
+        <div class="acc-card__body">
+          <h3>Aktivitäten &amp; Spiele</h3>
+          <p>Kegeln, Hufeisenwerfen, Tischkicker, Tischtennis, Riesen-Jenga — Unterhaltung für Groß und Klein.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     VIDEO
+═══════════════════════════════════════════════════════ -->
+<section id="video">
+  <div class="container">
+    <div class="video__grid">
+      <div class="reveal">
+        <a class="video__thumb" href="https://www.youtube.com/watch?v=9uKPsJwChME" target="_blank" rel="noopener" aria-label="Drohnen-Zeitraffer: Zeltaufbau auf YouTube ansehen">
+          <img
+            class="video__thumb-img"
+            src="assets/video-drohnen-zeitraffer.png"
+            alt="Vorschau: Drohnen-Zeitraffer — Aufbau 4×6 m Zelt"
+            loading="lazy"
+          />
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+        </a>
+      </div>
+      <div class="video__text reveal" style="transition-delay:.1s">
+        <span class="eyebrow" style="color:rgba(255,255,255,.55)">Drohnen-Zeitraffer</span>
+        <h2 class="video__title">Zeltaufbau in 60 Sekunden</h2>
+        <p class="video__desc">Schauen Sie unserem Team beim professionellen Zeltaufbau zu — von der leeren Rasenfläche bis zum fertigen Festzelt. Überzeugen Sie sich selbst von unserem Aufbauservice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     BEWERTUNGEN
+═══════════════════════════════════════════════════════ -->
+<!-- <section id="bewertungen">
+  <div class="container">
+    <div class="bew__header reveal">
+      <span class="eyebrow">Was unsere Kunden sagen</span>
+      <h2>Echte Erfahrungen</h2>
+      <p>Mundpropaganda ist unser wichtigstes Marketing — hier lesen Sie, warum Menschen wiederkommen.</p>
+    </div>
+    <div class="bew__grid">
+      <article class="bew-card reveal">
+        <div class="bew-card__stars">★★★★★</div>
+        <p class="bew-card__text">„Das Team war pünktlich auf die Minute, das Zelt makellos sauber. Bei der Jugendweihe unserer Tochter lief alles perfekt — ich musste mich um nichts kümmern."</p>
+        <div class="bew-card__name">Sandra M.</div>
+        <div class="bew-card__meta">Jugendweihe · Erfurt, April 2024</div>
+      </article>
+      <article class="bew-card reveal" style="transition-delay:.08s">
+        <div class="bew-card__stars">★★★★★</div>
+        <p class="bew-card__text">„Obwohl es den ganzen Tag geregnet hat, war unsere Hochzeitsfeier ein absoluter Traum. Die Seitenwände waren schnell montiert und kein Tropfen ist reingekommen."</p>
+        <div class="bew-card__name">Familie Richter</div>
+        <div class="bew-card__meta">Hochzeit · Weimar, Juni 2024</div>
+      </article>
+      <article class="bew-card reveal" style="transition-delay:.16s">
+        <div class="bew-card__stars">★★★★★</div>
+        <p class="bew-card__text">„Zweites Jahr in Folge für unsere Firmenfeier. Ludwig denkt mit, macht Vorschläge und alles kommt genau so, wie besprochen. Absolut empfehlenswert."</p>
+        <div class="bew-card__name">Thomas K., Geschäftsführer</div>
+        <div class="bew-card__meta">Firmenfeier · Gotha, September 2024</div>
+      </article>
+    </div>
+    <div class="bew__cta">
+      <a href="https://g.page/r/zeltverleih-erfurt/review" target="_blank" rel="noopener" class="btn btn--green">
+        Alle Google-Bewertungen lesen →
+      </a>
+    </div>
+  </div>
+</section>-->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FAQ
+═══════════════════════════════════════════════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq__header reveal">
+      <span class="eyebrow">Häufige Fragen</span>
+      <h2>Gut zu wissen</h2>
+      <p>Antworten auf die häufigsten Fragen rund um Buchung, Lieferung und das Zelt selbst.</p>
+    </div>
+    <div class="faq__inner">
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          <span>Wie hoch ist die Kaution, und wann bekomme ich sie zurück?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Bei Selbstabholung und Lieferung wird eine Kaution von 75 € je Zelt hinterlegt. Diese wird vollständig zurückerstattet, wenn das Zelt sauber und trocken zurückgegeben wird. Gegen Aufpreis (75 € zzgl. MwSt. je Zelt) übernehmen wir auch Reinigung und Trocknung.</div></div>
+      </div>
+
+      <div class="faq-item reveal" style="transition-delay:.04s">
+        <button class="faq-q" aria-expanded="false">
+          <span>Was ist, wenn es regnet? Sind die Zelte wirklich wasserdicht?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Ja — alle unsere Zelte sind zu 100 % wasserdicht. Wir setzen überwiegend PVC-Planen ein (vergleichbar mit LKW-Planen). Alle Seitenteile können vollständig geschlossen werden. Regenrinnen für Längs- und Giebelseiten sind als Zubehör erhältlich (ab 6,50 €/Tag).</div></div>
+      </div>
+
+      <div class="faq-item reveal" style="transition-delay:.08s">
+        <button class="faq-q" aria-expanded="false">
+          <span>Wie weit im Voraus sollte ich buchen?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Für Wochenenden in der Hauptsaison (Mai–September) empfehlen wir eine Buchung mindestens 4–6 Wochen im Voraus, da die beliebten Zeltgrößen schnell vergeben sind. Unter der Woche ist oft auch kurzfristiger etwas möglich — einfach anfragen.</div></div>
+      </div>
+
+      <div class="faq-item reveal" style="transition-delay:.12s">
+        <button class="faq-q" aria-expanded="false">
+          <span>Wie lange dauert der Aufbau beim Komplett-Service?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Je nach Zeltgröße und Ausstattung rechnen wir mit 1–3 Stunden für Aufbau und Einrichtung. Wir stimmen den genauen Zeitplan vorab mit Ihnen ab, damit alles für Ihre Feier bereit steht.</div></div>
+      </div>
+
+      <div class="faq-item reveal" style="transition-delay:.16s">
+        <button class="faq-q" aria-expanded="false">
+          <span>Kann das Zelt auch auf Rasen aufgebaut werden?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Ja, unsere Zelte können sowohl auf befestigtem Untergrund als auch auf Rasenflächen aufgebaut werden. Der Untergrundtyp beeinflusst die Verankerungsmethode — bitte geben Sie das beim Anfragen an, damit wir das richtige Material mitbringen.</div></div>
+      </div>
+
+      <div class="faq-item reveal" style="transition-delay:.20s">
+        <button class="faq-q" aria-expanded="false">
+          <span>Was ist beim Wochenendpreis inbegriffen?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="faq-answer"><div class="faq-answer-inner">Der Wochenendpreis gilt von Freitag 16:00 Uhr bis Montag 09:00 Uhr (bei Selbstabholung) bzw. bis Sonntagnachmittag (bei Lieferung/Aufbau). Sie haben das Zelt also über das gesamte Wochenende.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     KONTAKT
+═══════════════════════════════════════════════════════ -->
+<section id="kontakt">
+  <div class="container">
+    <div class="kontakt__grid">
+
+      <!-- Info + Karte -->
+      <div class="kontakt__info reveal">
+        <span class="eyebrow">Anfrage stellen</span>
+        <h2>Ihr Fest verdient das Beste</h2>
+        <p>Sagen Sie uns, was Sie planen — wir melden uns innerhalb von 24 Stunden mit einem unverbindlichen Angebot. Spitzenwochenenden sind schnell ausgebucht.</p>
+
+        <div class="kontakt__details">
+          <div class="kontakt__detail">
+            <div class="kontakt__detail-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.92-1.87a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.22 15z"/></svg>
+            </div>
+            <div class="kontakt__detail-text">
+              <strong>Telefon</strong>
+              <a href="tel:+4917645829595">0176 45829595</a>
+            </div>
+          </div>
+          <div class="kontakt__detail">
+            <div class="kontakt__detail-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="kontakt__detail-text">
+              <strong>E-Mail</strong>
+              <a href="mailto:info@zeltverleiherfurt.de">info@zeltverleiherfurt.de</a>
+            </div>
+          </div>
+          <div class="kontakt__detail">
+            <div class="kontakt__detail-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="kontakt__detail-text">
+              <strong>Standort</strong>
+              <span>Lützewiesenweg 18, 99098 Erfurt<br>Lager: Fichtenweg 20, 99098 Erfurt</span>
+            </div>
+          </div>
+          <div class="kontakt__detail">
+            <div class="kontakt__detail-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="kontakt__detail-text">
+              <strong>Erreichbarkeit</strong>
+              <span>Mo – Sa · 09:00 – 19:00 Uhr</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-wrap">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2498.6!2d11.0213!3d50.9748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a472d5c6f7a6c1%3A0x0!2sFichtenweg+20%2C+99098+Erfurt!5e0!3m2!1sde!2sde!4v1"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Standort Zeltverleih Erfurt Lager"
+            aria-label="Google Maps: Fichtenweg 20, Erfurt">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- 3-Stufen Formular -->
+      <div class="reveal" style="transition-delay:.1s">
+        <div class="form-card">
+          <div class="form-steps" id="form-steps">
+            <div class="step-tab active" data-step="0">1 · Kontakt</div>
+            <div class="step-tab"        data-step="1">2 · Veranstaltung</div>
+            <div class="step-tab"        data-step="2">3 · Details</div>
+          </div>
+
+          <div id="form-err" class="form__err"></div>
+
+          <form id="quote-form" novalidate>
+
+            <!-- Seite 1 -->
+            <div class="form-page active" data-page="0">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-name">Name <span class="req">*</span></label>
+                  <input type="text" id="f-name" name="name" placeholder="Ihr Name" required />
+                </div>
+                <div class="form-group">
+                  <label for="f-phone">Telefon <span class="req">*</span></label>
+                  <input type="tel" id="f-phone" name="phone" placeholder="0176 …" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="f-email">E-Mail <span class="req">*</span></label>
+                <input type="email" id="f-email" name="email" placeholder="ihre@email.de" required />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-plz">PLZ Veranstaltungsort</label>
+                  <input type="text" id="f-plz" name="deliveryPostalCode" placeholder="99084" maxlength="10" />
+                </div>
+                <div class="form-group">
+                  <label for="f-city">Ort</label>
+                  <input type="text" id="f-city" name="deliveryCity" placeholder="Erfurt" />
+                </div>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn btn--primary" onclick="nextPage()">Weiter →</button>
+              </div>
+            </div>
+
+            <!-- Seite 2 -->
+            <div class="form-page" data-page="1">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-event-type">Anlass</label>
+                  <select id="f-event-type" name="eventType">
+                    <option value="">Bitte wählen …</option>
+                    <option>Hochzeit</option>
+                    <option>Geburtstag</option>
+                    <option>Jugendweihe</option>
+                    <option>Firmung / Kommunion</option>
+                    <option>Schuleinführung</option>
+                    <option>Firmenfeier</option>
+                    <option>Gartenparty</option>
+                    <option>Sonstiges</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-date">Datum der Veranstaltung <span class="req">*</span></label>
+                  <input type="date" id="f-date" name="eventDate" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-guests">Ungefähre Gästezahl</label>
+                  <select id="f-guests" name="guestCount">
+                    <option value="">Bitte wählen …</option>
+                    <option>bis 20</option>
+                    <option>20–50</option>
+                    <option>50–80</option>
+                    <option>80–120</option>
+                    <option>120–200</option>
+                    <option>über 200</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-service">Gewünschter Service</label>
+                  <select id="f-service" name="servicePackage">
+                    <option value="">Bitte wählen …</option>
+                    <option>Selbstabholung</option>
+                    <option>Lieferservice</option>
+                    <option>Aufbauhilfe</option>
+                    <option>Komplett-Service</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn btn--light" onclick="prevPage()">← Zurück</button>
+                <button type="button" class="btn btn--primary" onclick="nextPage()">Weiter →</button>
+              </div>
+            </div>
+
+            <!-- Seite 3 -->
+            <div class="form-page" data-page="2">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="f-tent-size">Zeltgröße (falls bekannt)</label>
+                  <select id="f-tent-size" name="tentSize">
+                    <option value="">Noch nicht sicher</option>
+                    <option>XS (4×2 m)</option>
+                    <option>S (3×3 m)</option>
+                    <option>Pagode (3×3 m)</option>
+                    <option>M/1 (4×4 m)</option>
+                    <option>M/2 (3×6 m)</option>
+                    <option>L (4×6 m)</option>
+                    <option>XL/1 (4×8 m)</option>
+                    <option>XL/2 (4×9 m)</option>
+                    <option>XXL (4×10 m)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="f-ground">Untergrund <span class="req">*</span></label>
+                  <select id="f-ground" name="ground" required>
+                    <option value="">Bitte wählen …</option>
+                    <option>Befestigt (Beton / Pflaster)</option>
+                    <option>Unbefestigt (Rasen / Erde)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="f-accessories">Zusatzausstattung</label>
+                <input type="text" id="f-accessories" name="accessories" placeholder="z.B. Lichterketten, Heizlüfter, Biertischgarnituren …" />
+              </div>
+              <div class="form-group">
+                <label for="f-message">Nachricht / Besondere Wünsche <span class="req">*</span></label>
+                <textarea id="f-message" name="message" placeholder="Was sollen wir noch wissen?" required></textarea>
+              </div>
+              <div class="form-nav">
+                <button type="button" class="btn btn--light" onclick="prevPage()">← Zurück</button>
+                <button type="submit" class="btn btn--primary" id="submit-btn">
+                  <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Anfrage absenden
+                </button>
+              </div>
+            </div>
+
+          </form>
+
+          <div class="form__success" id="form-success">
+            <div class="form__success-icon">
+              <svg width="28" height="28" fill="none" stroke="#2D5E3A" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>Anfrage erhalten!</h3>
+            <p>Vielen Dank. In der Regel melden wir uns innerhalb von 24 Stunden mit einem unverbindlichen Angebot bei Ihnen.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <h3>Zeltverleih Erfurt</h3>
+        <p>Ihr Fest. Unser Zelt. Unsere Verantwortung.<br>Partyzelte und Eventausstattung im Herzen Thüringens.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#tents">Zelte &amp; Preise</a></li>
+          <li><a href="#service">Service</a></li>
+          <li><a href="#bewertungen">Bewertungen</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="tel:+4917645829595">0176 45829595</a></li>
+          <li><a href="mailto:info@zeltverleiherfurt.de">info@zeltverleiherfurt.de</a></li>
+          <li><span style="color:rgba(255,255,255,.62)">Lützewiesenweg 18, 99098 Erfurt</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 Zeltverleih Erfurt · Ludwig Fuchs</span>
+      <div class="footer__legal-links">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+/* ── Tent data ──────────────────────────────────────────── */
+const tents = [
+  { code:'XS',     dims:'4×2 m',  persons:'ab 8 Pers.',  day:65,  we:95,  material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'S',      dims:'3×3 m',  persons:'ab 8 Pers.',  day:75,  we:105, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'Pagode', dims:'3×3 m',  persons:'ab 8 Pers.',  day:80,  we:115, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'M/1',    dims:'4×4 m',  persons:'ab 16 Pers.', day:85,  we:125, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'M/2',    dims:'3×6 m',  persons:'ab 24 Pers.', day:90,  we:130, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'L',      dims:'4×6 m',  persons:'ab 32 Pers.', day:100, we:145, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'XL/1',   dims:'4×8 m',  persons:'ab 48 Pers.', day:110, we:170, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'XL/2',   dims:'4×9 m',  persons:'ab 48 Pers.', day:125, we:185, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+  { code:'XXL',    dims:'4×10 m', persons:'ab 64 Pers.', day:140, we:200, material:'PVC-Plane', sides:'Inklusive', deposit:75 },
+];
+
+/* ── Nav hamburger ──────────────────────────────────────── */
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+});
+function closeMenu() {
+  mobileMenu.classList.remove('open');
+  hamburger.classList.remove('open');
+}
+
+/* ── Tent selector ──────────────────────────────────────── */
+const row    = document.getElementById('tentRow');
+const detail = document.getElementById('tentDetail');
+let selectedIdx = 0;
+
+function buildTentCards() {
+  row.innerHTML = '';
+  tents.forEach((t, i) => {
+    const c = document.createElement('div');
+    c.className = 'tent-card' + (i === selectedIdx ? ' active' : '');
+    c.setAttribute('tabindex', '0');
+    c.innerHTML = `<div class="tent-code">${t.code}</div><div class="tent-dims">${t.dims}</div><div class="tent-persons">${t.persons}</div><div class="tent-price-day">${t.day} €/Tag</div><div class="tent-price-we">WE ${t.we} €</div>`;
+    c.addEventListener('click', () => selectTent(i));
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTent(i); } });
+    row.appendChild(c);
+  });
+}
+
+function selectTent(idx) {
+  selectedIdx = idx;
+  row.querySelectorAll('.tent-card').forEach((c, i) => c.classList.toggle('active', i === idx));
+  detail.classList.add('fading');
+  setTimeout(() => { fillDetail(tents[idx]); detail.classList.remove('fading'); }, 220);
+}
+
+function fillDetail(t) {
+  document.getElementById('tdTitle').textContent = `${t.code} — ${t.dims}`;
+  document.getElementById('tdSpecs').innerHTML = `
+    <div class="tent-spec"><span class="tent-spec-lbl">Größe</span><span class="tent-spec-val">${t.dims}</span></div>
+    <div class="tent-spec"><span class="tent-spec-lbl">Personen</span><span class="tent-spec-val">${t.persons}</span></div>
+    <div class="tent-spec"><span class="tent-spec-lbl">Material</span><span class="tent-spec-val">${t.material}</span></div>
+    <div class="tent-spec"><span class="tent-spec-lbl">Seitenteile</span><span class="tent-spec-val">${t.sides}</span></div>
+    <div class="tent-spec"><span class="tent-spec-lbl">Kaution</span><span class="tent-spec-val">${t.deposit} € (bei Rückgabe erstattet)</span></div>
+  `;
+  document.getElementById('tdDay').textContent = `€ ${t.day}`;
+  document.getElementById('tdWe').textContent  = `Wochenende: ${t.we} €`;
+  document.getElementById('tdCta').textContent = `Zelt ${t.code} anfragen →`;
+}
+
+buildTentCards();
+fillDetail(tents[0]);
+
+/* ── FAQ accordion ──────────────────────────────────────── */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ── Ausstattung image slideshows (synchron) ────────────── */
+const ACC_INTERVAL = 4500;
+const accSlideshows = [];
+
+document.querySelectorAll('.acc-slideshow').forEach(show => {
+  const slides = show.querySelectorAll('.acc-slide');
+  if (slides.length < 2) return;
+
+  const dots = document.createElement('div');
+  dots.className = 'acc-dots';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'acc-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', `Bild ${i + 1} anzeigen`);
+    dots.appendChild(dot);
+  });
+  show.appendChild(dots);
+
+  let current = 0;
+  const ctrl = {
+    show,
+    goTo(idx) {
+      slides[current].classList.remove('active');
+      dots.children[current].classList.remove('active');
+      current = idx;
+      slides[current].classList.add('active');
+      dots.children[current].classList.add('active');
+    },
+    next() {
+      ctrl.goTo((current + 1) % slides.length);
+    },
+  };
+
+  dots.querySelectorAll('.acc-dot').forEach((dot, i) => {
+    dot.addEventListener('click', () => ctrl.goTo(i));
+  });
+
+  accSlideshows.push(ctrl);
+});
+
+let accTimer = null;
+let accPauseCount = 0;
+
+function accTick() {
+  accSlideshows.forEach(s => s.next());
+}
+
+function accStart() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  clearInterval(accTimer);
+  accTimer = setInterval(accTick, ACC_INTERVAL);
+}
+
+accSlideshows.forEach(s => {
+  s.show.addEventListener('mouseenter', () => {
+    accPauseCount++;
+    clearInterval(accTimer);
+  });
+  s.show.addEventListener('mouseleave', () => {
+    accPauseCount = Math.max(0, accPauseCount - 1);
+    if (accPauseCount === 0) accStart();
+  });
+});
+
+accStart();
+
+/* ── Multi-step form ────────────────────────────────────── */
+let currentPage = 0;
+const pages    = document.querySelectorAll('.form-page');
+const stepTabs = document.querySelectorAll('.step-tab');
+
+function getTodayIso() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function validateEventDate() {
+  const value = document.getElementById('f-date').value;
+  const today = getTodayIso();
+  if (!value) return 'Bitte wählen Sie ein Datum für die Veranstaltung.';
+  if (value < today) return 'Das Datum darf nicht in der Vergangenheit liegen.';
+  return null;
+}
+
+function validatePhone() {
+  const phone = document.getElementById('f-phone').value.trim();
+  if (!phone) return 'Bitte geben Sie Ihre Telefonnummer ein.';
+  if (phone.length < 6) return 'Bitte geben Sie eine gültige Telefonnummer ein.';
+  return null;
+}
+
+function validateDetails() {
+  const ground = document.getElementById('f-ground').value;
+  if (!ground) return 'Bitte wählen Sie den Untergrund.';
+  const message = document.getElementById('f-message').value.trim();
+  if (!message) return 'Bitte geben Sie eine Nachricht ein.';
+  return null;
+}
+
+const dateInput = document.getElementById('f-date');
+dateInput.min = getTodayIso();
+dateInput.addEventListener('change', () => {
+  if (dateInput.value && dateInput.value < getTodayIso()) dateInput.value = getTodayIso();
+});
+
+function showPage(idx) {
+  pages.forEach((p, i) => p.classList.toggle('active', i === idx));
+  stepTabs.forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+    t.classList.toggle('done',   i < idx);
+  });
+  currentPage = idx;
+  document.getElementById('form-err').style.display = 'none';
+}
+
+function nextPage() {
+  const errEl = document.getElementById('form-err');
+  if (currentPage === 0) {
+    const name  = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    if (!name) {
+      errEl.textContent = 'Bitte geben Sie Ihren Namen ein.';
+      errEl.style.display = 'block'; return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+      errEl.style.display = 'block'; return;
+    }
+    const phoneErr = validatePhone();
+    if (phoneErr) {
+      errEl.textContent = phoneErr;
+      errEl.style.display = 'block'; return;
+    }
+  }
+  if (currentPage === 1) {
+    const dateErr = validateEventDate();
+    if (dateErr) {
+      errEl.textContent = dateErr;
+      errEl.style.display = 'block'; return;
+    }
+  }
+  if (currentPage < pages.length - 1) showPage(currentPage + 1);
+}
+
+function prevPage() {
+  if (currentPage > 0) showPage(currentPage - 1);
+}
+
+/* ── Form submit ────────────────────────────────────────── */
+document.getElementById('quote-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn    = document.getElementById('submit-btn');
+  const errEl  = document.getElementById('form-err');
+
+  const dateErr = validateEventDate();
+  if (dateErr) {
+    errEl.textContent = dateErr;
+    errEl.style.display = 'block';
+    showPage(1);
+    return;
+  }
+
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!name) {
+    errEl.textContent = 'Bitte geben Sie Ihren Namen ein.';
+    errEl.style.display = 'block';
+    showPage(0);
+    return;
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+    errEl.style.display = 'block';
+    showPage(0);
+    return;
+  }
+  const phoneErr = validatePhone();
+  if (phoneErr) {
+    errEl.textContent = phoneErr;
+    errEl.style.display = 'block';
+    showPage(0);
+    return;
+  }
+
+  const detailsErr = validateDetails();
+  if (detailsErr) {
+    errEl.textContent = detailsErr;
+    errEl.style.display = 'block';
+    showPage(2);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet …';
+
+  const fd = new FormData(this);
+  const payload = {};
+  fd.forEach((v, k) => { if (v) payload[k] = v; });
+
+  const isLocal = ['localhost','127.0.0.1',''].includes(location.hostname) || location.protocol === 'file:';
+  const api     = isLocal ? 'http://localhost:8080' : '';
+
+  try {
+    const res = await fetch(api + '/api/anfragen', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      document.getElementById('quote-form').style.display   = 'none';
+      document.getElementById('form-steps').style.display   = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.error || 'Server-Fehler. Bitte erneut versuchen.');
+    }
+  } catch (err) {
+    errEl.textContent = err.message || 'Verbindungsfehler. Bitte Internetverbindung prüfen.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Anfrage absenden';
+  }
+});
+
+/* ── Scroll reveal ──────────────────────────────────────── */
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+}
+</script>
+</body>
+</html>

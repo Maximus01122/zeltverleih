@@ -17,7 +17,10 @@ public class QuoteRequest {
     private String eventType;
     private String eventDate;
     private String guestCount;
+    private String tentCount;
     private String tentSize;
+    private String deliveryPostalCode;
+    private String deliveryCity;
     private String servicePackage;
     private String accessories;
     private String ground;
@@ -27,6 +30,7 @@ public class QuoteRequest {
 
     private LocalDateTime receivedAt = LocalDateTime.now();
     private boolean processed = false;
+    private Long clientId;
 
     public Long getId() { return id; }
     public String getName() { return name; }
@@ -41,8 +45,14 @@ public class QuoteRequest {
     public void setEventDate(String eventDate) { this.eventDate = eventDate; }
     public String getGuestCount() { return guestCount; }
     public void setGuestCount(String guestCount) { this.guestCount = guestCount; }
+    public String getTentCount() { return tentCount; }
+    public void setTentCount(String tentCount) { this.tentCount = tentCount; }
     public String getTentSize() { return tentSize; }
     public void setTentSize(String tentSize) { this.tentSize = tentSize; }
+    public String getDeliveryPostalCode() { return deliveryPostalCode; }
+    public void setDeliveryPostalCode(String deliveryPostalCode) { this.deliveryPostalCode = deliveryPostalCode; }
+    public String getDeliveryCity() { return deliveryCity; }
+    public void setDeliveryCity(String deliveryCity) { this.deliveryCity = deliveryCity; }
     public String getServicePackage() { return servicePackage; }
     public void setServicePackage(String servicePackage) { this.servicePackage = servicePackage; }
     public String getAccessories() { return accessories; }
@@ -52,6 +62,9 @@ public class QuoteRequest {
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
     public LocalDateTime getReceivedAt() { return receivedAt; }
+    public void setReceivedAt(LocalDateTime receivedAt) { this.receivedAt = receivedAt; }
     public boolean isProcessed() { return processed; }
     public void setProcessed(boolean processed) { this.processed = processed; }
+    public Long getClientId() { return clientId; }
+    public void setClientId(Long clientId) { this.clientId = clientId; }
 }
