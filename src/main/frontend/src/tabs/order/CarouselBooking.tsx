@@ -1,10 +1,11 @@
 // File: CarouselBooking.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Toaster } from "@/components/ui/sonner";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import Menu from "@/tabs/navigation/menuNew";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import StepClientForm from "./steps/StepClientForm";
@@ -43,14 +44,18 @@ const CarouselBooking = () => {
     } = useBookingWizard(bookingProps, navigate);
 
     return (
+        <div className="p-4 md:p-8">
         <Card>
             <Toaster position="top-right" richColors closeButton />
             <CardHeader>
-                <div className="flex justify-between items-center w-full">
-                    <CardTitle>{stepTitle}</CardTitle>
-                    <Button variant="ghost" className="h-8 w-8 p-0" onClick={handleClose}>
-                        <Cross2Icon className="h-4 w-4" />
-                    </Button>
+                <div className="flex items-center justify-between gap-2 w-full">
+                    <CardTitle className="text-lg sm:text-2xl">{stepTitle}</CardTitle>
+                    <div className="flex items-center gap-2 shrink-0">
+                        <Menu />
+                        <Button variant="ghost" className="h-8 w-8 p-0" onClick={handleClose}>
+                            <Cross2Icon className="h-4 w-4" />
+                        </Button>
+                    </div>
                 </div>
                 <Progress value={(step - 1) * (100 / 4)} />
             </CardHeader>
@@ -87,6 +92,7 @@ const CarouselBooking = () => {
                 {step === 5 && <BookingSingleView bookingPreview={booking} handleDone={handleDone}/>}
             </CardContent>
         </Card>
+        </div>
     );
 };
 

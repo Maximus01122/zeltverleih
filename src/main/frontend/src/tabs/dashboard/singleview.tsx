@@ -22,6 +22,7 @@ import {AdresseToString, formatDateRangeDE, formatSetupServiceName} from "@/mode
 import {Button} from "@/components/ui/button";
 import {Cross2Icon} from "@radix-ui/react-icons";
 import {Textarea} from "@/components/ui/textarea";
+import { PageShell } from "@/components/PageShell";
 
 /**
  * Reusable read-only label + input pair.
@@ -71,8 +72,10 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
     if (error)    return <div>Error: {error}</div>;
     if (!booking) return <div>No booking found</div>;
 
-    return (
-        <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8 p-4 lg:p-8">
+    const isEmbedded = !!bookingPreview;
+
+    const content = (
+        <div className={`grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8 ${isEmbedded ? '' : ''}`}>
 
             {/* Kundeninformationen ---------------------------------------- */}
             <Card>
@@ -128,7 +131,7 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                 <CardHeader>
                     <CardTitle>Bestellung</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="overflow-x-auto">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -146,10 +149,10 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                             ) : (
                                 booking.bookingMaterials.map((bm) => (
                                     <TableRow key={bm.id ?? `${bm.material.id}-${bm.material.name}`}>
-                                        <TableCell className="font-semibold w-[100px]">
+                                        <TableCell className="min-w-[120px] font-semibold">
                                             {bm.material.name}
                                         </TableCell>
-                                        <TableCell className="font-semibold w-[350px]">
+                                        <TableCell className="min-w-[200px] font-semibold">
                                             {/* unique id per row — fixes the duplicate id="material-quantity" */}
                                             <Input
                                                 id={`material-quantity-${bm.id ?? bm.material.id}`}
@@ -170,7 +173,7 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                 <CardHeader>
                     <CardTitle>Service</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="overflow-x-auto">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -190,7 +193,7 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
                             ) : (
                                 booking.setupServices.map((setupService) => (
                                     <TableRow key={setupService.id ?? setupService.name}>
-                                        <TableCell className="font-semibold w-[100px]">
+                                        <TableCell className="min-w-[120px] font-semibold">
                                             {formatSetupServiceName(setupService.name)}
                                         </TableCell>
                                     </TableRow>
@@ -216,8 +219,18 @@ export const BookingSingleView: React.FC<BookingSingleViewProps> = ({ bookingPre
             </Card>
 
             {handleDone !== undefined && (
-                <Button onClick={handleDone}>Buchung abschließen</Button>
+                <Button className="w-full sm:w-auto" onClick={handleDone}>Buchung abschließen</Button>
             )}
         </div>
+    );
+
+    if (isEmbedded) {
+        return content;
+    }
+
+    return (
+        <PageShell title="Buchungsdetails">
+            {content}
+        </PageShell>
     );
 };

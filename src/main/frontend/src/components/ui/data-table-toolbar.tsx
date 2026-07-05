@@ -18,8 +18,8 @@ export function DataTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
-        <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center space-x-2">
+        <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+            <div className="flex flex-1 flex-wrap items-center gap-2">
                 {!isCalendarView && (
                     <Input
                         placeholder="Kunde suchen..."
@@ -29,7 +29,7 @@ export function DataTableToolbar<TData>({
                             const k = table.getColumn("client")!
                             k.setFilterValue(searchValue)
                         }}
-                        className="h-8 w-[150px] lg:w-[250px]"
+                        className="h-8 w-full sm:w-[150px] lg:w-[250px]"
                     />
                 )}
                 {isFiltered && !isCalendarView && (
@@ -47,7 +47,7 @@ export function DataTableToolbar<TData>({
                 variant="outline"
                 size="sm"
                 onClick={toggleView}
-                className="ml-2"
+                className="w-full shrink-0 sm:w-auto"
             >
                 {isCalendarView ? (
                     <>

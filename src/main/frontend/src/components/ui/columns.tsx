@@ -33,7 +33,7 @@ export const columns: ColumnDef<Booking>[] = [
             const client: Client = row.original.client;
             return (
                 <div className="flex space-x-1">
-                  <span className="flex w-[300px] items-center">
+                  <span className="flex min-w-[160px] max-w-[300px] items-center">
                       {client.name}
                   </span>
                 </div>

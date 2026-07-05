@@ -49,11 +49,11 @@ const MaterialTable: React.FC<MaterialTableProps> = ({
 
                     return (
                         <TableRow key={availableMaterial.material.id}>
-                            <TableCell className="font-semibold w-[100px]">
+                            <TableCell className="font-semibold min-w-[120px]">
                                 {availableMaterial.material.name}
                             </TableCell>
 
-                            <TableCell className="font-semibold w-[350px]">
+                            <TableCell className="font-semibold min-w-[200px]">
                                 <Input
                                     id={`${availableMaterial.material.id}`}
                                     type="number"

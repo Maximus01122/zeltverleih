@@ -8,18 +8,36 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {DateRange} from "react-day-picker";
-import {addDays, format} from "date-fns";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {de} from "date-fns/locale";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 
-type dateProps = {
-    date:DateRange | undefined,
+type DateRangePickerProps = {
+    date: DateRange | undefined,
     setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>
+    className?: string
 }
 
+function formatDateLabel(date: Date, compact: boolean): string {
+    if (compact) {
+        return date.toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+    }
+    return date.toLocaleDateString('de-DE', {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+}
 
-export function DateRangePicker({date, setDate}: dateProps, {className}: React.HTMLAttributes<HTMLDivElement>) {
+export function DateRangePicker({date, setDate, className}: DateRangePickerProps) {
+    const isMobile = useIsMobile();
+
     return (
         <div className={cn("grid gap-2", className)}>
             <Popover>
@@ -28,41 +46,27 @@ export function DateRangePicker({date, setDate}: dateProps, {className}: React.H
                         id="date"
                         variant={"outline"}
                         className={cn(
-                            "w-[500px] justify-start text-left font-normal",
+                            "w-full max-w-full justify-start text-left font-normal sm:max-w-md md:max-w-lg",
                             !date && "text-muted-foreground"
                         )}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-8" />
-                        {date?.from ? (
-                            date.to ? (
-                                <>
-                                    {date.from.toLocaleDateString('de-DE',{
-                                        weekday: "long",
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    })} - {" "}
-                                    {date.to.toLocaleDateString('de-DE', {
-                                        weekday: "long",
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    })}
-                                </>
+                        <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+                        <span className="truncate">
+                            {date?.from ? (
+                                date.to ? (
+                                    <>
+                                        {formatDateLabel(date.from, isMobile)} – {formatDateLabel(date.to, isMobile)}
+                                    </>
+                                ) : (
+                                    formatDateLabel(date.from, isMobile)
+                                )
                             ) : (
-                                date.from.toLocaleDateString('de-DE',{
-                                    weekday: "long",
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })
-                            )
-                        ) : (
-                            <span>Datum auswählen</span>
-                        )}
+                                "Datum auswählen"
+                            )}
+                        </span>
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
+                <PopoverContent className="w-auto max-w-[calc(100vw-2rem)] p-0" align="start">
                     <Calendar
                         locale={de}
                         initialFocus
@@ -70,7 +74,7 @@ export function DateRangePicker({date, setDate}: dateProps, {className}: React.H
                         defaultMonth={date?.from}
                         selected={date}
                         onSelect={setDate}
-                        numberOfMonths={2}
+                        numberOfMonths={isMobile ? 1 : 2}
                     />
                 </PopoverContent>
             </Popover>

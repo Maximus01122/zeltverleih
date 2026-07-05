@@ -40,8 +40,8 @@ const StepMaterialSelection: React.FC<StepMaterialSelectionProps> = ({
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center space-x-2 p-2 bg-muted/30 rounded-md">
-                <DateRangePicker date={dateRange} setDate={setDateRange} />
+            <div className="flex flex-col gap-2 rounded-md bg-muted/30 p-2 sm:flex-row sm:items-center sm:space-x-2">
+                <DateRangePicker date={dateRange} setDate={setDateRange} className="w-full sm:w-auto" />
                 {dateRange?.to && (
                     <Button
                         variant="ghost"
@@ -69,7 +69,7 @@ const StepMaterialSelection: React.FC<StepMaterialSelectionProps> = ({
                             ))}
                         </TabsList>
 
-                        <div className="mt-4 border rounded-md">
+                        <div className="mt-4 overflow-x-auto rounded-md border">
                             {categoryValues.map(cat => (
                                 <TabsContent key={cat} value={cat} className="m-0">
                                     <MaterialTable

@@ -29,8 +29,8 @@ const WarehouseTable: React.FC<WarehouseTableProps> = ({
                 ) : null}
                 {availableMaterials.map((availableMaterial) => {
                     return(<TableRow key={availableMaterial.material.id}>
-                        <TableCell className="font-semibold w-[100px]">{availableMaterial.material.name}</TableCell>
-                        <TableCell className="font-semibold w-[350px]">
+                        <TableCell className="font-semibold min-w-[120px]">{availableMaterial.material.name}</TableCell>
+                        <TableCell className="font-semibold min-w-[200px]">
                             <Input id={`material-quantity-${availableMaterial.material.name}`}
                                    value={availableMaterial.availableCount} readOnly />
                         </TableCell>

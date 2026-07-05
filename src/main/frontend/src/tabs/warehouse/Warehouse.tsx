@@ -5,7 +5,7 @@ import { DateRange } from "react-day-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import MaterialService from "@/services/MaterialService";
 import {categoryValues, MaterialAvailability} from "@/model/AllTypes";
-import Menu from "@/tabs/navigation/menuNew";
+import { PageShell } from "@/components/PageShell";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import WarehouseTable from "@/tabs/warehouse/WarehouseTable";
 
@@ -31,10 +31,9 @@ export function Warehouse() {
     }, [dateRange]);
 
     return (
-        <div className="p-4 lg:p-8">
-            <div className="flex items-center justify-between mb-8">
-                <DateRangePicker date={dateRange} setDate={setDateRange} />
-                <Menu/>
+        <PageShell title="Lager">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <DateRangePicker date={dateRange} setDate={setDateRange} className="w-full sm:w-auto" />
             </div>
             <Card x-chunk="dashboard-07-chunk-1">
                 <CardHeader>
@@ -42,7 +41,7 @@ export function Warehouse() {
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="Zelte" className="w-full h-full">
-                        <TabsList>
+                        <TabsList className="w-full justify-start overflow-x-auto">
                             <TabsTrigger value="Zelte">Zelte</TabsTrigger>
                             <TabsTrigger value="Tische_Bänke_Stühle">Tische & Bänke</TabsTrigger>
                             <TabsTrigger value="Licht_Schatten">Licht & Schatten</TabsTrigger>
@@ -61,6 +60,6 @@ export function Warehouse() {
                     </Tabs>
                 </CardContent>
             </Card>
-        </div>
+        </PageShell>
     );
 }

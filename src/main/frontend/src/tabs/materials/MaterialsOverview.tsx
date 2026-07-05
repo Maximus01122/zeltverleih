@@ -15,7 +15,7 @@ import * as React from "react";
 import {toast} from "sonner";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Toaster} from "@/components/ui/sonner";
-import Menu from "@/tabs/navigation/menuNew";
+import { PageShell } from "@/components/PageShell";
 import materialService from "@/services/MaterialService";
 
 import { MaterialCreateDropdown, type MaterialDraft, MaterialEditDateDropdown, MaterialEditPriceDropdown } from "@/tabs/materials/PopUps"; // adjust path if different
@@ -132,13 +132,10 @@ export const MaterialsOverview = () => {
     };
 
     return (
-        <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold tracking-tight">Materialübersicht</h2>
-                    <Toaster position={"top-right"} richColors={true} closeButton/>
-                    <Menu/>
-                </div>
-            <Table className="border">
+        <PageShell title="Materialübersicht">
+            <Toaster position="top-center" richColors closeButton />
+            <div className="overflow-x-auto rounded-md border">
+            <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="text-center w-2/12">Name</TableHead>
@@ -233,6 +230,7 @@ export const MaterialsOverview = () => {
                     ))}
                 </TableBody>
             </Table>
-        </div>
+            </div>
+        </PageShell>
     );
 };

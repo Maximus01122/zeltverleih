@@ -1,7 +1,7 @@
 import {Card, CardContent, CardHeader, CardTitle,} from "@/components/ui/card"
 import {Tabs, TabsContent, TabsList, TabsTrigger,} from "@/components/ui/tabs"
 
-import Menu from "@/tabs/navigation/menuNew";
+import { PageShell } from "@/components/PageShell";
 import React, {useEffect, useState} from "react";
 import {numberWithCommas} from "@/model/helperFunctions";
 import taxIcon from "@/tabs/navigation/tax-calculate.png";
@@ -47,14 +47,9 @@ export default function DashboardPage() {
     }, []);
 
     return (
-        <>
-        <div className="flex-1 space-y-4 p-8 pt-6">
-            <div className="flex items-center justify-between space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-                <Menu/>
-            </div>
+        <PageShell title="Dashboard">
             <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList>
+                <TabsList className="w-full justify-start overflow-x-auto">
                     <TabsTrigger value="overview">Finanzen</TabsTrigger>
                     <TabsTrigger value="analytics">Buchungen</TabsTrigger>
                 </TabsList>
@@ -133,7 +128,6 @@ export default function DashboardPage() {
                     </div>
                 </TabsContent>
             </Tabs>
-        </div>
-        </>
+        </PageShell>
     );
 }
