@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Zeltverleih Erfurt brand palette (Marken-Wissensdatenbank v2.0):
+ * Festblau #1F5C8B carries structure/trust, Sonnengelb #F4B41E is the sparing
+ * highlight. Never pure black — Anthrazit for text.
+ */
+@layer base {
+  :root {
+    --background: 210 60% 99%; /* Klarweiß #FAFCFE */
+    --foreground: 60 4% 11%; /* Anthrazit #1C1C1A */
+
+    --card: 0 0% 100%; /* Reinweiß */
+    --card-foreground: 60 4% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 4% 11%;
+
+    --primary: 206 63% 33%; /* Festblau #1F5C8B */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 209 40% 95%; /* Nebelblau #EDF3F9 */
+    --secondary-foreground: 206 63% 33%;
+
+    --muted: 209 40% 95%; /* Nebelblau */
+    --muted-foreground: 210 12% 40%; /* Schiefer #5A6672 */
+
+    --accent: 209 40% 95%; /* Nebelblau — subtle hover surface */
+    --accent-foreground: 206 63% 33%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 209 35% 88%; /* Dunst #D7E2EC */
+    --input: 209 35% 88%;
+    --ring: 206 63% 33%; /* Festblau */
+
+    --sun: 42 91% 54%; /* Sonnengelb #F4B41E */
+    --sun-foreground: 60 4% 11%; /* dark text on yellow — never white */
+    --sun-hover: 42 100% 62%; /* Goldgelb #FFC53D */
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}

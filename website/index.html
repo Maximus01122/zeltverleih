@@ -1114,6 +1114,9 @@ document.getElementById('quote-form').addEventListener('submit', async function(
     const accessoriesText = window.ZV_Cart.formatForSubmit('');
     if (accessoriesText) payload.accessories = accessoriesText;
 
+    const cartLines = window.ZV_Cart.lines().map(l => ({ id: l.id, qty: l.qty }));
+    if (cartLines.length) payload.cartJson = JSON.stringify(cartLines);
+
     const tentInfo = window.ZV_Cart.tentSummary();
     if (tentInfo.count) payload.tentCount = String(tentInfo.count);
     if (tentInfo.sizes) payload.tentSize = tentInfo.sizes;

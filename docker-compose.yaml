@@ -8,6 +8,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: zeltverleih
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
@@ -20,18 +21,17 @@ services:
 
   springboot:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: springboot-app
     restart: always
     ports:
       - "127.0.0.1:8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/zeltverleih
+      SPRING_PROFILES_ACTIVE: mysql
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/zeltverleih?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      PDF_ANGEBOT_PATH: /app/pdfs/angebot/
-      PDF_RECHNUNG_PATH: /app/pdfs/rechnung/
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_NOTIFICATION_TO: ${MAIL_NOTIFICATION_TO:-}
@@ -39,19 +39,17 @@ services:
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       AUTH_PASSWORD_HASH: ${AUTH_PASSWORD_HASH:-}
       JWT_SECRET: ${JWT_SECRET}
-    volumes:
-      - pdf_data:/app/pdfs
     depends_on:
       mysql:
         condition: service_healthy
 
   frontend:
     build:
-      context: ./src/main/frontend
+      context: ./frontend
       dockerfile: Dockerfile
     container_name: react-app
     restart: always
-    # Kein öffentlicher Port mehr — Zugriff nur über den website-Proxy unter /admin/
+    # Kein öffentlicher Port — Zugriff nur über den website-Proxy unter /admin/
     expose:
       - "80"
 
@@ -62,11 +60,10 @@ services:
     container_name: website
     restart: always
     ports:
-      - "0.0.0.0:80:80"
+      - "127.0.0.1:8081:80"
     depends_on:
       - springboot
       - frontend
 
 volumes:
   mysql_data:
-  pdf_data:
