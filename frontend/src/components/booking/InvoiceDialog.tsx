@@ -18,7 +18,7 @@ import {
   type EditorItem,
 } from '@/components/documents/ItemsEditor'
 import { createInvoice, getBooking, invoiceFormDefaults, invoicePreview } from '@/lib/endpoints'
-import { openPdf, ApiError } from '@/lib/api'
+import { openPdf, downloadFile, ApiError } from '@/lib/api'
 import { computeInvoiceDueDate, isoLocalDate } from '@/lib/format'
 
 export function InvoiceDialog({
@@ -36,6 +36,7 @@ export function InvoiceDialog({
   const [serviceDate, setServiceDate] = useState('')
   const [dueDate, setDueDate] = useState(computeInvoiceDueDate(isoLocalDate()))
   const [customerNumber, setCustomerNumber] = useState('')
+  const [createEInvoice, setCreateEInvoice] = useState(false)
   const [items, setItems] = useState<EditorItem[]>([])
   const [busy, setBusy] = useState(false)
 
@@ -74,12 +75,14 @@ export function InvoiceDialog({
     setServiceDate(booking.startDate)
     setDueDate(computeInvoiceDueDate(today))
     setCustomerNumber(String(formDefaults.customerNumber))
+    setCreateEInvoice(false)
     setStep(1)
   }, [open, booking, formDefaults])
 
   const reset = () => {
     setStep(1)
     setItems([])
+    setCreateEInvoice(false)
   }
 
   const onInvoiceDateChange = (value: string) => {
@@ -88,6 +91,13 @@ export function InvoiceDialog({
       setDueDate(computeInvoiceDueDate(value))
     }
   }
+
+  const clientAddressComplete =
+    !!booking?.client.name &&
+    !!booking.client.street?.trim() &&
+    !!booking.client.houseNumber?.trim() &&
+    !!booking.client.postalCode?.trim() &&
+    !!booking.client.city?.trim()
 
   const create = async () => {
     const parsedCustomerNumber = Number(customerNumber)
@@ -103,11 +113,15 @@ export function InvoiceDialog({
         serviceDate,
         dueDate,
         items: toDocumentItems(items),
+        createEInvoice,
       })
       toast.success(`Rechnung ${invoice.invoiceNumber} erstellt.`)
       queryClient.invalidateQueries({ queryKey: ['bookings'] })
       queryClient.invalidateQueries({ queryKey: ['booking', bookingId] })
       await openPdf(`/api/bookings/${bookingId}/invoice/pdf`, 'GET')
+      if (invoice.einvoice) {
+        await downloadFile(`/api/bookings/${bookingId}/invoice/xml`, 'Rechnung.xml')
+      }
       onOpenChange(false)
       reset()
     } catch (err) {
@@ -172,6 +186,29 @@ export function InvoiceDialog({
                 onChange={(e) => setDueDate(e.target.value)}
               />
             </div>
+            <div className="space-y-2 rounded-md border p-3">
+              <label className="flex cursor-pointer items-start gap-2">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  checked={createEInvoice}
+                  onChange={(e) => setCreateEInvoice(e.target.checked)}
+                />
+                <span>
+                  <span className="font-medium">e-Rechnung erstellen</span>
+                  <span className="mt-0.5 block text-sm text-muted-foreground">
+                    Für B2B-Kunden: ZUGFeRD-PDF mit eingebetteter XRechnung-XML (Profil EN16931).
+                  </span>
+                </span>
+              </label>
+              {createEInvoice && (
+                <p className={`text-sm ${clientAddressComplete ? 'text-muted-foreground' : 'text-destructive'}`}>
+                  {clientAddressComplete
+                    ? 'Vollständige Kundenadresse (Straße, Hausnr., PLZ, Ort) wird für die E-Rechnung verwendet.'
+                    : 'Für E-Rechnungen fehlt die vollständige Kundenadresse (Straße, Hausnr., PLZ, Ort). Bitte zuerst in der Buchung ergänzen.'}
+                </p>
+              )}
+            </div>
           </div>
         ) : (
           <ItemsEditor items={items} onChange={setItems} />
@@ -179,14 +216,22 @@ export function InvoiceDialog({
 
         <DialogFooter>
           {step === 1 ? (
-            <Button onClick={() => setStep(2)}>Weiter</Button>
+            <Button
+              onClick={() => setStep(2)}
+              disabled={createEInvoice && !clientAddressComplete}
+            >
+              Weiter
+            </Button>
           ) : (
             <>
               <Button variant="outline" onClick={() => setStep(1)} disabled={busy}>
                 Zurück
               </Button>
-              <Button onClick={create} disabled={busy || items.length === 0}>
-                {busy ? 'Erstelle…' : 'Rechnung erstellen'}
+              <Button
+                onClick={create}
+                disabled={busy || items.length === 0 || (createEInvoice && !clientAddressComplete)}
+              >
+                {busy ? 'Erstelle…' : createEInvoice ? 'E-Rechnung erstellen' : 'Rechnung erstellen'}
               </Button>
             </>
           )}

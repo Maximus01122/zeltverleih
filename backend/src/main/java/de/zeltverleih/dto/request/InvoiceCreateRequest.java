@@ -13,5 +13,6 @@ public record InvoiceCreateRequest(
         @NotNull LocalDate invoiceDate,
         @NotNull LocalDate serviceDate,
         @NotNull LocalDate dueDate,
-        @NotEmpty List<@Valid ItemLineRequest> items
+        @NotEmpty List<@Valid ItemLineRequest> items,
+        boolean createEInvoice
 ) {}

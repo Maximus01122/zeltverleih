@@ -39,19 +39,25 @@ public class InvoiceService {
     private final DocumentCalculationService calculationService;
     private final DocumentPdfGenerator pdfGenerator;
     private final SequenceService sequenceService;
+    private final EInvoiceService eInvoiceService;
+    private final ZugferdInvoiceMapper zugferdInvoiceMapper;
 
     public InvoiceService(InvoiceRepository invoiceRepository,
                           BookingRepository bookingRepository,
                           ClientService clientService,
                           DocumentCalculationService calculationService,
                           DocumentPdfGenerator pdfGenerator,
-                          SequenceService sequenceService) {
+                          SequenceService sequenceService,
+                          EInvoiceService eInvoiceService,
+                          ZugferdInvoiceMapper zugferdInvoiceMapper) {
         this.invoiceRepository = invoiceRepository;
         this.bookingRepository = bookingRepository;
         this.clientService = clientService;
         this.calculationService = calculationService;
         this.pdfGenerator = pdfGenerator;
         this.sequenceService = sequenceService;
+        this.eInvoiceService = eInvoiceService;
+        this.zugferdInvoiceMapper = zugferdInvoiceMapper;
     }
 
     @Transactional(readOnly = true)
@@ -91,6 +97,10 @@ public class InvoiceService {
             throw new ConflictException("Booking %d already has an invoice".formatted(bookingId));
         }
 
+        if (request.createEInvoice()) {
+            zugferdInvoiceMapper.validateBuyerForEInvoice(booking.getClient());
+        }
+
         clientService.updateCustomerNumber(booking.getClient(), request.customerNumber());
 
         String invoiceNumber = nextInvoiceNumber(request);
@@ -100,6 +110,22 @@ public class InvoiceService {
         List<ItemWithPosition> items = withPositions(request);
         items.forEach(i -> invoice.addItem(new InvoiceItem(
                 i.line().description(), i.line().quantity(), i.line().unitPrice(), i.position())));
+
+        List<DocumentItemView> itemViews = items.stream()
+                .map(i -> calculationService.item(
+                        i.line().description(), i.line().quantity(), i.line().unitPrice()))
+                .toList();
+        Totals totals = calculationService.totals(itemViews);
+
+        if (request.createEInvoice()) {
+            byte[] visualPdfA3 = pdfGenerator.invoice(booking.getClient(), invoiceNumber,
+                    request.invoiceDate(), request.serviceDate(), request.dueDate(),
+                    request.customerNumber(), itemViews, totals);
+            EInvoiceService.EInvoiceResult eInvoice = eInvoiceService.create(
+                    invoice, booking.getClient(), itemViews, visualPdfA3);
+            invoice.setEinvoice(true);
+            invoice.setEinvoiceXml(eInvoice.xml());
+        }
 
         booking.setStatus(BookingStatus.PAYMENT_PENDING);
 
@@ -122,8 +148,23 @@ public class InvoiceService {
         byte[] content = pdfGenerator.invoice(booking.getClient(), invoice.getInvoiceNumber(),
                 invoice.getInvoiceDate(), invoice.getServiceDate(), invoice.getDueDate(),
                 booking.getClient().getCustomerNumber(), items, totals);
+
+        if (invoice.isEinvoice() && invoice.getEinvoiceXml() != null) {
+            content = eInvoiceService.embedStoredXml(content, invoice.getEinvoiceXml());
+        }
+
         String filename = DocumentFilenameUtil.pdfFilename("Rechnung", booking.getClient().getName());
         return new PdfDocument(filename, content);
+    }
+
+    @Transactional(readOnly = true)
+    public PdfDocument xml(Long bookingId) {
+        Invoice invoice = loadByBooking(bookingId);
+        if (!invoice.isEinvoice() || invoice.getEinvoiceXml() == null) {
+            throw new ResourceNotFoundException("No e-invoice XML exists for booking %d".formatted(bookingId));
+        }
+        String filename = DocumentFilenameUtil.xmlFilename("Rechnung", invoice.getBooking().getClient().getName());
+        return new PdfDocument(filename, invoice.getEinvoiceXml());
     }
 
     /** Format: year-month of the invoice date + globally incrementing counter, e.g. 2026-01-1003. */
@@ -158,7 +199,8 @@ public class InvoiceService {
                 invoice.getServiceDate(),
                 invoice.getDueDate(),
                 items,
-                totals.net(), totals.vat(), totals.gross()
+                totals.net(), totals.vat(), totals.gross(),
+                invoice.isEinvoice()
         );
     }
 

@@ -14,5 +14,6 @@ public record InvoiceResponse(
         List<DocumentItemView> items,
         BigDecimal netTotal,
         BigDecimal vatTotal,
-        BigDecimal grossTotal
+        BigDecimal grossTotal,
+        boolean einvoice
 ) {}

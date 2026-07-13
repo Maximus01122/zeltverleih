@@ -213,6 +213,7 @@ export interface Invoice {
   netTotal: number
   vatTotal: number
   grossTotal: number
+  einvoice: boolean
 }
 
 export interface InvoiceCreateRequest {
@@ -221,6 +222,7 @@ export interface InvoiceCreateRequest {
   serviceDate: string
   dueDate: string
   items: DocumentItem[]
+  createEInvoice?: boolean
 }
 
 export interface InvoiceFormDefaults {

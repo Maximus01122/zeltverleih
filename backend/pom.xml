@@ -99,6 +99,30 @@
             <version>2.0.3</version>
         </dependency>
 
+        <!-- PDF/A-3 conversion -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>xmpbox</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+
+        <!-- ZUGFeRD / XRechnung (EN 16931) -->
+        <dependency>
+            <groupId>org.mustangproject</groupId>
+            <artifactId>library</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mustangproject</groupId>
+            <artifactId>validator</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+
 
         <!-- Test -->
         <dependency>

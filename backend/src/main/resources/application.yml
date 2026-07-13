@@ -40,6 +40,12 @@ app:
     username: ${AUTH_USERNAME:admin}
     password-hash: ${AUTH_PASSWORD_HASH:}
     password: ${AUTH_PASSWORD:change-me}
+  einvoice:
+    profile: EN16931
+    zugferd-version: 2
+    seller-country: DE
+    buyer-country-default: DE
+    unit-code: C62
   rate-limit:
     max-attempts: 5
     window-minutes: 15

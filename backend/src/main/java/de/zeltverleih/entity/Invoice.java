@@ -37,6 +37,14 @@ public class Invoice {
     @OrderBy("position ASC")
     private List<InvoiceItem> items = new ArrayList<>();
 
+    @Column(nullable = false)
+    private boolean einvoice = false;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "einvoice_xml")
+    private byte[] einvoiceXml;
+
     protected Invoice() {}
 
     public Invoice(Booking booking, String invoiceNumber,
@@ -71,4 +79,10 @@ public class Invoice {
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
     public List<InvoiceItem> getItems() { return items; }
+
+    public boolean isEinvoice() { return einvoice; }
+    public void setEinvoice(boolean einvoice) { this.einvoice = einvoice; }
+
+    public byte[] getEinvoiceXml() { return einvoiceXml; }
+    public void setEinvoiceXml(byte[] einvoiceXml) { this.einvoiceXml = einvoiceXml; }
 }

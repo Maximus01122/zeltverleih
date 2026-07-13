@@ -9,6 +9,11 @@ public final class DocumentFilenameUtil {
         return "%s %s.pdf".formatted(documentType, sanitizeClientName(clientName));
     }
 
+    /** e.g. "Rechnung Max Mustermann.xml" */
+    public static String xmlFilename(String documentType, String clientName) {
+        return "%s %s.xml".formatted(documentType, sanitizeClientName(clientName));
+    }
+
     private static String sanitizeClientName(String clientName) {
         if (clientName == null || clientName.isBlank()) {
             return "Unbekannt";

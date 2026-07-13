@@ -103,3 +103,30 @@ export async function openPdf(path: string, method: 'GET' | 'POST' = 'GET', body
   window.open(url, '_blank')
   setTimeout(() => URL.revokeObjectURL(url), 60_000)
 }
+
+function parseDownloadFilename(disposition: string | null): string | null {
+  if (!disposition) return null
+  const utf8 = disposition.match(/filename\*=UTF-8''([^;]+)/i)
+  if (utf8) return decodeURIComponent(utf8[1])
+  const ascii = disposition.match(/filename="?([^";]+)"?/i)
+  return ascii?.[1] ?? null
+}
+
+/** Downloads a file (e.g. XRechnung XML) and triggers a browser download. */
+export async function downloadFile(path: string, fallbackFilename: string) {
+  const headers = new Headers()
+  const token = getToken()
+  if (token) headers.set('Authorization', `Bearer ${token}`)
+
+  const res = await fetch(path, { headers })
+  if (!res.ok) throw new ApiError(res.status, await extractError(res))
+
+  const filename = parseDownloadFilename(res.headers.get('Content-Disposition')) ?? fallbackFilename
+  const blob = await res.blob()
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(url), 60_000)
+}

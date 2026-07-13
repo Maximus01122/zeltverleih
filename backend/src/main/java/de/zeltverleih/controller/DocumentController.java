@@ -6,6 +6,7 @@ import de.zeltverleih.dto.request.OfferPdfRequest;
 import de.zeltverleih.dto.response.DocumentPreviewResponse;
 import de.zeltverleih.dto.response.InvoiceFormDefaultsResponse;
 import de.zeltverleih.dto.response.InvoiceResponse;
+import de.zeltverleih.dto.response.PdfDocument;
 import de.zeltverleih.service.InvoiceService;
 import de.zeltverleih.service.OfferService;
 import jakarta.validation.Valid;
@@ -73,8 +74,18 @@ public class DocumentController {
 
     @GetMapping("/invoice/pdf")
     public ResponseEntity<byte[]> invoicePdf(@PathVariable Long bookingId) {
-        InvoiceService.PdfDocument pdf = invoiceService.pdf(bookingId);
+        PdfDocument pdf = invoiceService.pdf(bookingId);
         return pdfResponse(pdf.filename(), pdf.content());
+    }
+
+    @GetMapping("/invoice/xml")
+    public ResponseEntity<byte[]> invoiceXml(@PathVariable Long bookingId) {
+        PdfDocument xml = invoiceService.xml(bookingId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_XML);
+        headers.setContentDisposition(
+                ContentDisposition.attachment().filename(xml.filename(), StandardCharsets.UTF_8).build());
+        return ResponseEntity.ok().headers(headers).body(xml.content());
     }
 
     private ResponseEntity<byte[]> pdfResponse(String filename, byte[] content) {

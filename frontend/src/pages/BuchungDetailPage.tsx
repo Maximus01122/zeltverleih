@@ -19,7 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { getBooking, listServices } from '@/lib/endpoints'
+import { getBooking, getInvoice, listServices } from '@/lib/endpoints'
+import { openPdf, downloadFile } from '@/lib/api'
 import { formatCurrency, formatDate } from '@/lib/format'
 
 function Field({ label, value }: { label: string; value: string }) {
@@ -44,6 +45,15 @@ export function BuchungDetailPage() {
   const { data: services } = useQuery({
     queryKey: ['services'],
     queryFn: listServices,
+  })
+
+  const hasInvoice =
+    booking?.status === 'PAYMENT_PENDING' || booking?.status === 'COMPLETED'
+
+  const { data: invoice } = useQuery({
+    queryKey: ['invoice', bookingId],
+    queryFn: () => getInvoice(bookingId),
+    enabled: hasInvoice,
   })
 
   const serviceLabel = (name: string) =>
@@ -174,6 +184,32 @@ export function BuchungDetailPage() {
             </p>
           </CardContent>
         </Card>
+
+        {invoice ? (
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Rechnung {invoice.invoiceNumber}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              <Button
+                variant="outline"
+                onClick={() => openPdf(`/api/bookings/${bookingId}/invoice/pdf`, 'GET')}
+              >
+                PDF öffnen
+              </Button>
+              {invoice.einvoice ? (
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    downloadFile(`/api/bookings/${bookingId}/invoice/xml`, 'Rechnung.xml')
+                  }
+                >
+                  XRechnung (XML) herunterladen
+                </Button>
+              ) : null}
+            </CardContent>
+          </Card>
+        ) : null}
       </div>
     </div>
   )

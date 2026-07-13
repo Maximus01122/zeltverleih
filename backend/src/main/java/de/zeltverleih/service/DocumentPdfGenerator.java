@@ -8,6 +8,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
@@ -48,21 +49,30 @@ public class DocumentPdfGenerator {
 
     private static final Color HEADER_BLUE = new Color(31, 55, 92);
 
-    private static final Font FONT_NORMAL = new Font(Font.HELVETICA, 10);
-    private static final Font FONT_BOLD = new Font(Font.HELVETICA, 10, Font.BOLD);
-    private static final Font FONT_TITLE = new Font(Font.HELVETICA, 16, Font.BOLD);
-    private static final Font FONT_SMALL = new Font(Font.HELVETICA, 8);
-    private static final Font FONT_TABLE_HEADER = new Font(Font.HELVETICA, 10, Font.BOLD, Color.WHITE);
-
     private static final float MARGIN = 56;
     private static final float FOOTER_HEIGHT = 84;
 
+    private final Font fontNormal;
+    private final Font fontBold;
+    private final Font fontTitle;
+    private final Font fontSmall;
+    private final Font fontTableHeader;
+
     private final CompanyProperties company;
     private final byte[] logo;
+    private final PdfA3Converter pdfA3Converter;
 
-    public DocumentPdfGenerator(CompanyProperties company) {
+    public DocumentPdfGenerator(CompanyProperties company, PdfA3Converter pdfA3Converter) {
         this.company = company;
         this.logo = loadLogo();
+        this.pdfA3Converter = pdfA3Converter;
+        BaseFont regular = loadEmbeddedFont("/pdf/Arial.ttf");
+        BaseFont bold = loadEmbeddedFont("/pdf/Arial-Bold.ttf");
+        this.fontNormal = new Font(regular, 10);
+        this.fontBold = new Font(bold, 10);
+        this.fontTitle = new Font(bold, 16);
+        this.fontSmall = new Font(regular, 8);
+        this.fontTableHeader = new Font(bold, 10, Font.NORMAL, Color.WHITE);
     }
 
     public byte[] invoice(Client client, String invoiceNumber, LocalDate invoiceDate, LocalDate serviceDate,
@@ -72,9 +82,9 @@ public class DocumentPdfGenerator {
         meta.put("Leistungsdatum:", DATE.format(serviceDate));
         meta.put("Kundennummer:", String.valueOf(customerNumber));
 
-        return render("Rechnung", "Rechnung Nr.: " + invoiceNumber,
+        return pdfA3Converter.toPdfA3(render("Rechnung", "Rechnung Nr.: " + invoiceNumber,
                 "Bitte bei Zahlungen und Schriftverkehr angeben!", client, meta, items, totals,
-                "Bitte begleichen Sie den angegebenen Betrag bis zum " + DATE.format(dueDate));
+                "Bitte begleichen Sie den angegebenen Betrag bis zum " + DATE.format(dueDate)));
     }
 
     public byte[] offer(Client client, LocalDate offerDate, LocalDate validUntil,
@@ -99,7 +109,7 @@ public class DocumentPdfGenerator {
             addTitle(doc, title, numberLine, numberHint);
             addItemsTable(doc, items, totals);
 
-            Paragraph note = new Paragraph(closingNote, FONT_NORMAL);
+            Paragraph note = new Paragraph(closingNote, fontNormal);
             note.setSpacingBefore(24);
             doc.add(note);
 
@@ -132,12 +142,12 @@ public class DocumentPdfGenerator {
         header.addCell(logoCell);
 
         Phrase sender = new Phrase();
-        sender.add(new Phrase(company.name() + "\n", FONT_BOLD));
+        sender.add(new Phrase(company.name() + "\n", fontBold));
         sender.add(new Phrase(company.owner() + "\n" + company.street() + "\n"
                 + company.postalCode() + " " + company.city() + "\n\n"
                 + "Tel.: " + company.phone() + "\n"
                 + "E-Mail: " + company.email() + "\n"
-                + "Internet: " + company.website(), FONT_NORMAL));
+                + "Internet: " + company.website(), fontNormal));
         Paragraph senderParagraph = new Paragraph(sender);
         senderParagraph.setAlignment(Element.ALIGN_RIGHT);
         PdfPCell senderCell = new PdfPCell();
@@ -157,7 +167,7 @@ public class DocumentPdfGenerator {
         String recipient = client.getName() + "\n"
                 + client.getAddress().getStreet() + " " + client.getAddress().getHouseNumber() + "\n"
                 + client.getAddress().getPostalCode() + " " + client.getAddress().getCity();
-        PdfPCell recipientCell = new PdfPCell(new Phrase(recipient, FONT_NORMAL));
+        PdfPCell recipientCell = new PdfPCell(new Phrase(recipient, fontNormal));
         recipientCell.setBorder(Rectangle.NO_BORDER);
         recipientCell.setPadding(2);
         table.addCell(recipientCell);
@@ -169,8 +179,8 @@ public class DocumentPdfGenerator {
             PdfPTable metaTable = new PdfPTable(new float[]{55, 45});
             metaTable.setWidthPercentage(100);
             meta.forEach((label, value) -> {
-                metaTable.addCell(borderless(new Phrase(label, FONT_NORMAL)));
-                PdfPCell valueCell = borderless(new Phrase(value, FONT_NORMAL));
+                metaTable.addCell(borderless(new Phrase(label, fontNormal)));
+                PdfPCell valueCell = borderless(new Phrase(value, fontNormal));
                 valueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                 metaTable.addCell(valueCell);
             });
@@ -183,15 +193,15 @@ public class DocumentPdfGenerator {
     }
 
     private void addTitle(Document doc, String title, String numberLine, String numberHint) {
-        Paragraph titleParagraph = new Paragraph(title, FONT_TITLE);
+        Paragraph titleParagraph = new Paragraph(title, fontTitle);
         titleParagraph.setSpacingBefore(24);
         doc.add(titleParagraph);
 
         if (numberLine != null) {
-            doc.add(new Paragraph(numberLine, FONT_BOLD));
+            doc.add(new Paragraph(numberLine, fontBold));
         }
         if (numberHint != null) {
-            doc.add(new Paragraph(numberHint, FONT_SMALL));
+            doc.add(new Paragraph(numberHint, fontSmall));
         }
     }
 
@@ -210,9 +220,9 @@ public class DocumentPdfGenerator {
             table.addCell(bodyCell(MONEY.format(item.lineTotal()), Element.ALIGN_RIGHT));
         }
 
-        addTotalRow(table, "Summe netto", totals.net(), FONT_NORMAL);
-        addTotalRow(table, "Mehrwertsteuer 19%", totals.vat(), FONT_NORMAL);
-        addTotalRow(table, "Summe brutto", totals.gross(), FONT_BOLD);
+        addTotalRow(table, "Summe netto", totals.net(), fontNormal);
+        addTotalRow(table, "Mehrwertsteuer 19%", totals.vat(), fontNormal);
+        addTotalRow(table, "Summe brutto", totals.gross(), fontBold);
 
         doc.add(table);
     }
@@ -245,6 +255,18 @@ public class DocumentPdfGenerator {
         }
     }
 
+    private static BaseFont loadEmbeddedFont(String resource) {
+        try (InputStream in = DocumentPdfGenerator.class.getResourceAsStream(resource)) {
+            if (in == null) {
+                throw new IllegalStateException("Font not found: " + resource);
+            }
+            byte[] bytes = in.readAllBytes();
+            return BaseFont.createFont(resource, BaseFont.WINANSI, BaseFont.EMBEDDED, true, bytes, null);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to load font " + resource, e);
+        }
+    }
+
     private PdfPCell borderless(Phrase phrase) {
         PdfPCell cell = new PdfPCell(phrase);
         cell.setBorder(Rectangle.NO_BORDER);
@@ -253,14 +275,14 @@ public class DocumentPdfGenerator {
     }
 
     private PdfPCell headerCell(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text, FONT_TABLE_HEADER));
+        PdfPCell cell = new PdfPCell(new Phrase(text, fontTableHeader));
         cell.setBackgroundColor(HEADER_BLUE);
         cell.setHorizontalAlignment(alignment);
         return gridCell(cell);
     }
 
     private PdfPCell bodyCell(String text, int alignment) {
-        PdfPCell cell = new PdfPCell(new Phrase(text, FONT_NORMAL));
+        PdfPCell cell = new PdfPCell(new Phrase(text, fontNormal));
         cell.setHorizontalAlignment(alignment);
         return gridCell(cell);
     }
@@ -283,7 +305,7 @@ public class DocumentPdfGenerator {
     }
 
     private PdfPCell footerCell(String text) {
-        PdfPCell cell = new PdfPCell(new Phrase(text, FONT_SMALL));
+        PdfPCell cell = new PdfPCell(new Phrase(text, fontSmall));
         cell.setBorder(Rectangle.TOP);
         cell.setPadding(4);
         return cell;
