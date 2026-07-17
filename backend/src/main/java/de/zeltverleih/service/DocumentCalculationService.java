@@ -3,9 +3,11 @@ package de.zeltverleih.service;
 import de.zeltverleih.dto.response.DocumentItemView;
 import de.zeltverleih.entity.Booking;
 import de.zeltverleih.entity.BookingMaterial;
+import de.zeltverleih.entity.DeliveryFee;
 import de.zeltverleih.entity.MaterialPrice;
 import de.zeltverleih.enums.MaterialCategory;
 import de.zeltverleih.enums.SetupService;
+import de.zeltverleih.repository.DeliveryFeeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +35,12 @@ public class DocumentCalculationService {
     );
 
     private final BigDecimal vatRate;
+    private final DeliveryFeeRepository deliveryFeeRepository;
 
-    public DocumentCalculationService(@Value("${app.vat-rate}") BigDecimal vatRate) {
+    public DocumentCalculationService(@Value("${app.vat-rate}") BigDecimal vatRate,
+                                      DeliveryFeeRepository deliveryFeeRepository) {
         this.vatRate = vatRate;
+        this.deliveryFeeRepository = deliveryFeeRepository;
     }
 
     public record Totals(BigDecimal net, BigDecimal vat, BigDecimal gross) {}
@@ -120,6 +125,7 @@ public class DocumentCalculationService {
         return switch (service) {
             case LIEFERUNG -> orZero(deliveryCosts);
             case SELBSTABHOLUNG -> booking.getLoadingFee() != null ? booking.getLoadingFee().getPrice() : BigDecimal.ZERO;
+            case AUFBAU_ZELT -> tentAssemblyAmount(booking);
             default -> assemblySum(booking, service);
         };
     }
@@ -129,6 +135,25 @@ public class DocumentCalculationService {
             return "Ladepauschale (%s)".formatted(booking.getLoadingFee().getName());
         }
         return service.getLabel();
+    }
+
+    /**
+     * Tent assembly: Σ(assemblyPrice × qty) minus the standard delivery fee
+     * from the Lieferpauschale table (historically 140 €). Floored at 0.
+     */
+    private BigDecimal tentAssemblyAmount(Booking booking) {
+        BigDecimal sum = assemblySum(booking, SetupService.AUFBAU_ZELT);
+        BigDecimal deducted = sum.subtract(standardDeliveryFee());
+        return deducted.signum() < 0 ? BigDecimal.ZERO : deducted;
+    }
+
+    /** First Lieferpauschale row; 0 if the table is empty. */
+    private BigDecimal standardDeliveryFee() {
+        return deliveryFeeRepository.findAll().stream()
+                .findFirst()
+                .map(DeliveryFee::getPrice)
+                .map(DocumentCalculationService::orZero)
+                .orElse(BigDecimal.ZERO);
     }
 
     /**

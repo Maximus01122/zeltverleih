@@ -41,6 +41,8 @@ export interface ClientView {
   city: string | null
 }
 
+export type ClientSuggestion = ClientView
+
 export interface MaterialLineView {
   materialId: number
   materialName: string

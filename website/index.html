@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/site.css?v=24" />
+  <link rel="stylesheet" href="/css/site.css?v=28" />
   <link rel="stylesheet" href="/css/themes/blau1.css?v=10" />
 </head>
 <body>
@@ -187,7 +187,7 @@
     <div class="tents__header reveal">
       <span class="eyebrow">Unsere Zelte</span>
       <h2>Das richtige Zelt für Ihre Feier</h2>
-      <p>Alle Zelte in Festzeltqualität - 100 % wasserdicht, feuerhemmend, PVC-Planen. Wählen Sie Ihre Größe:</p>
+      <p class="tents__intro"><span class="tents__intro-lead">Alle Zelte in Festzeltqualität - 100 % wasserdicht, feuerhemmend, PVC&#8209;Planen.</span><br>Wählen Sie Ihre Größe:</p>
     </div>
 
     <div class="tent-row reveal" id="tentRow"></div>
@@ -229,8 +229,8 @@
             <img class="acc-slide active" src="images/tisch/garnitur.png" alt="Biertischgarnitur" loading="lazy" />
             <img class="acc-slide" src="images/tisch/tisch_stuhl.png" alt="Tisch und Stühle" loading="lazy" />
             <img class="acc-slide" src="images/tisch/stehtisch.png" alt="Stehtisch" loading="lazy" />
-            <img class="acc-slide" src="images/tisch/fuchs%20bild%204.jpg" alt="Tische und Stühle bei einer Veranstaltung" loading="lazy" />
-            <img class="acc-slide" src="images/tisch/fuchs%20bild%208.jpg" alt="Gedeckter Tisch unter dem Zelt" loading="lazy" />
+            <img class="acc-slide" src="images/tisch/fuchs%20bild%204.jpg" alt="Biertischgarnitur mit Tischdecke und Polstern" loading="lazy" />
+            <img class="acc-slide" src="images/tisch/fuchs%20bild%208.jpg" alt="Tisch und Stühle mit Tischdecke und Polstern" loading="lazy" />
           </div>
         </div>
         <div class="acc-card__body acc-card__body--link" role="link" tabindex="0">
@@ -241,8 +241,8 @@
       <div class="acc-card reveal" data-price-cat="licht" style="transition-delay:.07s">
         <div class="acc-card__img" role="button" tabindex="0" aria-label="Bilder vergrößern">
           <div class="acc-slideshow">
-            <img class="acc-slide active" src="images/deko/lichterkette.png" alt="Lichterketten-Dekoration" loading="lazy" />
-            <img class="acc-slide" src="images/deko/thumb_29757274.jpg" alt="Event-Dekoration" loading="lazy" />
+            <img class="acc-slide active" src="images/deko/lichterkette.png" alt="Lichterkette" loading="lazy" />
+            <img class="acc-slide" src="images/deko/thumb_29757274.jpg" alt="Sonnenschirm" loading="lazy" />
           </div>
         </div>
         <div class="acc-card__body acc-card__body--link" role="link" tabindex="0">
@@ -253,13 +253,13 @@
       <div class="acc-card reveal" data-price-cat="waerme" style="transition-delay:.14s">
         <div class="acc-card__img" role="button" tabindex="0" aria-label="Bilder vergrößern">
           <div class="acc-slideshow">
-            <img class="acc-slide active" src="images/kaltundwarm/thumb_29757275.JPG" alt="Klimatisierung unter dem Zelt" loading="lazy" />
-            <img class="acc-slide" src="images/kaltundwarm/Klimagerät.jpg" alt="Klimagerät für heiße Sommertage" loading="lazy" />
+            <img class="acc-slide active" src="images/kaltundwarm/thumb_29757275.JPG" alt="Heizlüfter" loading="lazy" />
+            <img class="acc-slide" src="images/kaltundwarm/Klimagerät.jpg" alt="Klimagerät" loading="lazy" />
           </div>
         </div>
         <div class="acc-card__body acc-card__body--link" role="link" tabindex="0">
           <h3>Wärme &amp; Kälte</h3>
-          <p>Heizlüfter für Herbst- und Winterfeiern, Klimagerät für heiße Sommertage. Immer die richtige Temperatur unter dem Zelt.</p>
+          <p>Heizlüfter bei Herbst- und Winterfeiern und Klimagerät an heißen Sommertagen sorgen immer für die richtige Temperatur unter dem Zelt.</p>
         </div>
       </div>
       <div class="acc-card reveal" data-price-cat="aktivitaeten" style="transition-delay:.21s">
@@ -268,8 +268,8 @@
             <img class="acc-slide active" src="images/aktivitaeten/kicker.png" alt="Tischkicker" loading="lazy" />
             <img class="acc-slide" src="images/aktivitaeten/tischtennis.png" alt="Tischtennis" loading="lazy" />
             <img class="acc-slide" src="images/aktivitaeten/thumb_29757266.JPG" alt="Kegeln" loading="lazy" />
-            <img class="acc-slide" src="images/aktivitaeten/thumb_29757267.JPG" alt="Hufeisenwerfen" loading="lazy" />
-            <img class="acc-slide" src="images/aktivitaeten/thumb_29757268.JPG" alt="Riesen-Jenga" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/thumb_29757267.JPG" alt="Riesen-Jenga" loading="lazy" />
+            <img class="acc-slide" src="images/aktivitaeten/thumb_29757268.JPG" alt="Hufeisenwerfen" loading="lazy" />
           </div>
         </div>
         <div class="acc-card__body acc-card__body--link" role="link" tabindex="0">
@@ -295,7 +295,8 @@
     <div id="priceListRoot" class="reveal"></div>
     <p class="price-footnote reveal">
       * Kalendertag: 09:00 - 19:00 Uhr<br>
-      ** Wochenende: Freitag 16:00 Uhr - Montag 09:00 Uhr
+      ** Wochenende: Freitag 16:00 Uhr - Montag 09:00 Uhr<br>
+      *** Lieferung und Aufbau (soweit angeboten)
     </p>
   </div>
 </section>
@@ -328,45 +329,6 @@
     </div>
   </div>
 </section>
-
-
-<!-- ═══════════════════════════════════════════════════════
-     BEWERTUNGEN
-═══════════════════════════════════════════════════════ -->
-<!-- <section id="bewertungen">
-  <div class="container">
-    <div class="bew__header reveal">
-      <span class="eyebrow">Was unsere Kunden sagen</span>
-      <h2>Echte Erfahrungen</h2>
-      <p>Mundpropaganda ist unser wichtigstes Marketing - hier lesen Sie, warum Menschen wiederkommen.</p>
-    </div>
-    <div class="bew__grid">
-      <article class="bew-card reveal">
-        <div class="bew-card__stars">★★★★★</div>
-        <p class="bew-card__text">„Das Team war pünktlich auf die Minute, das Zelt makellos sauber. Bei der Jugendweihe unserer Tochter lief alles perfekt - ich musste mich um nichts kümmern."</p>
-        <div class="bew-card__name">Sandra M.</div>
-        <div class="bew-card__meta">Jugendweihe · Erfurt, April 2024</div>
-      </article>
-      <article class="bew-card reveal" style="transition-delay:.08s">
-        <div class="bew-card__stars">★★★★★</div>
-        <p class="bew-card__text">„Obwohl es den ganzen Tag geregnet hat, war unsere Hochzeitsfeier ein absoluter Traum. Die Seitenwände waren schnell montiert und kein Tropfen ist reingekommen."</p>
-        <div class="bew-card__name">Familie Richter</div>
-        <div class="bew-card__meta">Hochzeit · Weimar, Juni 2024</div>
-      </article>
-      <article class="bew-card reveal" style="transition-delay:.16s">
-        <div class="bew-card__stars">★★★★★</div>
-        <p class="bew-card__text">„Zweites Jahr in Folge für unsere Firmenfeier. Ludwig denkt mit, macht Vorschläge und alles kommt genau so, wie besprochen. Absolut empfehlenswert."</p>
-        <div class="bew-card__name">Thomas K., Geschäftsführer</div>
-        <div class="bew-card__meta">Firmenfeier · Gotha, September 2024</div>
-      </article>
-    </div>
-    <div class="bew__cta">
-      <a href="https://g.page/r/zeltverleih-erfurt/review" target="_blank" rel="noopener" class="btn btn--green">
-        Alle Google-Bewertungen lesen →
-      </a>
-    </div>
-  </div>
-</section>-->
 
 
 <!-- ═══════════════════════════════════════════════════════
@@ -676,7 +638,6 @@
           <li><a href="#tents">Zelte</a></li>
           <li><a href="#preisliste">Preisliste</a></li>
           <li><a href="#service">Service</a></li>
-          <li><a href="#bewertungen">Bewertungen</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
@@ -704,17 +665,14 @@
 <!-- ═══════════════════════════════════════════════════════
      JAVASCRIPT
 ═══════════════════════════════════════════════════════ -->
-<script src="/js/products.js?v=8"></script>
-<script src="/js/cart.js?v=7"></script>
+<script src="/js/products.js?v=12"></script>
+<script src="/js/cart.js?v=12"></script>
 <script>
 /* ── Dynamic years since founding (2017) ───────────────── */
 (function () {
   const el = document.getElementById('years-since-start');
   if (el) el.textContent = 'Seit über ' + (new Date().getFullYear() - 2017) + ' Jahren';
 })();
-
-/* ── Tent data from products.js ─────────────────────────── */
-const tents = window.ZV_TENTS;
 
 /* ── Nav hamburger ──────────────────────────────────────── */
 const hamburger  = document.getElementById('hamburger');
@@ -728,13 +686,15 @@ function closeMenu() {
   hamburger.classList.remove('open');
 }
 
-/* ── Tent selector ──────────────────────────────────────── */
+/* ── Tent selector (after catalog load) ─────────────────── */
 const row    = document.getElementById('tentRow');
 const detail = document.getElementById('tentDetail');
 let selectedIdx = 0;
 
 function buildTentCards() {
+  const tents = window.ZV_TENTS || [];
   row.innerHTML = '';
+  if (!tents.length) return;
   tents.forEach((t, i) => {
     const c = document.createElement('div');
     c.className = 'tent-card' + (i === selectedIdx ? ' active' : '');
@@ -747,6 +707,8 @@ function buildTentCards() {
 }
 
 function selectTent(idx) {
+  const tents = window.ZV_TENTS || [];
+  if (!tents[idx]) return;
   selectedIdx = idx;
   row.querySelectorAll('.tent-card').forEach((c, i) => c.classList.toggle('active', i === idx));
   detail.classList.add('fading');
@@ -778,8 +740,16 @@ document.getElementById('tdCartBtn').addEventListener('click', () => {
   }
 });
 
-buildTentCards();
-fillDetail(tents[0]);
+function initTentSelector() {
+  const tents = window.ZV_TENTS || [];
+  if (!tents.length) return;
+  selectedIdx = 0;
+  buildTentCards();
+  fillDetail(tents[0]);
+}
+
+window.addEventListener('catalog:ready', initTentSelector);
+if ((window.ZV_TENTS || []).length) initTentSelector();
 
 /* ── FAQ accordion ──────────────────────────────────────── */
 document.querySelectorAll('.faq-item').forEach(item => {

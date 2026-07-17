@@ -54,6 +54,7 @@ export function AnfragenPage() {
   const [deleteTarget, setDeleteTarget] = useState<QuoteRequest | null>(null)
 
   const createBookingFromQuote = (quote: QuoteRequest) => {
+    const eventDate = quote.eventDate ?? ''
     navigate('/buchungen/neu', {
       state: {
         fromQuote: {
@@ -63,7 +64,8 @@ export function AnfragenPage() {
           phoneNumber: quote.phone ?? '',
           postalCode: quote.deliveryPostalCode ?? '',
           city: quote.deliveryCity ?? '',
-          startDate: quote.eventDate ?? '',
+          startDate: eventDate,
+          endDate: eventDate,
           materials: quoteMaterialQuantities(quote),
         },
       },

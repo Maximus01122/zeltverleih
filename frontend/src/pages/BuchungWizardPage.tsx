@@ -3,9 +3,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { PageHeader } from '@/components/PageHeader'
+import { ClientNameAutocomplete } from '@/components/booking/ClientNameAutocomplete'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { MaterialListControls } from '@/components/material/MaterialListControls'
+import { PageHeader } from '@/components/PageHeader'
 import { Stepper } from '@/components/Stepper'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -66,6 +67,7 @@ interface QuotePrefill {
   postalCode: string
   city: string
   startDate: string
+  endDate: string
   materials: Record<number, number>
 }
 
@@ -92,7 +94,7 @@ export function BuchungWizardPage() {
       : emptyClient,
   )
   const [startDate, setStartDate] = useState(fromQuote?.startDate ?? '')
-  const [endDate, setEndDate] = useState('')
+  const [endDate, setEndDate] = useState(fromQuote?.endDate ?? fromQuote?.startDate ?? '')
   const [quantities, setQuantities] = useState<Record<number, number>>(
     () => fromQuote?.materials ?? {},
   )
@@ -308,9 +310,10 @@ export function BuchungWizardPage() {
               <div className="space-y-1.5 sm:col-span-2">
                 <Label>Name *</Label>
                 {/* Only the name is required; all other fields are optional. */}
-                <Input
+                <ClientNameAutocomplete
                   value={client.name}
-                  onChange={(e) => setClient({ ...client, name: e.target.value })}
+                  onChange={(name) => setClient({ ...client, name })}
+                  onSelect={(selected) => setClient(selected)}
                 />
               </div>
               <div className="space-y-1.5">

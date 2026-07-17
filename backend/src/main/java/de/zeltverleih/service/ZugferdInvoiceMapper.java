@@ -6,6 +6,7 @@ import de.zeltverleih.dto.response.DocumentItemView;
 import de.zeltverleih.entity.Address;
 import de.zeltverleih.entity.Client;
 import de.zeltverleih.exception.BadRequestException;
+import org.mustangproject.Allowance;
 import org.mustangproject.BankDetails;
 import org.mustangproject.Contact;
 import org.mustangproject.Item;
@@ -14,6 +15,7 @@ import org.mustangproject.TradeParty;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -120,7 +122,23 @@ public class ZugferdInvoiceMapper {
                 einvoiceProperties.unitCode(),
                 VAT_PERCENT);
         product.setUnit(einvoiceProperties.unitCode());
-        return new Item(product, line.unitPrice(), line.quantity())
+
+        BigDecimal unitPrice = line.unitPrice();
+        BigDecimal quantity = line.quantity();
+        if (unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+            // EN16931 BR-27: BT-146 (Einzelpreis netto) darf nicht negativ sein.
+            // Rabatte/Skonti werden als positionsbezogener Abschlag (BG-27) abgebildet:
+            // Position mit Nettopreis 0 € + Allowance in Höhe des Rabattbetrags (BT-136/BT-139).
+            // Die sichtbare PDF-Rechnung zeigt weiterhin „Rabatt −10,00 €“ in der Positionstabelle.
+            BigDecimal allowanceAmount = unitPrice.abs()
+                    .multiply(quantity)
+                    .setScale(2, RoundingMode.HALF_UP);
+            Item item = new Item(product, BigDecimal.ZERO, quantity)
+                    .setId(String.valueOf(lineNumber));
+            item.addAllowance(new Allowance(allowanceAmount).setReason(line.description()));
+            return item;
+        }
+        return new Item(product, unitPrice, quantity)
                 .setId(String.valueOf(lineNumber));
     }
 

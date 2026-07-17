@@ -3,6 +3,7 @@ package de.zeltverleih.service;
 import de.zeltverleih.dto.request.MaterialCreateRequest;
 import de.zeltverleih.dto.request.MaterialUpdateRequest;
 import de.zeltverleih.dto.request.PriceVersionRequest;
+import de.zeltverleih.dto.response.CatalogMaterialResponse;
 import de.zeltverleih.dto.response.MaterialAvailabilityResponse;
 import de.zeltverleih.dto.response.MaterialResponse;
 import de.zeltverleih.entity.Material;
@@ -15,6 +16,7 @@ import de.zeltverleih.repository.MaterialRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,24 @@ public class MaterialService {
     public List<MaterialResponse> list() {
         return materialRepository.findAllWithPrices().stream()
                 .map(mapper::toResponse)
+                .toList();
+    }
+
+    /** Slim public catalog for the website price list. */
+    @Transactional(readOnly = true)
+    public List<CatalogMaterialResponse> catalog() {
+        return materialRepository.findAllWithPrices().stream()
+                .map(material -> {
+                    var price = material.priceValidOn(LocalDate.now());
+                    return new CatalogMaterialResponse(
+                            material.getId(),
+                            material.getName(),
+                            material.getCategory(),
+                            price.map(MaterialPrice::getDailyPrice).orElse(BigDecimal.ZERO),
+                            price.map(MaterialPrice::getWeekendPrice).orElse(BigDecimal.ZERO),
+                            price.map(MaterialPrice::getAssemblyPrice).orElse(BigDecimal.ZERO)
+                    );
+                })
                 .toList();
     }
 

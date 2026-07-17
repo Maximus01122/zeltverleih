@@ -1,6 +1,7 @@
 package de.zeltverleih.service;
 
 import de.zeltverleih.dto.request.BookingRequest;
+import de.zeltverleih.dto.response.ClientSearchResponse;
 import de.zeltverleih.entity.Address;
 import de.zeltverleih.entity.Client;
 import de.zeltverleih.exception.ConflictException;
@@ -8,6 +9,7 @@ import de.zeltverleih.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -98,5 +100,31 @@ public class ClientService {
             return client.getCustomerNumber();
         }
         return sequenceService.peekNextCustomerNumber();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ClientSearchResponse> searchByName(String query) {
+        if (query == null || query.trim().length() < 2) {
+            return List.of();
+        }
+        return clientRepository.findTop10ByNameContainingIgnoreCaseOrderByNameAsc(query.trim())
+                .stream()
+                .map(this::toSearchResponse)
+                .toList();
+    }
+
+    private ClientSearchResponse toSearchResponse(Client client) {
+        Address address = client.getAddress();
+        return new ClientSearchResponse(
+                client.getId(),
+                String.valueOf(client.getCustomerNumber()),
+                client.getName(),
+                client.getEmail(),
+                client.getPhoneNumber(),
+                address != null ? address.getStreet() : null,
+                address != null ? address.getHouseNumber() : null,
+                address != null ? address.getPostalCode() : null,
+                address != null ? address.getCity() : null
+        );
     }
 }

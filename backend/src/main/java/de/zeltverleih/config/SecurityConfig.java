@@ -34,8 +34,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Public: website contact form submits quote requests without login
+                        // Public: website contact form + price catalog
                         .requestMatchers(HttpMethod.POST, "/api/anfragen").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/catalog/materials").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()

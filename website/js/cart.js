@@ -219,12 +219,25 @@
     const expandBtn = p.priceExpandId
       ? `<button type="button" class="price-expand-toggle" aria-expanded="false" aria-label="Mit / ohne Biertischgarnitur anzeigen"><svg class="price-expand-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>`
       : '';
+    const colorSelect = p.colorVariants?.length
+      ? `<span class="price-color-wrap">
+          <select class="price-color-select" aria-label="Farbe für ${escapeHtml(p.name)}">
+            <option value="">Farbe wählen…</option>
+            ${p.colorVariants.map(v => `<option value="${v.id}">${escapeHtml(v.label)}</option>`).join('')}
+          </select>
+          <span class="price-color-error" hidden>Bitte Farbe wählen.</span>
+        </span>`
+      : '';
+    const addBtn = p.colorVariants?.length
+      ? `<button type="button" class="btn btn--green btn--sm price-add price-add--variant" data-parent="${p.id}">Hinzufügen</button>`
+      : `<button type="button" class="btn btn--green btn--sm price-add" data-id="${p.id}">Hinzufügen</button>`;
     let rows = `
       <tr class="price-row">
-        <td><div class="price-row__title"><span class="price-row__name">${escapeHtml(p.name)}</span>${expandBtn}</div>${note}</td>
+        <td><div class="price-row__title"><span class="price-row__name">${escapeHtml(p.name)}</span>${colorSelect}${expandBtn}</div>${note}</td>
         <td>${window.ZV_formatPrice(p.day)}</td>
         <td>${window.ZV_formatPrice(p.we)}</td>
-        <td><button type="button" class="btn btn--green btn--sm price-add" data-id="${p.id}">Hinzufügen</button></td>
+        <td>${window.ZV_formatAssemblyPrice(p.assembly)}</td>
+        <td>${addBtn}</td>
       </tr>`;
     if (p.priceExpandId) {
       const alt = allItems.find(x => x.id === p.priceExpandId);
@@ -234,6 +247,7 @@
         <td><span class="price-row__name price-row__name--alt">${escapeHtml(alt.name)}</span></td>
         <td>${window.ZV_formatPrice(alt.day)}</td>
         <td>${window.ZV_formatPrice(alt.we)}</td>
+        <td>${window.ZV_formatAssemblyPrice(alt.assembly)}</td>
         <td><button type="button" class="btn btn--green btn--sm price-add" data-id="${alt.id}">Hinzufügen</button></td>
       </tr>`;
       }
@@ -303,6 +317,7 @@
                 <th>Artikel</th>
                 <th>Tag*</th>
                 <th>WE**</th>
+                <th>Lieferung und Aufbau***</th>
                 <th></th>
               </tr>
             </thead>
@@ -323,9 +338,33 @@
       });
     });
 
+    function clearColorError(select) {
+      select.classList.remove('price-color-select--error');
+      select.closest('.price-color-wrap')?.querySelector('.price-color-error')?.setAttribute('hidden', '');
+    }
+
+    function showColorError(select) {
+      select.classList.add('price-color-select--error');
+      select.closest('.price-color-wrap')?.querySelector('.price-color-error')?.removeAttribute('hidden');
+    }
+
+    panels.querySelectorAll('.price-color-select').forEach(select => {
+      select.addEventListener('change', () => clearColorError(select));
+    });
+
     panels.querySelectorAll('.price-add').forEach(btn => {
       btn.addEventListener('click', () => {
-        window.ZV_Cart.add(btn.dataset.id, 1);
+        let id = btn.dataset.id;
+        if (btn.classList.contains('price-add--variant')) {
+          const select = btn.closest('tr')?.querySelector('.price-color-select');
+          id = select?.value;
+          if (!id) {
+            if (select) showColorError(select);
+            return;
+          }
+          if (select) clearColorError(select);
+        }
+        window.ZV_Cart.add(id, 1);
         btn.textContent = '✓ Hinzugefügt';
         btn.disabled = true;
         setTimeout(() => {
@@ -362,10 +401,21 @@
     ).join('');
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     buildCartUI();
+    try {
+      await window.ZV_loadCatalog();
+    } catch (err) {
+      console.error(err);
+      const root = document.getElementById('priceListRoot');
+      if (root) {
+        root.innerHTML =
+          '<p class="price-footnote" style="color:var(--stein)">Preisliste derzeit nicht verfügbar. Bitte Seite neu laden.</p>';
+      }
+    }
     window.ZV_buildPriceList();
     window.updateFormPreview();
+    window.dispatchEvent(new CustomEvent('catalog:ready'));
 
     document.querySelectorAll('.acc-card[data-price-cat]').forEach(card => {
       const body = card.querySelector('.acc-card__body--link');

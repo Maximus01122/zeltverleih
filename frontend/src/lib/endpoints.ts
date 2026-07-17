@@ -24,7 +24,12 @@ import type {
   QuoteRequest,
   ServiceOption,
   DocumentItem,
+  ClientSuggestion,
 } from './types'
+
+// --- Clients ---
+export const searchClients = (q: string) =>
+  api.get<ClientSuggestion[]>(`/api/clients/search?q=${encodeURIComponent(q)}`)
 
 // --- Bookings ---
 export const listBookings = (from?: string, to?: string) => {
